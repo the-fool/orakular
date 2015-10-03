@@ -25,5 +25,5 @@ with open('db_script.sql') as script:
       print 'Error.code =', error.code
       print 'Error.message =', error.message
       print 'Error.offset =', error.offset
-      c.rollback()
+      db.rollback()
 
