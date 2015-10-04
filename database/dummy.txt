@@ -36,4 +36,14 @@ BEGIN
 (10, 'friedrich nietzsche', 'psychology')
 END
 BEGIN
-(1, 'intro to 
+('HUM101', 'intro to humanity', 'MWF 10:00-10:50', 'ALPHA 0001', null, 30)
+('MATH220', 'numbers big and small', 'Tu 1:00-3:50', 'BETA 0020', null, 15)
+('PHYS439', 'advanced time travel', 'WF 4:00-4:30', 'GAMMA 0333', null, 20)
+('MUS330', 'special topic: pierrot lunaire', 'MWF 12:00-12:50', 'DELTA 4040', null, 30)
+('BASK101', 'intro to baskets', 'TuTh 5:00-6:30', 'EPSILON 0055', null, 15)
+('HIST412', 'roman economy', 'MWF 9:00-9:50', 'ZETA 0606', null, 20)
+('ENGIN120', 'augers and levers', 'W 9:00-11:30', 'ETA 7007', null, 30)
+('ENGLISH450', 'race, gender, class in pre-soviet anglophone lit', 'TuTh 4:00-4:50', 'THETA 0888', null, 50)
+('THEAT230', 'advanced staged death scenes', 'MWF 8:00-8:50', 'IOTA 0909', null, 15)
+('PSYCH401', 'mind-melding', 'Tu 3:00-5:30', 'KAPPA 0101', null, 10)
+END
