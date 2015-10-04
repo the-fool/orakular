@@ -1,10 +1,20 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for, request
 import cx_Oracle
 from flask.ext.bootstrap import Bootstrap
-from config import DBNAME, DBPASSWORD, DBADDRESS
+from flask.ext.wtf import Form
+from wtforms import StringField, IntegerField, SubmitField
+from wtforms.validators import Required
+
+from config import DBNAME, DBPASSWORD, DBADDRESS, SECRET_KEY
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = SECRET_KEY
 bootstrap = Bootstrap(app)
+
+class LoginForm(Form):
+    id_no = StringField('ID please', validators=[Required()])
+    submit = SubmitField('Submit')
+
 
 @app.route("/data/")
 def hello():
@@ -17,10 +27,19 @@ def hello():
 	  s += str(tup)
 	return "here is your data: " + s
 
-@app.route("/")
-@app.route("/index")
+
+@app.route("/", methods=['GET', 'POST'])
 def index():
-	return render_template("index.html")
+    form = LoginForm()       
+    if form.validate_on_submit():
+       session['id_no'] = form.id_no.data
+       return redirect(url_for('student'))
+    return render_template("index.html", form=form, id_no=session.get('id_no'))
+    #return "template problem"
+
+@app.route("/student")
+def student():
+    print "hello student " + session.get('id_no')
 
 if __name__ == '__main__':
-	app.run()
+	app.run(debug=True)
