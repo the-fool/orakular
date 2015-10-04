@@ -17,11 +17,12 @@ with open('db_script.sql') as script:
   commands = txt.split('/')    
   for command in commands:
     try:
-      print "Executing: " + command
+      print "\n\nExecuting:\n" + command
       c.execute(command)
       db.commit()
     except cx_Oracle.DatabaseError, ex:
       error, = ex.args
+      print '*****ERROR*****\n'
       print 'Error.code =', error.code
       print 'Error.message =', error.message
       print 'Error.offset =', error.offset
