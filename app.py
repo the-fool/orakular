@@ -33,14 +33,16 @@ def index():
     form = LoginForm()       
     if form.validate_on_submit():
        session['id_no'] = form.id_no.data
-       form.id_no.data = ''
        return redirect(url_for('student'))
     return render_template("index.html", form=form, id_no=session.get('id_no'))
-    #return "template problem"
 
 @app.route("/student")
 def student():
-    return render_template("students.html", id_no=session.get('id_no')) 
+    return render_template("student.html", id_no=session.get('id_no')) 
+
+@app.route("/staff", methods=['GET', 'POST'])
+def faculty():
+    return render_template("faculty.html", id_no=session.get('id_no'))
 
 if __name__ == '__main__':
 	app.run(debug=True)
