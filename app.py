@@ -16,18 +16,6 @@ class LoginForm(Form):
     submit = SubmitField('Submit')
 
 
-@app.route("/data/")
-def hello():
-	db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
-	c = db.cursor()
-	c.execute("select * from test")
-	r = c.fetchall()
-	s = ""
-	for tup in r:
-	  s += str(tup)
-	return "here is your data: " + s
-
-
 @app.route("/", methods=['GET', 'POST'])
 def index():
     form = LoginForm()       
@@ -36,9 +24,11 @@ def index():
        return redirect(url_for('student'))
     return render_template("index.html", form=form, id_no=session.get('id_no'))
 
+
 @app.route("/student")
 def student():
     return render_template("student.html", id_no=session.get('id_no')) 
+
 
 @app.route("/staff", methods=['GET', 'POST'])
 def staff():
@@ -47,6 +37,7 @@ def staff():
     c.execute("select * from students")
     students = c.fetchall()
     return render_template("staff.html",  students=students, id_no=session.get('id_no'))
+
 
 @app.route("/api/students")
 def api_students():
