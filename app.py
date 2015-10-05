@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, jsonify
 import cx_Oracle
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.wtf import Form
@@ -47,6 +47,20 @@ def staff():
     c.execute("select * from students")
     students = c.fetchall()
     return render_template("staff.html",  students=students, id_no=session.get('id_no'))
+
+@app.route("/api/students")
+def api_students():
+    db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
+    c = db.cursor()
+    c.execute("select * from students")
+    students = c.fetchall()
+    keys = ['sid','sname','major','s_level','age']
+    l = []
+    for s in students:
+        l.append(dict(zip(keys, list(s))))
+    d = {'students': l}      
+    return jsonify(d) 
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
