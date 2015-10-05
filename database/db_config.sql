@@ -7,8 +7,6 @@ drop table staff /
 drop sequence student_id / 
 drop sequence faculty_id /
 drop sequence staff_id / 
-drop sequence department_id 
-/
 create table students 
 	(sid integer primary key not null, 
 	sname varchar(50) not null, 
@@ -28,7 +26,7 @@ create table faculty
   	  on delete set null)
 /
 create table courses
-	(cid char(12) primary key not null, 
+	(cid char(16) primary key not null, 
 	cname varchar(50) not null,
 	meets_at char(30), 
 	room char(15), 
@@ -64,8 +62,6 @@ create sequence faculty_id
 /
 create sequence staff_id
 /
-create sequence department_id
-/
 create trigger student_id_increment
 before insert on students
 for each row
@@ -90,14 +86,5 @@ for each row
 begin
   select 3000 + MOD(staff_id.NEXTVAL, 1000)
   into :new.sid
-  from dual;
-end;
-/
-create trigger dept_id_increment
-before insert on department
-for each row
-begin
-  select 2000 + MOD(department_id.NEXTVAL, 1000)
-  into :new.did
   from dual;
 end;

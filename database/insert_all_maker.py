@@ -3,7 +3,7 @@ import sys, os
 header = ['into students (sid, sname, major, s_level, age)',
           'into department (did, dname)',
           'into faculty (fid, fname, deptid)',
-          'into courses (cid, cname, meets_at, room, fid, limit',
+          'into courses (cid, cname, meets_at, room, fid, limit)',
           'into enrolled (sid, cid, exam1, exam2, final)',
           'into staff (sid, sname, deptid)'
          ]
@@ -20,9 +20,11 @@ with open('dummy.txt') as i:
           if ln.rstrip() == 'END': 
             break
           o.write('  ' + header[index] + '\n') 
-          o.write('  values ' + ln)
+          o.write('     values ' + ln)
         index = index + 1
       else: 
         break
 
     o.write('\nSELECT * FROM dual\n') 
+    o.write('/')
+    o.close()
