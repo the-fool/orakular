@@ -46,9 +46,7 @@ def api_students():
     c.execute("select * from students")
     students = c.fetchall()
     keys = ['sid','sname','major','s_level','age']
-    l = []
-    for s in students:
-        l.append(dict(zip(keys, list(s))))
+    l = [dict(zip(keys, list(s))) for s in students]
     d = {'students': l}      
     return jsonify(d) 
 
