@@ -2,9 +2,12 @@ drop table students cascade constraints /
 drop table department cascade constraints / 
 drop table faculty cascade constraints /
 drop table courses cascade constraints / 
-drop table enrolled / drop table staff /
-drop sequence student_id / drop sequence course_id / drop sequence faculty_id /
-drop sequence staff_id / drop sequence department_id 
+drop table enrolled / 
+drop table staff /
+drop sequence student_id / 
+drop sequence faculty_id /
+drop sequence staff_id / 
+drop sequence department_id 
 /
 create table students 
 	(sid integer primary key not null, 
@@ -67,7 +70,7 @@ create trigger student_id_increment
 before insert on students
 for each row
 begin
-  select student_id.NEXTVAL
+  select 5000 + MOD(student_id.NEXTVAL, 4000)
   into :new.sid
   from dual;
 end;
@@ -76,7 +79,7 @@ create trigger fid_increment
 before insert on faculty
 for each row
 begin
-  select faculty_id.NEXTVAL
+  select 4000 + MOD(faculty_id.NEXTVAL, 1000)
   into :new.fid
   from dual;
 end;
@@ -85,7 +88,7 @@ create trigger staff_id_increment
 before insert on staff
 for each row
 begin
-  select staff_id.NEXTVAL
+  select 3000 + MOD(staff_id.NEXTVAL, 1000)
   into :new.sid
   from dual;
 end;
@@ -94,7 +97,7 @@ create trigger dept_id_increment
 before insert on department
 for each row
 begin
-  select department_id.NEXTVAL
+  select 2000 + MOD(department_id.NEXTVAL, 1000)
   into :new.did
   from dual;
 end;
