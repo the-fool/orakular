@@ -41,8 +41,12 @@ def student():
     return render_template("student.html", id_no=session.get('id_no')) 
 
 @app.route("/staff", methods=['GET', 'POST'])
-def faculty():
-    return render_template("faculty.html", id_no=session.get('id_no'))
+def staff():
+    db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
+    c = db.cursor()
+    c.execute("select * from students")
+    students = c.fetchall()
+    return render_template("staff.html",  students=students, id_no=session.get('id_no'))
 
 if __name__ == '__main__':
 	app.run(debug=True)
