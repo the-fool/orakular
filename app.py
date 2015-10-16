@@ -1,6 +1,8 @@
 from flask import Flask, render_template, session, redirect, url_for, request, jsonify, flash
 import cx_Oracle
 from flask.ext.bootstrap import Bootstrap
+from database import db_session
+from models import Student, Faculty, Course, Department, Enrolled, Staff
 from flask.ext.wtf import Form
 from wtforms import StringField, IntegerField, SubmitField
 from wtforms.validators import Required
@@ -9,6 +11,7 @@ from config import DBNAME, DBPASSWORD, DBADDRESS, SECRET_KEY
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
+
 bootstrap = Bootstrap(app)
 
 class LoginForm(Form):
