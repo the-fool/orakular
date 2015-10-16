@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for, request, jsonify
+from flask import Flask, render_template, session, redirect, url_for, request, jsonify, flash
 import cx_Oracle
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.wtf import Form
@@ -21,7 +21,9 @@ def index():
     form = LoginForm()       
     if form.validate_on_submit():
        session['id_no'] = form.id_no.data
-       return redirect(url_for('student'))
+       if session.get('id_no') is not None:
+           flash('hello member')
+       return redirect(url_for('index'))
     return render_template("index.html", form=form, id_no=session.get('id_no'))
 
 
