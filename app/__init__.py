@@ -20,3 +20,5 @@ def create_app(config_filename):
     app.register_blueprint(main_blueprint)
     
     return app
+
+app = create_app('/var/www/cs430_project/config.py')
