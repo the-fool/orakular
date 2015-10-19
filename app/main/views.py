@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, request, jsonify, flash
 from . import main
 import cx_Oracle
-from ..database import db_session
+from ..database import db_session, cursor as c
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff
 from forms import LoginForm
 
@@ -22,11 +22,15 @@ def index():
 def student():
     return render_template("student.html", id_no=session.get('id_no')) 
 
+@main.route("/api/staff")
+def api_staff():
+    courses = db_session.query(Course).all()
+    for c in courses:
+	print c.cname
+    return "it works?"
 
 @main.route("/staff", methods=['GET', 'POST'])
 def staff():
-    db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
-    c = db.cursor()
     c.execute("select * from students")
     students = c.fetchall()
     return render_template("staff.html",  students=students, id_no=session.get('id_no'))
@@ -34,8 +38,6 @@ def staff():
 
 @main.route("/api/students")
 def api_students():
-    db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
-    c = db.cursor()
     c.execute("select * from students")
     students = c.fetchall()
     keys = ['sid','sname','major','s_level','age']
