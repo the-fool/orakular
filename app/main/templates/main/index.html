@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+ 
+  <div class="page-header">
+    <h1>Welcome to the Bureaucalypse </h1>
+    <h2>You are {% if id_no %} entity {{ id_no }}
+        {% else %} unknown to us {% endif %}
+    </h2> 
+  </div>
+  <div class="row">
+	<div class="col-sm-4">
+	  <h3 id="login-staff">Staff</h3>
+	  <p>Login with your staff ID</p>
+	  <p><a href="#" class="btn btn-default">Staff</a></p>
+	</div>
+	
+	<div class="col-sm-4">
+	  <h3 id="login-faculty">Facutly</h3>
+	  <p>Faculty login with your faculty ID</p>
+	  <p><a href="#" class="btn btn-default">Faculty</a></p>
+	</div>
+
+	<div class="col-sm-4">
+	  <h3 id="login-student">Student</h3>
+	  <p>Login with your student ID</p>
+	  <p><a href="#" class="btn btn-default">Student</a></p>
+	</div>
+   </div>
+   <div class="row">
+       <div class="col-sm-6">
+       {{ wtf.quick_form(form) }}
+       </div>
+   </div>
+{% endblock %}

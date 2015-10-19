@@ -1,4 +1,5 @@
 from flask import render_template, session, redirect, url_for, request, jsonify, flash
+from . import main
 import cx_Oracle
 from ..database import db_session
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff
@@ -12,15 +13,15 @@ def index():
        if session.get('id_no') is not None:
            flash('hello member')
        return redirect(url_for('.index'))
-    return render_template("index.html", form=form, id_no=session.get('id_no'))
+    return render_template("main/index.html", form=form, id_no=session.get('id_no'))
 
 
-@app.route("/student")
+@main.route("/student")
 def student():
     return render_template("student.html", id_no=session.get('id_no')) 
 
 
-@app.route("/staff", methods=['GET', 'POST'])
+@main.route("/staff", methods=['GET', 'POST'])
 def staff():
     db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
     c = db.cursor()
@@ -29,7 +30,7 @@ def staff():
     return render_template("staff.html",  students=students, id_no=session.get('id_no'))
 
 
-@app.route("/api/students")
+@main.route("/api/students")
 def api_students():
     db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
     c = db.cursor()
