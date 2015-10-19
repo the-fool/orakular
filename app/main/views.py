@@ -13,7 +13,9 @@ def index():
        if session.get('id_no') is not None:
            flash('hello member')
        return redirect(url_for('.index'))
-    return render_template("main/index.html", form=form, id_no=session.get('id_no'))
+    return render_template('index.html', 
+                           form=form, 
+			   id_no=session.get('id_no'))
 
 
 @main.route("/student")
