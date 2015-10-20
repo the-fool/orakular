@@ -9,8 +9,12 @@ from ..database import db_session
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        #user = User(id=form.id.data, role=form.role.data, name=form.name.data)
-        #login_user(user, form.remember_me.data)
+        
+        user = User.check_user(id=form.id.data
+                               , role=form.role.data)
+        if user is not None:
+            login_user(user, form.remember_me.data)
+            return "Hello " + user.name
         #return redirect(url_for('main.index'))
-	return "Hello!"
+	return form.role.data
     return render_template('auth/login.html', form=form)

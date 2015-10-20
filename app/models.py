@@ -98,10 +98,13 @@ class User():
         
     @classmethod
     def check_user(cls, id, role):
+        id = int(id)
+        role = role.encode('ascii')
+
         u = User.USERS.get(id)
         if u is not None:
             return u
-        if role is 'student':
+        if role == 'student':
             try:
                 s = db_session.query(Student).filter_by(sid=id).one()
             except:
@@ -110,7 +113,7 @@ class User():
                 u = User(id=s.sid, name=s.sname, role='student')
                 User.USERS[id] = u
                 return u
-        elif role is 'faculty':
+        elif role == 'faculty':
             try:
                 f = db_session.query(Faculty).filter_by(fid=id).one()
             except:
@@ -123,4 +126,4 @@ class User():
                 
 @login_manager.user_loader
 def load_user(user_id):
-    return USERS.get(int(user_id))
+    return User.USERS.get(int(user_id))
