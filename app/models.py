@@ -1,39 +1,11 @@
 # coding: utf-8
 from sqlalchemy import Column, ForeignKey, Numeric, String, Table, text
 from sqlalchemy.orm import relationship
-from database import Base
+from database import Base, db_session
 from . import login_manager
 
 metadata = Base.metadata
 
-class User():
-    USERS = {}
-    def __init__(self, role, name, id):
-        if not id in USERS:
-           USERS[id] = name
-        self.id = id
-        self.name = name
-        self.role = role
-        self.authenticated = True
-        
-    def is_authenticated(self):
-        return self.authenticated
-
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return unicode(self.id)
-
-    def is_anonymous(self):
-        return False
-    
-    def get_user(user_id):
-        return USERS[user_id]
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get_user(user_id)
 
 class Course(Base):
     __tablename__ = 'courses'
@@ -103,3 +75,45 @@ t_test = Table(
     Column('i', Numeric(scale=0, asdecimal=False)),
     Column('name', String(15))
 )
+
+class User():
+    S = {}
+    F = {}
+    s = db_session.query(Student).all()
+    f = db_session.query(Faculty).all()
+    for x in s:
+        S[x.sid] = x.sname
+    for x in f:
+        F[x.fid] = x.fname
+
+    def add(self, role, name, id):
+        if role is 'student':
+            U = S
+        elif role is 'faculty':
+            U = F
+        
+        if id not in U:
+            U[id] = name
+        self.id = id
+        self.name = name
+        self.role = role
+        self.authenticated = True
+        
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return unicode(self.id)
+
+    def is_anonymous(self):
+        return False
+    
+    def get_user(user_id):
+        return USERS[user_id]
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_user(user_id)
