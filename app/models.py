@@ -1,5 +1,5 @@
 # coding: utf-8
-from sqlalchemy import Column, ForeignKey, Numeric, String, Table, text
+from sqlalchemy import Numeric, Column, ForeignKey, Integer, String, Table, text
 from sqlalchemy.orm import relationship
 from database import Base, db_session
 from . import login_manager
@@ -23,7 +23,7 @@ class Course(Base):
 class Department(Base):
     __tablename__ = 'department'
 
-    did = Column(Numeric(scale=0, asdecimal=False), primary_key=True)
+    did = Column(Integer, primary_key=True)
     dname = Column(String(50))
 
 
@@ -43,7 +43,7 @@ class Enrolled(Base):
 class Faculty(Base):
     __tablename__ = 'faculty'
 
-    fid = Column(Numeric(scale=0, asdecimal=False), primary_key=True)
+    fid = Column(Integer, primary_key=True)
     fname = Column(String(50))
     deptid = Column(ForeignKey(u'department.did'))
 
@@ -53,7 +53,7 @@ class Faculty(Base):
 class Staff(Base):
     __tablename__ = 'staff'
 
-    sid = Column(Numeric(scale=0, asdecimal=False), primary_key=True)
+    sid = Column(Integer, primary_key=True)
     sname = Column(String(50))
     deptid = Column(ForeignKey(u'department.did'))
 
@@ -63,11 +63,11 @@ class Staff(Base):
 class Student(Base):
     __tablename__ = 'students'
 
-    sid = Column(Numeric(scale=0, asdecimal=False), primary_key=True)
+    sid = Column(Integer, primary_key=True)
     sname = Column(String(50), nullable=False)
     major = Column(String(30), nullable=False, server_default=text("'undeclared' "))
     s_level = Column(String(15), nullable=False)
-    age = Column(Numeric(scale=0, asdecimal=False))
+    age = Column(Integer)
 
 
 t_test = Table(
@@ -77,30 +77,15 @@ t_test = Table(
 )
 
 class User():
-    S = {}
-    F = {}
-    s = db_session.query(Student).all()
-    f = db_session.query(Faculty).all()
-    for x in s:
-        S[x.sid] = x.sname
-    for x in f:
-        F[x.fid] = x.fname
-
-    def add(self, role, name, id):
-        if role is 'student':
-            U = S
-        elif role is 'faculty':
-            U = F
-        
-        if id not in U:
-            U[id] = name
+    USERS = {}
+    
+    def __init__(self, id, name, role):
         self.id = id
         self.name = name
         self.role = role
-        self.authenticated = True
         
     def is_authenticated(self):
-        return self.authenticated
+        return True
 
     def is_active(self):
         return True
@@ -110,10 +95,32 @@ class User():
 
     def is_anonymous(self):
         return False
-    
-    def get_user(user_id):
-        return USERS[user_id]
-
+        
+    @classmethod
+    def check_user(cls, id, role):
+        u = User.USERS.get(id)
+        if u is not None:
+            return u
+        if role is 'student':
+            try:
+                s = db_session.query(Student).filter_by(sid=id).one()
+            except:
+                s = None
+            if s is not None:
+                u = User(id=s.sid, name=s.sname, role='student')
+                User.USERS[id] = u
+                return u
+        elif role is 'faculty':
+            try:
+                f = db_session.query(Faculty).filter_by(fid=id).one()
+            except:
+                f = None
+            if f is not None:
+                u = User(id=f.fid, name=f.fname, role='faculty')
+                User.USERS[id] = u
+                return u
+        return None
+                
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get_user(user_id)
+    return USERS.get(int(user_id))
