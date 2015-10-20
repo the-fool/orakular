@@ -2,8 +2,38 @@
 from sqlalchemy import Column, ForeignKey, Numeric, String, Table, text
 from sqlalchemy.orm import relationship
 from database import Base
+from . import login_manager
 
 metadata = Base.metadata
+
+class User():
+    USERS = {}
+    def __init__(self, role, name, id):
+        if not id in USERS:
+           USERS[id] = name
+        self.id = id
+        self.name = name
+        self.role = role
+        self.authenticated = True
+        
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return unicode(self.id)
+
+    def is_anonymous(self):
+        return False
+    
+    def get_user(user_id):
+        return USERS[user_id]
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_user(user_id)
 
 class Course(Base):
     __tablename__ = 'courses'
