@@ -3,7 +3,6 @@ from wtforms import StringField, IntegerField, RadioField, PasswordField, Boolea
 from wtforms.validators import Required
 
 class LoginForm(Form):
-    name = StringField('Name', validators=[Required()])
     id = IntegerField('ID', validators=[Required()])
     role = RadioField('Role', validators=[Required()],
                       choices=[('student','Student'),
