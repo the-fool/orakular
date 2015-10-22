@@ -17,7 +17,6 @@ def index():
                            form=form, 
 			   id_no=session.get('id_no'))
 
-
 @main.route("/student")
 def student():
     return render_template("student.html", id_no=session.get('id_no')) 
@@ -44,3 +43,18 @@ def api_students():
     l = [dict(zip(keys, list(s))) for s in students]
     d = {'students': l}      
     return jsonify(d) 
+
+@main.route("/api/faculty")
+def api_faculty():
+    f_list = table_to_dict(db_session.query(Faculty).all())
+    return jsonify({'faculty': f_list})
+    
+
+def table_to_dict(table):
+    l = []
+    for row in table:
+        d = {}
+        for column in row.__table__.columns:
+            d[column.name] = str(getattr(row, column.name))
+        l.append(d)
+    return l
