@@ -6,12 +6,30 @@
      <h1>Course Schedule</h2>
   </div>
   <div class="container">
+    {% if current_user.is_authenticated %}
+      You are {{ current_user.name }}
+    {% endif %}
+  </div>
+  <div class="container">
     {% for c in courses %}
-    <div class="row">
-      <div class="col-sm-4">
-        {{ c.cname }}
-      </div>
-    </div>
+    
+      <table class="table">
+	<thead>
+	  <tr>
+	    <th>Time</th>
+	    <th>Where</th>
+	    <th>Instructor</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td class="col-md-3">{{c.meets_at}}</td>
+	    <td class="col-md-3">{{c.room}}</td>
+	    <td class="col-md-3">{{c.fid}}</td>
+	  </tr>
+	</tbody>
+      </table>
+    
     {% endfor %}
   </div>
   
