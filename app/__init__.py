@@ -4,6 +4,9 @@ from flask.ext.moment import Moment
 from flask.ext.sqlalchemy import SQLAlchemy
 from config import *
 from flask.ext.login import LoginManager
+from flask_lazyviews import LazyViews
+from flask import session, redirect, current_app
+
 
 bootstrap = Bootstrap()
 moment = Moment()
@@ -12,10 +15,10 @@ login_manager = LoginManager()
 login_manager.session_protection = 'basic'
 login_manager.login_view = 'auth.login'
 
+
 def create_app(config_filename):
     app = Flask(__name__)
     app.config.from_pyfile(config_filename)
-
     db.init_app(app)
     moment.init_app(app)
     bootstrap.init_app(app)

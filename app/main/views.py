@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, request, jsonify, flash
+from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app
 from . import main
 import cx_Oracle
 from ..database import db_session, cursor as c
@@ -50,3 +50,4 @@ def table_to_dict(table):
             d[column.name] = str(getattr(row, column.name))
         l.append(d)
     return l
+
