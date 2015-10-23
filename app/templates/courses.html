@@ -12,11 +12,17 @@
   </div>
   <div class="container">
     {% for c in courses %}
-    
+     <h2 class="cname">{{ c.cname.title() }}</h2>
+     {% if current_user.role == "student" %}
+     <p>
+     <a href="/register?cid={{c.cid}}">Register</a>
+     </p>
+     {% endif %}
       <table class="table">
 	<thead>
 	  <tr>
 	    <th>Time</th>
+	    <th>Course No.</th>
 	    <th>Where</th>
 	    <th>Instructor</th>
 	  </tr>
@@ -24,11 +30,13 @@
 	<tbody>
 	  <tr>
 	    <td class="col-md-3">{{c.meets_at}}</td>
+	    <td class="col-md-3">{{c.cid}}</td>
 	    <td class="col-md-3">{{c.room}}</td>
 	    <td class="col-md-3">{{c.fid}}</td>
 	  </tr>
 	</tbody>
       </table>
+      <br>
     
     {% endfor %}
   </div>
