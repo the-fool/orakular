@@ -17,9 +17,10 @@ def index():
                            form=form, 
 			   id_no=session.get('id_no'))
 
-@main.route("/student")
-def student():
-    return render_template("student.html", id_no=session.get('id_no')) 
+@main.route("/courses")
+def courses():
+    courses = db_session.query(Course).all()
+    return render_template("courses.html", courses=courses) 
 
 @main.route("/staff", methods=['GET', 'POST'])
 def staff():
