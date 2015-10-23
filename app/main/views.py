@@ -21,13 +21,6 @@ def index():
 def student():
     return render_template("student.html", id_no=session.get('id_no')) 
 
-@main.route("/api/staff")
-def api_staff():
-    courses = db_session.query(Course).all()
-    for c in courses:
-	print c.cname
-    return "it works?"
-
 @main.route("/staff", methods=['GET', 'POST'])
 def staff():
     c.execute("select * from students")
@@ -35,20 +28,18 @@ def staff():
     return render_template("staff.html",  students=students, id_no=session.get('id_no'))
 
 
-@main.route("/api/students")
-def api_students():
-    c.execute("select * from students")
-    students = c.fetchall()
-    keys = ['sid','sname','major','s_level','age']
-    l = [dict(zip(keys, list(s))) for s in students]
-    d = {'students': l}      
-    return jsonify(d) 
-
 @main.route("/api/faculty")
 def api_faculty():
     f_list = table_to_dict(db_session.query(Faculty).all())
     return jsonify({'faculty': f_list})
-    
+@main.route("/api/students")
+def api_students():
+    s_list = table_to_dict(db_session.query(Student).all())
+    return jsonify({'student': s_list})
+@main.route("/api/staff")
+def api_staff():
+    s_list = table_to_dict(db_session.query(Staff).all())
+    return jsonify({'Staff': s_list})
 
 def table_to_dict(table):
     l = []
