@@ -46,7 +46,7 @@ BEGIN
 ('ENGIN120', 'augers and levers', 'W 9:00-11:30', 'ETA 7007', null, 30)
 ('ENGLISH450', 'race, gender, class in pre-soviet anglophone lit', 'TuTh 4:00-4:50', 'THETA 0888', null, 50)
 ('THEAT230', 'advanced staged death scenes', 'MWF 8:00-8:50', 'IOTA 0909', null, 15)
-('PSYCH401', 'mind-melding', 'Tu 3:00-5:30', 'KAPPA 0101', null, 10)
+('PSYCH401', 'mind-melding', 'Tu 3:00-5:30', 'KAPPA 0101', null, 5)
 END
 BEGIN
 (1, 'richard james', 101)
