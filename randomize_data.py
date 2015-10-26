@@ -2,6 +2,7 @@ from app.models import Course, Department, Enrolled, Faculty, Staff, Student
 from app.database import db_session as sess, cursor, db
 from random import randint, shuffle
 from database import db
+from itertools import cycle
 
 db.ex("database/db_config.sql")
 db.ex("database/data.sql")
@@ -9,8 +10,9 @@ db.ex("database/data.sql")
 # set course fid to the correct faculty fid
 lf = sess.query(Faculty).all()
 lc = sess.query(Course).all()
-for f, c in zip(lf, lc):
-    c.fid = f.fid
+ring = cycle(lf)
+for c in lc:
+    c.fid = next(ring).fid
 sess.commit()
     
 

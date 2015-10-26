@@ -12,7 +12,7 @@ create table students
 	(sid integer primary key not null, 
 	sname varchar(50) not null, 
 	major varchar(30) default 'undeclared' not null, 
-	s_level varchar(15) not null, 
+	s_level varchar2(15) not null, 
         age integer)
 /
 create table department
@@ -27,10 +27,10 @@ create table faculty
   	  on delete set null)
 /
 create table courses
-	(cid char(16) primary key not null, 
+	(cid varchar(16) primary key not null, 
 	cname varchar(50) not null,
 	meets_at char(30), 
-	room char(15), 
+	room varchar(15), 
 	fid integer, 
 	limit integer,
 	actual_enrolled integer default 0,
@@ -39,7 +39,7 @@ create table courses
 /
 create table enrolled
 	(sid integer,
-	cid char(16), 
+	cid varchar(16), 
 	exam1 integer, 
 	exam2 integer, 
 	final integer,
