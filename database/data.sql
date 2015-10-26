@@ -62,25 +62,25 @@ insert  into students (sid, sname, major, s_level, age)
      values (9, 'marlon brando', 109)
 /insert  into faculty (fid, fname, deptid)
      values (10, 'friedrich nietzsche', 110)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('HUM101', 'intro to humanity', 'MWF 10:00-10:50', 'ALPHA 0001', null, 30)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('MATH220', 'numbers big and small', 'Tu 1:00-3:50', 'BETA 0020', null, 15)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('PHYS439', 'advanced time travel', 'WF 4:00-4:30', 'GAMMA 0333', null, 20)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('MUS330', 'special topic: pierrot lunaire', 'MWF 12:00-12:50', 'DELTA 4040', null, 30)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('BASK101', 'intro to baskets', 'TuTh 5:00-6:30', 'EPSILON 0055', null, 15)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('HIST412', 'roman economy', 'MWF 9:00-9:50', 'ZETA 0606', null, 20)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('ENGIN120', 'augers and levers', 'W 9:00-11:30', 'ETA 7007', null, 30)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('ENGLISH450', 'race, gender, class in pre-soviet anglophone lit', 'TuTh 4:00-4:50', 'THETA 0888', null, 50)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('THEAT230', 'advanced staged death scenes', 'MWF 8:00-8:50', 'IOTA 0909', null, 15)
-/insert  into courses (cid, cname, meets_at, room, fid, limit
+/insert  into courses (cid, cname, meets_at, room, fid, limit)
      values ('PSYCH401', 'mind-melding', 'Tu 3:00-5:30', 'KAPPA 0101', null, 10)
 /insert  into staff (sid, sname, deptid)
      values (1, 'richard james', 101)

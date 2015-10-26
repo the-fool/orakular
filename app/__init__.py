@@ -37,3 +37,4 @@ def create_app(config_filename):
     return app
 
 app = create_app('/var/www/cs430_project/config.py')
+

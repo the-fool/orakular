@@ -13,3 +13,4 @@ Base.query = db_session.query_property()
 
 db = cx_Oracle.connect(DBNAME, DBPASSWORD, DBADDRESS)
 cursor = db.cursor()
+

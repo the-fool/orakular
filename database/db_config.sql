@@ -37,7 +37,7 @@ create table courses
 /
 create table enrolled
 	(sid integer,
-	cid char(12), 
+	cid char(16), 
 	exam1 integer, 
 	exam2 integer, 
 	final integer,
