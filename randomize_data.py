@@ -1,6 +1,11 @@
 from app.models import Course, Department, Enrolled, Faculty, Staff, Student
 from app.database import db_session as sess, cursor, db
 from random import randint, shuffle
+from database import db
+
+db.ex("database/db_config.sql")
+db.ex("database/data.sql")
+
 # set course fid to the correct faculty fid
 lf = sess.query(Faculty).all()
 lc = sess.query(Course).all()
@@ -13,7 +18,8 @@ ls = sess.query(Student).all()
 for s in ls:
     tmp = lc[:]
     shuffle(tmp)
-    for i in range(4):
+    i = 0
+    while i < 3:
         d = {}
         d["cid"] = tmp.pop().cid
         d["sid"] = s.sid
@@ -21,6 +27,13 @@ for s in ls:
         d["exam2"] = randint(55,100)
         d["final"] = randint(55,100)
         en = Enrolled(**d)
-        sess.add(en)
-        sess.commit()
+        try: 
+            sess.add(en)
+            sess.commit()
+        except:
+            sess.rollback()
+            i -= 1
+            raise
+        i += 1
+            
         

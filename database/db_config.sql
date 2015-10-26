@@ -1,3 +1,4 @@
+drop trigger check_enrollment /
 drop table students cascade constraints / 
 drop table department cascade constraints / 
 drop table faculty cascade constraints /
@@ -32,6 +33,7 @@ create table courses
 	room char(15), 
 	fid integer, 
 	limit integer,
+	actual_enrolled integer default 0,
 	foreign key(fid) references faculty(fid) 
 	  on delete set null)
 /
@@ -88,3 +90,25 @@ begin
   into :new.sid
   from dual;
 end;
+/
+create trigger check_enrollment
+before insert or update on enrolled
+for each row
+declare 
+	actual number; 
+	maximum number;
+begin
+  select count(cid) 
+  into actual
+  from enrolled
+  where enrolled.cid = :new.cid; 
+
+  select limit
+  into maximum
+  from courses
+  where courses.cid = :new.cid;
+
+  if (maximum <= actual)
+  then RAISE_APPLICATION_ERROR( -20001, 'Sorry, the class is full' );
+  END IF;
+END;

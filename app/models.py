@@ -16,7 +16,7 @@ class Course(Base):
     room = Column(String(15))
     fid = Column(ForeignKey(u'faculty.fid'))
     limit = Column(Numeric(scale=0, asdecimal=False))
-
+    actual_enrolled = Column(Numeric(scale=0, asdecimal=False))
     faculty = relationship(u'Faculty')
 
 
