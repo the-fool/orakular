@@ -10,6 +10,22 @@ BEGIN
 (9, 'gilles deleuze', 'mathematics', 'freshman', 17)
 (10, 'thomas pynchon', 'engineering', 'freshman', 18)
 (11, 'nick cave', 'music', 'junior', 21)
+(12, 'gregor samsa', 'literature', 'sophomore', 20)
+(13, 'jim webb', 'racquet sports', 'freshman', 19)
+(14, 'gordon freeman', 'physics', 'senior', 22)
+(15, 'flannery oconnor', 'chemistry', 'junior', 22)
+(16, 'ada lovelace', 'psychology', 'freshman', 21)
+(17, 'jean baudrillard', 'mathematics', 'senior', 23)
+(18, 'yukio mishima', 'fencing', 'senior', 23)
+(19, 'stephen malkmus', 'poetry', 'freshman', 18)
+(20, 'john connor', 'engineering', 'sophomore', 20)
+(21, 'diogenes laertius', 'speech-comm', 'senior', 21)
+(22, 'judith butler', 'racquet sports', 'freshman', 18)
+(23, 'susan sontag', 'information technology', 'junior', 20)
+(24, 'franz ferdinand', 'poli-sci', 'junior', 20)
+(25, 'john cage', 'mathematics', 'freshman', 19)
+(26, 'joseph beuys', 'art history', 'junior', 20)
+
 END
 BEGIN
 (999, 'ADMIN')

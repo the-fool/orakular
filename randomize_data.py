@@ -33,7 +33,6 @@ for s in ls:
         except:
             sess.rollback()
             i -= 1
-            raise
         i += 1
             
         
