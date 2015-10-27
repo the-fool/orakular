@@ -13,11 +13,13 @@ def profile():
     try:
         s = sess.query(Student).filter_by(sid=current_user.id).one()
         e = sess.query(Enrolled).filter_by(sid=s.sid).all()
-        c = {}
+        c = []
         for x in e:
-            c[x.cid]= sess.query(Course).filter_by(cid=x.cid).one()
+          cobj = sess.query(Course).filter_by(cid=x.cid).one()
+          fobj = sess.query(Faculty).filter_by(fid=cobj.fid).one()
+          c.append({'cobj':cobj, 'fobj':fobj})
     except:
         raise
     
-    return render_template('student/dashboard.html', s=s, e=e, c=c)
+    return render_template('student/dashboard.html', student=s, enrollment=e, courses=c)
 
