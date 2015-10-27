@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+  <div class="page-header">
+     <h1>{{ current_user.name.title()}}</h2>
+  </div>
+
+       <div class="row">
+       <div class="col-md-8">
+	 <h3>Current Courses</h3>
+       </div>
+     </div>
+       <table class="table-striped">
+	 <thead>
+	   <tr>
+	     <th>ID</th>
+	     <th>Name</th>
+	     <th>When</th>
+	     <th>Where</th>
+	     <th>See Students</th>
+	    </tr>
+	 </thead>
+	 <tbody>
+	   {% for c in courses %}
+	   <tr>
+	     <td class="col-md-2">{{c[0].cid}}</td>
+	     <td class="col-md-2">{{c[0].cname.title()}}</td>
+	     <td class="col-md-2">{{c[0].meets_at}}</td>
+	     <td class="col-md-2">{{c[0].room}}</td>
+	     <td class="col-md-2"><a href="#">.</a></td>
+	   </tr>
+	   {% endfor %}
+	 </tbody>
+       </table>
+     
+  
+{% endblock %}

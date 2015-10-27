@@ -34,6 +34,9 @@ def staff():
     students = c.fetchall()
     return render_template("staff.html",  students=students, id_no=session.get('id_no'))
 
+@main.route("/departments")
+def departments():
+    return "departments"
 
 @main.route("/api/<target>")
 def api(target):
