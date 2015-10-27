@@ -1,5 +1,6 @@
 from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app
 from . import main
+from ..student import student
 import cx_Oracle
 from ..database import db_session, cursor as c
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff
@@ -16,6 +17,12 @@ def index():
     return render_template('index.html', 
                            form=form, 
 			   id_no=session.get('id_no'))
+
+@main.route("/dashboard")
+def dash():
+    return redirect(url_for("student.dashboard"))
+
+
 @main.route("/courses")
 def courses():
     courses = db_session.query(Course).all()

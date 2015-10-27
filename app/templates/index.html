@@ -5,27 +5,28 @@
  
   <div class="page-header">
     <h1>Welcome to the Bureaucalypse </h1>
-    <h2>You are {% if id_no %} entity {{ id_no }}
-        {% else %} unknown to us {% endif %}
+    <h2>{% if current_user.is_authenticated %}{{current_user.name.title()}}{% else %}
+         Guest -- <a href="{{url_for('auth.login')}}">Sign in</a>
+        {%endif%}
     </h2> 
   </div>
   <div class="row">
 	<div class="col-sm-4">
-	  <h3 id="login-staff">Staff</h3>
-	  <p>Login with your staff ID</p>
-	  <p><a href="#" class="btn btn-default">Staff</a></p>
+	  <h3 id="login-staff">Your Dashboard</h3>
+	  <p>View your personal page</p>
+	  <p><a href="{{ url_for('main.dash')}}" class="btn btn-default">Dashboard</a></p>
 	</div>
 	
 	<div class="col-sm-4">
-	  <h3 id="login-faculty">Facutly</h3>
-	  <p>Faculty login with your faculty ID</p>
-	  <p><a href="#" class="btn btn-default">Faculty</a></p>
+	  <h3 id="login-faculty">Course Schedule</h3>
+	  <p>View the current course schedule</p>
+	  <p><a href="{{ url_for('main.courses')}}" class="btn btn-default">Courses</a></p>
 	</div>
 
 	<div class="col-sm-4">
-	  <h3 id="login-student">Student</h3>
-	  <p>Login with your student ID</p>
-	  <p><a href="#" class="btn btn-default">Student</a></p>
+	  <h3 id="login-student">Departments</h3>
+	  <p>View the departments</p>
+	  <p><a href="#" class="btn btn-default">Departments</a></p>
 	</div>
    </div>
    <div class="row">

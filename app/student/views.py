@@ -9,7 +9,7 @@ from ..decorators import student_only
 @student.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 @student_only
-def profile():
+def dashboard():
     try:
         s = sess.query(Student).filter_by(sid=current_user.id).one()
         e = sess.query(Enrolled).filter_by(sid=s.sid).all()
