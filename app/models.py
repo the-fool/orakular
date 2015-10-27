@@ -99,7 +99,6 @@ class User():
     def check_user(cls, id, role):
         id = int(id)
         role = role.encode('ascii')
-
         u = User.USERS.get(id)
         if u is not None:
             return u
@@ -119,6 +118,15 @@ class User():
                 f = None
             if f is not None:
                 u = User(id=f.fid, name=f.fname, role='faculty')
+                User.USERS[id] = u
+                return u
+        elif role == 'staff':
+            try:
+                s = db_session.query(Staff).filter_by(sid=id).one()
+            except:
+                s = None
+            if s is not None:
+                u = User(id=s.sid, name=s.sname, role='staff')
                 User.USERS[id] = u
                 return u
         return None
