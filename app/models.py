@@ -93,6 +93,9 @@ class User():
     def get_id(self):
         return unicode(self.id)
 
+    def get_name(self):
+        return unicode(self.name)
+
     def is_anonymous(self):
         return False
         

@@ -16,7 +16,7 @@ def index():
        if user is not None:
            login_user(user, form.remember_me.data)
            flash('hello member')
-       return redirect(url_for('.index'))
+       return redirect(url_for('{0}.dashboard'.format(user.role)))
     return render_template('index.html', 
                            form=form, 
 			   id_no=session.get('id_no'))
