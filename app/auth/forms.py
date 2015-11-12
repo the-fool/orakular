@@ -4,10 +4,10 @@ from wtforms.validators import Required
 
 class LoginForm(Form):
     id = IntegerField('ID', validators=[Required()])
-    role = RadioField('Role', validators=[Required()],
+    """ role = RadioField('Role', validators=[Required()],
                       choices=[('student','Student'),
                                ('faculty','Faculty'),
-                               ('staff','Staff')])
+                               ('staff','Staff')])"""
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log in')
     
