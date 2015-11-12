@@ -1,5 +1,5 @@
 from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app
-from flask.ext.login import login_user, logout_user, login_required
+from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import main
 from ..student import student
 import cx_Oracle
@@ -16,8 +16,12 @@ def index():
        if user is not None:
            login_user(user, form.remember_me.data)
            flash('hello member')
-       return redirect(url_for('{0}.dashboard'.format(user.role)))
-    return render_template('index.html', 
+       else:
+           flash('invalid id')
+    if current_user.is_authenticated:
+       return redirect(url_for('{0}.dashboard'.format(current_user.role)))
+    else: 
+        return render_template('index.html', 
                            form=form, 
 			   id_no=session.get('id_no'))
 
