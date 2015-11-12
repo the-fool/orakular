@@ -18,6 +18,7 @@ login_manager.login_view = 'auth.login'
 
 def create_app(config_filename):
     app = Flask(__name__)
+    app.debug = True
     app.config.from_pyfile(config_filename)
     db.init_app(app)
     moment.init_app(app)
@@ -40,4 +41,5 @@ def create_app(config_filename):
     return app
 
 app = create_app('/var/www/cs430_project/config.py')
+
 

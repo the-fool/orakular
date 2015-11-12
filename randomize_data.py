@@ -32,7 +32,9 @@ for s in ls:
         try: 
             sess.add(en)
             sess.commit()
+            print "Added!"
         except:
+            print "error"
             sess.rollback()
             i -= 1
         i += 1

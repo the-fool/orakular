@@ -1,17 +1,20 @@
 from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app
+from flask.ext.login import login_user, logout_user, login_required
 from . import main
 from ..student import student
 import cx_Oracle
 from ..database import db_session, cursor as c
-from ..models import Student, Faculty, Course, Department, Enrolled, Staff
-from forms import LoginForm
+from ..models import Student, Faculty, Course, Department, Enrolled, Staff, User
+from ..auth.forms import LoginForm
+
 
 @main.route("/", methods=['GET', 'POST'])
 def index():
     form = LoginForm()       
     if form.validate_on_submit():
-       session['id_no'] = form.id_no.data
-       if session.get('id_no') is not None:
+       user = User.check_user(id=form.id.data)
+       if user is not None:
+           login_user(user, form.remember_me.data)
            flash('hello member')
        return redirect(url_for('.index'))
     return render_template('index.html', 

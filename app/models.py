@@ -78,10 +78,11 @@ t_test = Table(
 class User():
     USERS = {}
     
-    def __init__(self, id, name, role):
+    def __init__(self, id, name, role, dept=None):
         self.id = id
         self.name = name
         self.role = role
+        self.dept = dept
         
     def is_authenticated(self):
         return True
@@ -96,13 +97,12 @@ class User():
         return False
         
     @classmethod
-    def check_user(cls, id, role):
+    def check_user(cls, id):
         id = int(id)
-        role = role.encode('ascii')
         u = User.USERS.get(id)
         if u is not None:
             return u
-        if role == 'student':
+        if id in range(5000,6000):
             try:
                 s = db_session.query(Student).filter_by(sid=id).one()
             except:
@@ -111,24 +111,25 @@ class User():
                 u = User(id=s.sid, name=s.sname, role='student')
                 User.USERS[id] = u
                 return u
-        elif role == 'faculty':
+        elif id in range(4000,5000):
             try:
                 f = db_session.query(Faculty).filter_by(fid=id).one()
             except:
                 f = None
             if f is not None:
-                u = User(id=f.fid, name=f.fname, role='faculty')
+                u = User(id=f.fid, name=f.fname, role='faculty', dept=f.deptid)
                 User.USERS[id] = u
                 return u
-        elif role == 'staff':
+        elif id in range(3000,4000):
             try:
                 s = db_session.query(Staff).filter_by(sid=id).one()
             except:
                 s = None
             if s is not None:
-                u = User(id=s.sid, name=s.sname, role='staff')
+                u = User(id=s.sid, name=s.sname, role='staff', dept=s.deptid)
                 User.USERS[id] = u
                 return u
+                    
         return None
                 
 @login_manager.user_loader
