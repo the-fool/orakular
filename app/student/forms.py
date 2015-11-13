@@ -4,5 +4,5 @@ from wtforms.validators import Required
 
 class RegisterClassForm(Form):
     cid = HiddenField('cid')
-    submit = SubmitField('Register', validators=[Required()])
+    # submit = SubmitField('Register', validators=[Required()])
     

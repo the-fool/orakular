@@ -32,7 +32,8 @@ def dashboard():
 def courses():
     form = RegisterClassForm()
     if form.validate_on_submit():
-        flash('registered')
+        if register_course(form.cid.data):
+            flash('registered')
         return redirect(url_for('.courses'))
 
     course_list = sess.query(Course).all()
@@ -44,3 +45,6 @@ def courses():
                            courses=course_list, enrolled=e_list)
 
 
+def register_course(cid):
+    return True
+    
