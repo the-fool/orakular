@@ -6,19 +6,16 @@
   <div class="page-header">
      <h1>Course Schedule</h2>
   </div>
-  <div class="container">
-    {% if current_user.is_authenticated %}
-      You are {{ current_user.name }}
-    {% endif %}
-  </div>
-  <div class="container">
-    {% for c in courses %}
-     <h2 class="cname">{{ c.cname.title() }}</h2>
+   {% for c in courses %}
+    <h2 class="cname">{{ c.cname.title() }}</h2>
       {% if current_user.role == "student" %}
      
       {% if c.cid not in enrolled %}
       <p>
-	<a href="/register?cid={{c.cid}}">Register</a>
+	<button type="button" class="btn btn-default button-reg" 
+		data-id="{{c.cid}}" >
+	  Register
+	</button>
       </p>
       {% else %}
         <p>
@@ -47,12 +44,12 @@
       <br>
     
     {% endfor %}
-  </div>
 
-  <div id="student-register-modal" class="modal fade" 
+
+   <div id="student-modal" class="modal fade" 
        role="dialog" data-id="">
     <div class="modal-dialog">
-      <div class="modal content">
+      <div class="modal-content">
 	<div class="modal-header">
 	  <button type="button" class="close" data-dismiss="modal">
 	    &times;
@@ -60,7 +57,7 @@
 	  <h4 id="student-modal-title" class="modal-title">(DE)FAULT</h4>
 	</div>
 	<div class="modal-body">
-	  BODY
+	 Test  {{ wtf.quick_form(form) if form != None }}
 	</div>
 	<div class="modal-footer">
 	  <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -70,4 +67,13 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+   {% if current_user.is_authenticated %}
+     {% if current_user.role == 'student' %}
+       <script type="text/javascript" src="{{ url_for('static', filename='course_student.js') }}"> </script>
+       {% endif %}
+    {% endif %}
 {% endblock %}

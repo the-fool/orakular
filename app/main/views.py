@@ -34,10 +34,10 @@ def dash():
 def courses():
     if current_user.is_authenticated:
         if current_user.role == 'student':
-            return redirect(url_for('student.courses', current_user.id))
+            return redirect(url_for('student.courses'))
 
     course_list = db_session.query(Course).all()    
-    return render_template("courses.html", 
+    return render_template("courses.html", form=None,
                            courses=course_list) 
 
 @main.route("/staff", methods=['GET', 'POST'])
