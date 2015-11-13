@@ -26,3 +26,18 @@ def dashboard():
     return render_template('student/dashboard.html', student=s, 
                            grades=grades, enrollment=e, courses=c)
 
+@student.route('/courses/<int:user>', methods=['GET', 'POST'])
+@login_required
+@student_only
+def courses(user):
+    enrolled = None
+    course_list = sess.query(Course).all()
+    print user
+    e_list = []
+    if enrolled is not None:
+        for e in enrolled:
+            e_list.append(e['cobj'].cid)
+
+    return render_template('courses.html', courses=course_list, enrolled=e_list)
+
+

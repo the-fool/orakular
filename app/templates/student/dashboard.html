@@ -36,17 +36,12 @@
 	 {% endfor %}
        </tbody>
      </table>
-     <div class="row">
+    <div class="row">
        <div class="col-md-8">
-	  <button type="button" class="btn btn-info btn-lg" 
-		  data-toggle="modal" data-target="#classInfo">
-	    Show Grades
-	  </button>
+	  <a class="btn btn-default" href="{{ url_for('student.courses', user=current_user.id )}}">
+	    Register More
+	  </a>
        </div>
-       <div class="col-md-8">
-	 
-       </div>
-     </div>
      
 <div id="classInfo" class="modal fade" role="dialog" data-id="">
   <div class="modal-dialog">

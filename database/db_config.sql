@@ -40,9 +40,9 @@ create table courses
 create table enrolled
 	(sid integer,
 	cid varchar(16), 
-	exam1 integer, 
-	exam2 integer, 
-	final integer,
+	exam1 integer default 0, 
+	exam2 integer default 0, 
+	final integer default 0,
   	primary key (sid, cid), 
   	foreign key(sid) references students(sid)
    	  on delete cascade
