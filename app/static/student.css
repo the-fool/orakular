@@ -1,3 +1,11 @@
 td:hover {
     cursor: pointer;
 }
+
+.grade-list {
+    display: none;
+}
+
+.modal-content {
+    font-size: 16px;
+}

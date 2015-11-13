@@ -58,7 +58,24 @@
         <h4 class="modal-title">Modal Header</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th>Exam 1</th>
+	      <th>Exam 2</th>
+	      <th>Final</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    {% for key, v in grades.iteritems() %}
+	    <tr id="grade_{{key}}" class="grade-list">
+	      <td class="col-md-2">{{ v.exam1}}</td>
+	      <td class="col-md-2">{{ v.exam2 }}</td>
+	      <td class="col-md-2">{{ v.final }}</td>
+	    </tr>
+	    {% endfor %}
+	  </tbody>
+	</table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

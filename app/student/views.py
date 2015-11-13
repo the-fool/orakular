@@ -14,12 +14,15 @@ def dashboard():
         s = sess.query(Student).filter_by(sid=current_user.id).one()
         e = sess.query(Enrolled).filter_by(sid=s.sid).all()
         c = []
+        grades = {}
         for x in e:
           cobj = sess.query(Course).filter_by(cid=x.cid).one()
           fobj = sess.query(Faculty).filter_by(fid=cobj.fid).one()
           c.append({'cobj':cobj, 'fobj':fobj})
+          grades[x.cid] = x
     except:
         raise
     
-    return render_template('student/dashboard.html', student=s, enrollment=e, courses=c)
+    return render_template('student/dashboard.html', student=s, 
+                           grades=grades, enrollment=e, courses=c)
 

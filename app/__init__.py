@@ -37,7 +37,7 @@ def create_app(config_filename):
     from .faculty import faculty as faculty_blueprint
     app.register_blueprint(faculty_blueprint, url_prefix='/faculty')
 
-    app.jinja_env.globals.update(title=str.title)
+    app.jinja_env.globals.update(title=str.title, iteritems=dict.iteritems)
     return app
 
 app = create_app('/var/www/cs430_project/config.py')
