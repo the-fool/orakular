@@ -32,12 +32,15 @@ def dashboard():
 def courses():
     form = RegisterClassForm()
     if form.validate_on_submit():
-        
+        flash('registered')
+        return redirect(url_for('.courses'))
+
     course_list = sess.query(Course).all()
     enrolled = sess.query(Enrolled).filter(Enrolled.sid==current_user.id).all()
     e_list = []
     if enrolled is not None:
         e_list = [e.cid for e in enrolled]
-    return render_template('courses.html', courses=course_list, enrolled=e_list)
+    return render_template('courses.html', form=form,
+                           courses=course_list, enrolled=e_list)
 
 

@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import SubmitField
+from wtforms import SubmitField, HiddenField
 from wtforms.validators import Required
 
 class RegisterClassForm(Form):
