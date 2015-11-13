@@ -2,7 +2,7 @@ from flask import render_template, url_for, redirect, request, flash, abort
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import student
 from ..models import User, Student, Enrolled, Course, Faculty
-from .forms import LoginForm
+from .forms import RegisterClassForm
 from ..database import db_session as sess
 from ..decorators import student_only
 
@@ -30,10 +30,12 @@ def dashboard():
 @login_required
 @student_only
 def courses():
+    form = RegisterClassForm()
+    if form.validate_on_submit():
+        
     course_list = sess.query(Course).all()
     enrolled = sess.query(Enrolled).filter(Enrolled.sid==current_user.id).all()
     e_list = []
-    print enrolled
     if enrolled is not None:
         e_list = [e.cid for e in enrolled]
     return render_template('courses.html', courses=course_list, enrolled=e_list)
