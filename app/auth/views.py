@@ -10,8 +10,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         
-        user = User.check_user(id=form.id.data
-                               , role=form.role.data)
+        user = User.check_user(id=form.id.data)
         if user is not None:
             login_user(user, form.remember_me.data)
             return redirect(request.args.get('next') 
