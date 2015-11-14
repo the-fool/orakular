@@ -23,3 +23,9 @@ def dashboard():
     return render_template('faculty/dashboard.html', 
                            faculty=f, courses=c)
 
+@faculty.route('/course_info/<cid>', methods=['GET', 'POST'])
+@login_required
+@faculty_only
+def course_info(cid):
+    return cid
+

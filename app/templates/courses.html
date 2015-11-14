@@ -2,27 +2,34 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block page_content %}
-
+<div class="row">
   <div class="page-header">
      <h1>Course Schedule</h2>
   </div>
-   {% for c in courses %}
+</div>
+  {% for c in courses %}
+  <div class="row"> 
+
     <h2 class="cname">{{ c.cname.title() }}</h2>
       {% if current_user.role == "student" %}
-     
-      {% if c.cid not in enrolled %}
-      <p>
-	<button type="button" class="btn btn-default button-reg" 
+         {% if c.cid not in enrolled %}
+         <p>
+	   <button type="button" class="btn btn-default button-reg" 
 		data-id="{{c.cid}}" >
-	  Register
-	</button>
-      </p>
-      {% else %}
-        <p>
-	 <em>Already registered</em>
-	</p>
-	{% endif %}
-	{% endif %}
+	     Register
+	   </button>
+	 </p>
+         {% else %}
+         <p>
+	   <em>Already registered</em>
+	 </p>
+	 {% endif %}
+      {% endif %}
+      {% if current_user.role in ("faculty", "staff") %}
+	 <a href="{{ url_for("{0}.course_info".format(current_user.role), cid=c.cid) }}">
+	   Course information
+	   </a>
+      {% endif %}
       <table class="table">
 	<thead>
 	  <tr>
@@ -42,11 +49,11 @@
 	</tbody>
       </table>
       <br>
-    
+    </div>
     {% endfor %}
 
 
-   <div id="student-modal" class="modal fade" 
+  <div id="student-modal" class="modal fade" 
        role="dialog" data-id="">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -82,6 +89,9 @@
    {% if current_user.is_authenticated %}
      {% if current_user.role == 'student' %}
        <script type="text/javascript" src="{{ url_for('static', filename='course_student.js') }}"> </script>
+       {% endif %}
+       {% if current_user.role == 'faculty' %}
+<script type="text/javascript" src="{{ url_for('static', filename='course_faculty.js') }}"> </script>
        {% endif %}
     {% endif %}
 {% endblock %}

@@ -18,3 +18,10 @@ def staff_only(f):
     return role_required('staff')(f)
 def faculty_only(f):
     return role_required('faculty')(f)
+def non_student_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.role.lower() == 'student':
+            return abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
