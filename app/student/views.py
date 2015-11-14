@@ -12,10 +12,10 @@ from ..decorators import student_only
 def dashboard():
     try:
         s = sess.query(Student).filter_by(sid=current_user.id).one()
-        e = sess.query(Enrolled).filter_by(sid=s.sid).all()
+        current_user.courses = sess.query(Enrolled).filter_by(sid=s.sid).all()
         c = []
         grades = {}
-        for x in e:
+        for x in current_user.courses:
           cobj = sess.query(Course).filter_by(cid=x.cid).one()
           fobj = sess.query(Faculty).filter_by(fid=cobj.fid).one()
           c.append({'cobj':cobj, 'fobj':fobj})
@@ -24,12 +24,15 @@ def dashboard():
         raise
     
     return render_template('student/dashboard.html', student=s, 
-                           grades=grades, enrollment=e, courses=c)
+                           grades=grades, courses=c)
 
 @student.route('/courses/', methods=['GET', 'POST'])
 @login_required
 @student_only
 def courses():
+    if current_user.courses is None:
+        current_user.courses = sess.query(Enrolled).filter_by(sid=current_user.id)
+    
     form = RegisterClassForm()
     if form.validate_on_submit():
         if register_course(form.cid.data):
@@ -37,14 +40,29 @@ def courses():
         return redirect(url_for('.courses'))
 
     course_list = sess.query(Course).all()
-    enrolled = sess.query(Enrolled).filter(Enrolled.sid==current_user.id).all()
     e_list = []
-    if enrolled is not None:
-        e_list = [e.cid for e in enrolled]
+    if current_user.courses is not None:
+        e_list = [e.cid for e in current_user.courses]
+
     return render_template('courses.html', form=form,
                            courses=course_list, enrolled=e_list)
 
 
 def register_course(cid):
+    to_reg = sess.query(Course).filter_by(cid=cid).one()
+    to_reg_sched = parse_time(to_reg)
+    print to_reg_sched
     return True
     
+def parse_time(course):
+    schedule = {}
+    meets = course.meets_at
+    t = meets.split()[0].upper()
+    h = [float(x.replace(':', '.')) for x in meets.split()[1].split('-')]
+    days = ['M', 'TU', 'W', 'TH', 'F']
+    for d in days:
+        if t.find(d) != -1:
+            schedule[d] = h
+    return schedule
+
+

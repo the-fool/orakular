@@ -83,7 +83,8 @@ class User():
         self.name = name
         self.role = role
         self.dept = dept
-        
+        self.courses = []
+
     def is_authenticated(self):
         return True
 
