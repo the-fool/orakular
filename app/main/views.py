@@ -6,7 +6,7 @@ import cx_Oracle
 from ..database import db_session, cursor as c
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff, User
 from ..auth.forms import LoginForm
-
+from ..decorators import non_student_only
 
 @main.route("/", methods=['GET', 'POST'])
 def index():
@@ -49,6 +49,17 @@ def staff():
 @main.route("/departments")
 def departments():
     return "departments"
+
+
+@main.route("/ajax/student_modal")
+@login_required
+@non_student_only
+def gen_student_modal():
+    sid = request.args.get('sid','')
+    if sid:
+        return sid
+    else:
+        return "System error retrieving data."
 
 @main.route("/api/<target>")
 def api(target):

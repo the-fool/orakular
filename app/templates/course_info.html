@@ -44,7 +44,7 @@
 </div>
 <div class="row">
   <div class="col-md-12 course-header">
-    <table class="table table-bordered table-striped">
+    <table class="table table-hover table-bordered table-striped">
       <thead>
 	<tr>
 	  <th>ID</th>
@@ -58,7 +58,7 @@
       </thead>
       <tbody>
 	{% for x in students %}
-	<tr>
+	<tr data-id="{{ x['s'].sid }}">
 	  <td>{{ x['s'].sid }}</td>
 	  <td>{{ x['s'].sname.title() }}</td>
 	  <td> {{ x['s'].s_level.title() }}</td>
@@ -73,5 +73,9 @@
    </div>
 </div>
 
-
+{% include 'student_info_modal.html' %}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='course_info.js') }}"></script>
 {% endblock %}
