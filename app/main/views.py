@@ -31,7 +31,7 @@ def courses():
         if current_user.role == 'student':
             return redirect(url_for('student.courses'))
 
-    course_list = session.query(Course).all()    
+    course_list = sess.query(Course).all()    
     return render_template("courses.html", form=None,
                            courses=course_list) 
 
@@ -46,9 +46,15 @@ def departments():
 def gen_student_modal():
     sid = request.args.get('sid','')
     try:
-        student = 
-            
-    else:
+        student = sess.query(Student).filter_by(sid=sid).one()
+        enrolled = sess.query(Enrolled).filter_by(sid=sid).all()
+        e_list = [ {'c':sess.query(Course).filter_by(cid=x.cid).one(), 
+                    'e':x} 
+                   for x in enrolled]
+
+        return render_template('student_modal_gen.html', 
+                               student=student, e_list=e_list)
+    except:
         return "System error retrieving data."
 
 @main.route("/api/<target>")
