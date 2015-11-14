@@ -3,95 +3,98 @@
 
 {% block page_content %}
 <div class="row">
-  <div class="page-header">
-     <h1>Course Schedule</h2>
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>Course Schedule</h2>
+    </div>
   </div>
 </div>
   {% for c in courses %}
-  <div class="row"> 
-
+<div class="row"> 
+  <div class="col-md-12">
     <h2 class="cname">{{ c.cname.title() }}</h2>
       {% if current_user.role == "student" %}
          {% if c.cid not in enrolled %}
-         <p>
-	   <button type="button" class="btn btn-default button-reg" 
-		data-id="{{c.cid}}" >
-	     Register
-	   </button>
-	 </p>
-         {% else %}
-         <p>
-	   <em>Already registered</em>
-	 </p>
-	 {% endif %}
-      {% endif %}
-      {% if current_user.role in ("faculty", "staff") %}
-	 <a href="{{ url_for("{0}.course_info".format(current_user.role), cid=c.cid) }}">
-	   Course information
-	   </a>
-      {% endif %}
-      <table class="table">
-	<thead>
-	  <tr>
-	    <th>Time</th>
-	    <th>Course No.</th>
-	    <th>Where</th>
-	    <th>Instructor</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  <tr>
-	    <td class="col-md-3">{{c.meets_at}}</td>
-	    <td class="col-md-3">{{c.cid}}</td>
-	    <td class="col-md-3">{{c.room}}</td>
-	    <td class="col-md-3">{{c.fid}}</td>
-	  </tr>
-	</tbody>
-      </table>
-      <br>
-    </div>
-    {% endfor %}
+    <p>
+      <button type="button" class="btn btn-default button-reg" 
+	      data-id="{{c.cid}}" >
+	Register
+      </button>
+    </p>
+    {% else %}
+    <p>
+      <em>Already registered</em>
+    </p>
+    {% endif %}
+    {% endif %}
+    {% if current_user.role in ("faculty", "staff") %}
+    <a href="{{ url_for("{0}.course_info".format(current_user.role), cid=c.cid) }}">
+      Course information
+    </a>
+    {% endif %}
+    <table class="table">
+      <thead>
+	<tr>
+	  <th>Time</th>
+	  <th>Course No.</th>
+	  <th>Where</th>
+	  <th>Instructor</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td class="col-md-3">{{c.meets_at}}</td>
+	  <td class="col-md-3">{{c.cid}}</td>
+	  <td class="col-md-3">{{c.room}}</td>
+	  <td class="col-md-3">{{c.fid}}</td>
+	</tr>
+      </tbody>
+    </table>
+    <br>
+  </div>
+</div>
+{% endfor %}
 
 
-  <div id="student-modal" class="modal fade" 
-       role="dialog" data-id="">
-    <div class="modal-dialog">
-      <div class="modal-content">
-	<div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal">
-	    &times;
-	  </button>
-	  <h4 id="student-modal-title" class="modal-title">(DE)FAULT</h4>
-	</div>
-	<div class="modal-body" style="text-align:center">
-	  <div class="tpbutton btn toolbar" style="text-align:center">
-	    {{ wtf.quick_form(form, id="register-form") if form != None }}
+<div id="student-modal" class="modal fade" 
+     role="dialog" data-id="">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal">
+	  &times;
+	</button>
+	<h4 id="student-modal-title" class="modal-title">(DE)FAULT</h4>
+      </div>
+      <div class="modal-body" style="text-align:center">
+	<div class="tpbutton btn toolbar" style="text-align:center">
+	  {{ wtf.quick_form(form, id="register-form") if form != None }}
 	    <button id="yes-register" type="button" class="btn btn-primary btn-lg" 
 		    data-dismiss="modal" onclick="submitreg()" style="margin-right:1em">
-	    Yes	 
+	      Yes	 
 	    </button>
 	    
 	    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="margin-left:1em">
-	    No	 
+	      No	 
 	    </button>
-	  </div>
 	</div>
-	<div class="modal-footer">
-	 
-	</div>
+      </div>
+      <div class="modal-footer">
+	
       </div>
     </div>
   </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-   {% if current_user.is_authenticated %}
-     {% if current_user.role == 'student' %}
-       <script type="text/javascript" src="{{ url_for('static', filename='course_student.js') }}"> </script>
-       {% endif %}
-       {% if current_user.role == 'faculty' %}
-<script type="text/javascript" src="{{ url_for('static', filename='course_faculty.js') }}"> </script>
-       {% endif %}
-    {% endif %}
+{% if current_user.is_authenticated %}
+ {% if current_user.role == 'student' %}
+  <script type="text/javascript" src="{{ url_for('static', filename='course_student.js') }}"> </script>
+ {% endif %}
+ {% if current_user.role == 'faculty' %}
+  <script type="text/javascript" src="{{ url_for('static', filename='course_faculty.js') }}"> </script>
+ {% endif %}
+{% endif %}
 {% endblock %}
