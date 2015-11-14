@@ -53,7 +53,7 @@ def gen_student_modal():
                    for x in enrolled]
 
         return render_template('student_modal_gen.html', 
-                               student=student, e_list=e_list)
+                               s=student, e_list=e_list)
     except:
         return "System error retrieving data."
 

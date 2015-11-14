@@ -58,7 +58,7 @@
       </thead>
       <tbody>
 	{% for x in students %}
-	<tr data-id="{{ x['s'].sid }}">
+	<tr data-id="{{ x['s'].sid }}" class="student-info">
 	  <td>{{ x['s'].sid }}</td>
 	  <td>{{ x['s'].sname.title() }}</td>
 	  <td> {{ x['s'].s_level.title() }}</td>
@@ -78,4 +78,5 @@
 {% block scripts %}
 {{ super() }}
 <script src="{{ url_for('static', filename='course_info.js') }}"></script>
+<script src="{{ url_for('static', filename='student_info_modal.js') }}"></script>
 {% endblock %}
