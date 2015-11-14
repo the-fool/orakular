@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from . import main
 from ..student import student
 import cx_Oracle
-from ..database import db_session, cursor as c
+from ..database import db_session as sess
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff, User
 from ..auth.forms import LoginForm
 from ..decorators import non_student_only
@@ -25,26 +25,15 @@ def index():
                            form=form, 
 			   id_no=session.get('id_no'))
 
-@main.route("/dashboard")
-def dash():
-    return redirect(url_for("student.dashboard"))
-
-
 @main.route("/courses")
 def courses():
     if current_user.is_authenticated:
         if current_user.role == 'student':
             return redirect(url_for('student.courses'))
 
-    course_list = db_session.query(Course).all()    
+    course_list = session.query(Course).all()    
     return render_template("courses.html", form=None,
                            courses=course_list) 
-
-@main.route("/staff", methods=['GET', 'POST'])
-def staff():
-    c.execute("select * from students")
-    students = c.fetchall()
-    return render_template("staff.html",  students=students, id_no=session.get('id_no'))
 
 @main.route("/departments")
 def departments():
@@ -56,15 +45,16 @@ def departments():
 @non_student_only
 def gen_student_modal():
     sid = request.args.get('sid','')
-    if sid:
-        return sid
+    try:
+        student = 
+            
     else:
         return "System error retrieving data."
 
 @main.route("/api/<target>")
 def api(target):
     t = globals()[target.title()]
-    l = table_to_dict(db_session.query(t).all())
+    l = table_to_dict(session.query(t).all())
     return jsonify({target: l})
 
 def table_to_dict(table):
