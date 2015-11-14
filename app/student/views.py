@@ -49,15 +49,20 @@ def courses():
                            courses=course_list, enrolled=e_list)
 
 
-def register_course(cid):
+def register_course(cid, sid=None):
+    """sid param only set when this method is used as a util for db init """
     to_reg = sess.query(Course).filter_by(cid=cid).one()
     q = parse_time(to_reg)
-    print q
     
     current_sched = [] 
-    for x in current_user.courses:
-        current_sched.append(parse_time(sess.query(Course).filter_by(cid=x.cid).one()))
-    print current_sched
+    if sid is None: # default setting
+        for x in current_user.courses:
+            current_sched.append(parse_time(sess.query(Course).filter_by(cid=x.cid).one()))
+    else:
+        elist = sess.query(Enrolled).filter_by(sid=sid).all()
+        for x in elist:
+            current_sched.append(parse_time(sess.query(Course).filter_by(cid=x.cid).one()))
+
     for x in current_sched:
         for k in x.keys():
             if k in q:
