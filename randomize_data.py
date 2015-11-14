@@ -29,7 +29,7 @@ for s in ls:
         d["final"] = randint(55,100)
         en = Enrolled(**d)
         try: 
-            if student.register_course(d["cid"], s.sid):
+            if student.check_schedule(d["cid"], s.sid) == 0:
                 sess.add(en)
                 sess.commit()
                 print "added"

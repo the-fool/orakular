@@ -40,10 +40,11 @@
 	</ul>
 	 {% if current_user.is_authenticated %}
 	<ul class="nav navbar-nav navbar-right">
-	 
-	  <li><a href="{{ url_for('auth.logout') }}"> Log Out</a></li>
-	 
-	 
+	  <li><a href="{{ url_for('auth.logout') }}">Sign Out</a></li>
+	</ul>
+	{% else %}
+	<ul class="nav navbar-nav navbar-right">
+	  <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
 	</ul>
 	  {% endif %}
     </div>

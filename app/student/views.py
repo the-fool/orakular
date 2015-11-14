@@ -34,10 +34,12 @@ def courses():
 
     form = RegisterClassForm()
     if form.validate_on_submit():
-        if register_course(form.cid.data):
-            flash('registered')
+        conf = check_schedule(form.cid.data)
+        if conf == 0:
+            enroll_course(form.cid.data)
+            flash('You are registered for {0}.'.format(form.cid.data))
         else:
-            flash('schedule conflict')
+            flash('Schedule conflict with {0}.'.format(conf.cid))
         return redirect(url_for('.courses'))
 
     course_list = sess.query(Course).all()
@@ -49,28 +51,31 @@ def courses():
                            courses=course_list, enrolled=e_list)
 
 
-def register_course(cid, sid=None):
-    """sid param only set when this method is used as a util for db init """
+def check_schedule(cid, sid=None):
+    """ sid param only set when this method is used as a util for db init 
+    Returns 0 on no-conflict, otherwise the conflicting Enrolled Object  
+    """
     to_reg = sess.query(Course).filter_by(cid=cid).one()
     q = parse_time(to_reg)
     
     current_sched = [] 
     if sid is None: # default setting
         for x in current_user.courses:
-            current_sched.append(parse_time(sess.query(Course).filter_by(cid=x.cid).one()))
-    else:
+            current_sched.append( (parse_time(sess.query(Course).filter_by(cid=x.cid).one()), x) )
+    
+    else: # only invoked by db init insertion of dummy data
         elist = sess.query(Enrolled).filter_by(sid=sid).all()
         for x in elist:
-            current_sched.append(parse_time(sess.query(Course).filter_by(cid=x.cid).one()))
+            current_sched.append( (parse_time(sess.query(Course).filter_by(cid=x.cid).one()), x) )
 
     for x in current_sched:
-        for k in x.keys():
+        for k in x[0].keys():
             if k in q:
-                if ((max(x[k]) >= min(q[k]) >= min(x[k])) | 
-                    (max(x[k]) >= max(q[k]) >= min(x[k])) |
-                    (min(q[k]) <= min(x[k]) and max(q[k]) >= max(x[k]))):
-                     return False
-    return True
+                if ((max(x[0][k]) >= min(q[k]) >= min(x[0][k])) | 
+                    (max(x[0][k]) >= max(q[k]) >= min(x[0][k])) |
+                    (min(q[k]) <= min(x[0][k]) and max(q[k]) >= max(x[0][k]))):
+                     return x[1]
+    return 0
     
 def parse_time(course):
     schedule = {}
@@ -84,3 +89,21 @@ def parse_time(course):
     return schedule
 
 
+def enroll_course(cid):
+    d = {}
+    d['cid'] = cid
+    d['sid'] = current_user.id
+    d['exam1'] = 0
+    d['exam2'] = 0
+    d['final'] = 0
+    en = Enrolled(**d)
+    try:
+        sess.add(en)
+        sess.commit()
+    except cx_Oracle.DatabaseError, exc:
+        error, = exc.args
+        print "Code: ", error.code
+        print "Message: ", error.message
+        flash("Database error - Please contact your administrator")
+        sess.rollback()
+    
