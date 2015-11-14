@@ -1,1 +1,14 @@
-{{ e_list }}
+<div class="row">
+  <div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active"><a id="student_info_main" href="#">Profile</a></li>
+      {% for e in e_list %}
+      <li> <a id="course_item_{{ e['c'].cid}}" href="#">{{e['c'].cid}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-9">
+    Test test
+  </div>
+</div>
+  

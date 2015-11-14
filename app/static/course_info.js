@@ -5,8 +5,7 @@ $(document).ready(function() {
 	console.log(name);
 	$('#student_info').data('id', id);
 	$('#student_info .modal-title').text(name);
-	$('#student_info').modal('show');
 	$('#student_info .modal-body').load('/ajax/student_modal?sid='+id);
+	$('#student_info').modal('show');
     });
-    
 });
