@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='course_info.css') }}">
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1> {{ course.cname.title() }} - {{ course.cid }}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 course-header">
+    <table class="table table-bordered">
+      <thead>
+	<tr>
+	  <th>Schedule</th>
+	  <th>Room</th>
+	  <th>Instructor</th>
+	  <th>Active</th>
+	  <th>Capacity</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td>{{ course.meets_at }}</td>
+	  <td>{{ course.room }}</td>
+	  <td> {{ instructor.title() }}</td>
+	  <td> {{ len(enrolled) }}</td>
+	  <td>{{ course.limit }}</td>
+	</tr>
+      <tbody>
+    </table>
+   </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h2>Current Students</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 course-header">
+    <table class="table table-bordered table-striped">
+      <thead>
+	<tr>
+	  <th>ID</th>
+	  <th>Name</th>
+	  <th>Level</th>
+	  <th>Major</th>
+	  <th>Exam 1</th>
+	  <th>Exam 2</th>
+	  <th>Final</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for x in students %}
+	<tr>
+	  <td>{{ x['s'].sid }}</td>
+	  <td>{{ x['s'].sname.title() }}</td>
+	  <td> {{ x['s'].s_level.title() }}</td>
+	  <td> {{ x['s'].major.title() }}</td>
+	  <td>{{ x['e1'] }}</td>
+	  <td>{{ x['e2'] }}</td>
+	  <td>{{ x['f'] }}</td>
+	</tr>
+	{% endfor %}
+      <tbody>
+    </table>
+   </div>
+</div>
+
+
+{% endblock %}

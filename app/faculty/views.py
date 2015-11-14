@@ -19,7 +19,6 @@ def dashboard():
             c.append((course, s))
     except:
         raise
-    
     return render_template('faculty/dashboard.html', 
                            faculty=f, courses=c)
 
@@ -27,5 +26,13 @@ def dashboard():
 @login_required
 @faculty_only
 def course_info(cid):
-    return cid
+    course = sess.query(Course).filter_by(cid=cid).one()
+    enrolled = sess.query(Enrolled).filter_by(cid=cid).all()
+    students = [ {'s':sess.query(Student).filter_by(sid=x.sid).one(), 
+                  'e1': x.exam1, 'e2':x.exam2, 'f':x.final} for x in enrolled]
+    instructor = sess.query(Faculty).filter_by(fid=course.fid).one().fname
+    
+    
+    return render_template('course_info.html', course=course, students=students,
+                           instructor=instructor, enrolled=enrolled)
 
