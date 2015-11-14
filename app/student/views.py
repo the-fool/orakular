@@ -30,18 +30,19 @@ def dashboard():
 @login_required
 @student_only
 def courses():
-    if current_user.courses is None:
-        current_user.courses = sess.query(Enrolled).filter_by(sid=current_user.id)
-    
+    current_user.courses = sess.query(Enrolled).filter_by(sid=current_user.id).all()
+
     form = RegisterClassForm()
     if form.validate_on_submit():
         if register_course(form.cid.data):
             flash('registered')
+        else:
+            flash('schedule conflict')
         return redirect(url_for('.courses'))
 
     course_list = sess.query(Course).all()
     e_list = []
-    if current_user.courses is not None:
+    if current_user.courses:
         e_list = [e.cid for e in current_user.courses]
 
     return render_template('courses.html', form=form,
@@ -50,8 +51,20 @@ def courses():
 
 def register_course(cid):
     to_reg = sess.query(Course).filter_by(cid=cid).one()
-    to_reg_sched = parse_time(to_reg)
-    print to_reg_sched
+    q = parse_time(to_reg)
+    print q
+    
+    current_sched = [] 
+    for x in current_user.courses:
+        current_sched.append(parse_time(sess.query(Course).filter_by(cid=x.cid).one()))
+    print current_sched
+    for x in current_sched:
+        for k in x.keys():
+            if k in q:
+                if ((max(x[k]) >= min(q[k]) >= min(x[k])) | 
+                    (max(x[k]) >= max(q[k]) >= min(x[k])) |
+                    (min(q[k]) <= min(x[k]) and max(q[k]) >= max(x[k]))):
+                     return False
     return True
     
 def parse_time(course):
