@@ -9,7 +9,7 @@
     </ul>
   </div>
   <div class="col-sm-9">
-    <div class="tab-content">
+    <div id="student-info-tabs" class="tab-content">
       <div id="tab-main" class="tab-pane fade in active">
 	<p class="course-title">Student Profile</p>
 	<table class="table table-striped">
@@ -17,10 +17,6 @@
 	    <tr>
 	      <td class="item-label">ID</td>
 	      <td>{{s.sid}}</td>
-	    </tr>
-	    <tr>
-	      <td class="item-label">Name</td>
-	      <td>{{s.sname.title()}}</td>
 	    </tr>
 	    <tr>
 	      <td class="item-label">Major</td>
@@ -44,24 +40,21 @@
 	  <tbody>
 	    <tr>
 	      <td class="item-label">Exam 1</td>
-	      <td>{{ e['e'].exam1}} </td>
+	      <td class="grade">{{ e['e'].exam1}} </td>
 	    </tr>
 	    <tr>
 	      <td class="item-label">Exam 2</td>
-	      <td>{{ e['e'].exam2 }}</td>
+	      <td class="grade">{{ e['e'].exam2 }}</td>
 	    </tr>
 	    <tr>
 	      <td class="item-label">Final</td>
-	      <td>{{ e['e'].final }}</td>
+	      <td class="grade">{{ e['e'].final }}</td>
 	    </tr>
 	    <tr>
 	      <td class="item-label">Average</td>
-	      <td data-id="avg_{{ e['e'].cid }}"> </td>
+	      <td class="course-avg" data-id="avg_{{ e['e'].cid }}"> </td>
 	    </tr>
-	    <tr>
-	      <td class="item-label">Age</td>
-	      <td>{{ s.age }}</td>
-	    </tr>
+	    
 	  </tbody>
 	</table>
       </div>
