@@ -60,7 +60,7 @@ def gen_student_modal():
 @main.route("/api/<target>")
 def api(target):
     t = globals()[target.title()]
-    l = table_to_dict(session.query(t).all())
+    l = table_to_dict(sess.query(t).all())
     return jsonify({target: l})
 
 def table_to_dict(table):
