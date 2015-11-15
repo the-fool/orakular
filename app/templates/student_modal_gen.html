@@ -1,64 +1,71 @@
 <div class="row">
   <div class="col-sm-3">
     <ul class="nav nav-pills nav-stacked">
-      <li class="active"><a id="student_info_main" href="#">Profile</a></li>
+      <li class="active"><a data-toggle="pill" data-id="tab-main" href="#tab-main">Profile</a></li>
       {% for e in e_list %}
-      <li> <a class="course_item" id="course_item_{{ e['c'].cid}}" href="#">{{e['c'].cid}}</a></li>
+      <li> <a data-toggle="pill" class="course_item" 
+	      data-id="tab-{{ e['c'].cid}}" href="#tab-{{e['c'].cid}}">{{e['c'].cid}}</a></li>
       {% endfor %}
     </ul>
   </div>
   <div class="col-sm-9">
-    <table class="table table-striped student-info-main-tab">
-      <tbody>
-	<tr>
-	  <td class="item-label">ID</td>
-	  <td>{{s.sid}}</td>
-	</tr>
-	<tr>
-	  <td class="item-label">Name</td>
-	  <td>{{s.sname.title()}}</td>
-	</tr>
-	<tr>
-	  <td class="item-label">Major</td>
-	  <td>{{s.major.title() }}</td>
-	</tr>
-	<tr>
-	  <td class="item-label">Level</td>
-	  <td>{{ s.s_level.title() }}</td>
-	</tr>
-	<tr>
-	  <td class="item-label">Age</td>
-	  <td>{{ s.age }}</td>
-	</tr>
-      </tbody>
-    </table>
-    {% for e in e_list %}
-    <p class="course-title"> {{ e['c'].cname.title() }}</p>
-    <table class="table table-striped student-info-class-tab">
-      <tbody>
-	<tr>
-	  <td class="item-label">Exam 1</td>
-	  <td>{{ e['e'].exam1}} </td>
-	</tr>
-	<tr>
-	  <td class="item-label">Exam 2</td>
-	  <td>{{ e['e'].exam2 }}</td>
-	</tr>
-	<tr>
-	  <td class="item-label">Final</td>
-	  <td>{{ e['e'].final }}</td>
-	</tr>
-	<tr>
-	  <td class="item-label">Average</td>
-	  <td data-id="avg_{{ e['e'].cid }}"> </td>
-	</tr>
-	<tr>
-	  <td class="item-label">Age</td>
-	  <td>{{ s.age }}</td>
-	</tr>
-      </tbody>
-    </table>
-    {% endfor %}
+    <div class="tab-content">
+      <div id="tab-main" class="tab-pane fade in active">
+	<table class="table table-striped">
+	  <tbody>
+	    <tr>
+	      <td class="item-label">ID</td>
+	      <td>{{s.sid}}</td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Name</td>
+	      <td>{{s.sname.title()}}</td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Major</td>
+	      <td>{{s.major.title() }}</td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Level</td>
+	      <td>{{ s.s_level.title() }}</td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Age</td>
+	      <td>{{ s.age }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+      {% for e in e_list %}
+      <div id="tab-{{ e['e'].cid}}" class="tab-pane fade" style="display: none" >
+	<p class="course-title"> {{ e['c'].cname.title() }}</p>
+	<table class="table table-striped student-info-course-tab">
+	  <tbody>
+	    <tr>
+	      <td class="item-label">Exam 1</td>
+	      <td>{{ e['e'].exam1}} </td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Exam 2</td>
+	      <td>{{ e['e'].exam2 }}</td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Final</td>
+	      <td>{{ e['e'].final }}</td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Average</td>
+	      <td data-id="avg_{{ e['e'].cid }}"> </td>
+	    </tr>
+	    <tr>
+	      <td class="item-label">Age</td>
+	      <td>{{ s.age }}</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
   
