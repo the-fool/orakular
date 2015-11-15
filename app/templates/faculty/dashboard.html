@@ -12,7 +12,7 @@
 </div>
 <ul class="nav nav-tabs">
 {% for c in courses %}
-  <li><a data-toggle="tab" href="#tab-{{c[0].cid}}">{{c[0].cid}}</a></li>
+  <li><a data-toggle="tab" href="#tab-{{c['c'].cid}}">{{c['c'].cid}}</a></li>
 {% endfor %}  
 </ul>
 
@@ -30,10 +30,10 @@
   <tbody>
     {% for c in courses %}
     <tr>
-      <td class="col-md-2">{{c[0].cid}}</td>
-      <td class="col-md-2">{{c[0].cname.title()}}</td>
-      <td class="col-md-2">{{c[0].meets_at}}</td>
-      <td class="col-md-2">{{c[0].room}}</td>
+      <td class="col-md-2">{{c['c'].cid}}</td>
+      <td class="col-md-2">{{c['c'].cname.title()}}</td>
+      <td class="col-md-2">{{c['c'].meets_at}}</td>
+      <td class="col-md-2">{{c['c'].room}}</td>
       <td class="col-md-2"><a href="#">.</a></td>
     </tr>
     {% endfor %}
