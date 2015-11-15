@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-sm-3">
     <ul class="nav nav-pills nav-stacked">
-      <li class="active"><a data-toggle="pill" data-id="tab-main" href="#tab-main">Profile</a></li>
+      <li class="active"><a data-toggle="tab" data-id="tab-main" href="#tab-main">Profile</a></li>
       {% for e in e_list %}
-      <li> <a data-toggle="pill" class="course_item" 
+      <li> <a data-toggle="tab" class="course_item" 
 	      data-id="tab-{{ e['c'].cid}}" href="#tab-{{e['c'].cid}}">{{e['c'].cid}}</a></li>
       {% endfor %}
     </ul>
@@ -11,6 +11,7 @@
   <div class="col-sm-9">
     <div class="tab-content">
       <div id="tab-main" class="tab-pane fade in active">
+	<p class="course-title">Student Profile</p>
 	<table class="table table-striped">
 	  <tbody>
 	    <tr>
@@ -37,7 +38,7 @@
 	</table>
       </div>
       {% for e in e_list %}
-      <div id="tab-{{ e['e'].cid}}" class="tab-pane fade" style="display: none" >
+      <div id="tab-{{ e['e'].cid}}" class="tab-pane fade">
 	<p class="course-title"> {{ e['c'].cname.title() }}</p>
 	<table class="table table-striped student-info-course-tab">
 	  <tbody>
