@@ -55,7 +55,7 @@ def gen_student_modal():
         return render_template('student_modal_gen.html', 
                                s=student, e_list=e_list)
     except:
-        return "System error retrieving data."
+        raise
 
 @main.route("/api/<target>")
 def api(target):

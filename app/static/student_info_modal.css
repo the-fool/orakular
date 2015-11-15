@@ -2,6 +2,10 @@
     display: none;
 }
 
+.course-title {
+    display: none;
+}
+
 .item-label {
     font-weight: bold;
 }
