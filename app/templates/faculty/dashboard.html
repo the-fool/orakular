@@ -43,3 +43,7 @@
      
   
 {% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="{{url_for('static', filename='dash_faculty.js')}}"></script>
+{% endblock %}
