@@ -49,7 +49,7 @@ END
 BEGIN
 ('HUM101', 'intro to humanity', 'MWF 10:00-10:50', 'ALPHA 0001', null, 30)
 ('MATH220', 'numbers big and small', 'Tu 1:00-3:50', 'BETA 0020', null, 15)
-('PHYS439', 'advanced time travel', 'WF 16:00-16:30', 'GAMMA 0333', null, 20)
+('PHYS439', 'advanced time travel', 'WF 16:30-17:00', 'GAMMA 0333', null, 20)
 ('MUS330', 'special topic: pierrot lunaire', 'MWF 12:00-12:50', 'DELTA 4040', null, 30)
 ('BASK101', 'intro to baskets', 'TuTh 17:00-18:30', 'EPSILON 0055', null, 15)
 ('HIST412', 'roman economy', 'MWF 9:00-9:50', 'ZETA 0606', null, 20)
