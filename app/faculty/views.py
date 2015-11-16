@@ -44,3 +44,8 @@ def course_info(cid):
     return render_template('course_info.html', course=course, students=students,
                            instructor=instructor, enrolled=enrolled, back=back)
 
+@faculty.route('/edit_grade', methods=['POST'])
+@login_required
+@faculty_only
+def edit_grade():
+    pass
