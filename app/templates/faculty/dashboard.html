@@ -7,8 +7,10 @@
 {% block page_content %}
 
 <div class="page-header">
-  <h1>{{ current_user.name.title()}}</h2>
+  <h1>{{ faculty.fname.title()}}</h1>
+  <h3>Department of {{ department.dname.title() }}</h3>
 </div>
+
 <div class="row">
   <div class="col-md-8">
     <h3>Current Courses</h3>

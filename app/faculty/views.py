@@ -1,7 +1,7 @@
 from flask import render_template, url_for, redirect, request, flash, abort, make_response, Response
 from flask.ext.login import  login_required, current_user
 from . import faculty 
-from ..models import User, Student, Enrolled, Course, Faculty
+from ..models import Department, User, Student, Enrolled, Course, Faculty
 from ..database import db_session as sess
 from ..decorators import faculty_only
 import cx_Oracle
@@ -12,6 +12,7 @@ import cx_Oracle
 def dashboard():
     try:
         f = sess.query(Faculty).filter_by(fid=current_user.id).one()
+        department = sess.query(Department).filter_by(did=f.deptid).one()
         c = []
         for course in sess.query(Course).filter_by(fid=f.fid).all():
             d = {}
@@ -27,7 +28,7 @@ def dashboard():
     except:
         raise
     return render_template('faculty/dashboard.html', 
-                           faculty=f, courses=c)
+                           faculty=f, courses=c, department=department)
 
 @faculty.route('/course_info/<cid>', methods=['GET', 'POST'])
 @login_required
