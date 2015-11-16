@@ -33,7 +33,7 @@
 	<h4>Enrolled students</h4>
       </div>
     </div> 
-    <table class="table table-striped">
+    <table class="table table-striped table-bordered">
       <thead>
 	<tr>
 	  <th>Name</th>
@@ -48,7 +48,14 @@
       <tbody>
 	{% for x in c['s'] %}
 	<tr>
-	  <td>{{x['student'].sname.title()}}</td>
+	  <td>
+	    <a href="#" data-id="{{ x['student'].sid}}" 
+	       data-toggle="tooltip" data-placement="left" 
+	       title="Click for Profile" 
+	       class="student-link">
+	      {{x['student'].sname.title()}}
+	    </a>
+	  </td>
 	  <td>{{x['student'].sid  }}</td>
 	  <td>{{x['student'].s_level.title() }}</td>
 	  <td>{{x['student'].major.title() }}</td>
@@ -80,6 +87,8 @@
   </div>
   {% endfor %}
 </div>
+
+{% include 'student_info_modal.html' %}
   
 {% endblock %}
 {% block scripts %}
