@@ -54,21 +54,21 @@
 	  <td>{{x['student'].major.title() }}</td>
 	  <td>
 	    <a href="#" class="edit-grade" data-name="exam1" 
-		 data-pk="{{x['student'].sid}}" data-type="text"
+		 data-pk="{{x['grades'].sid}}_{{x['grades'].cid}}" data-type="text"
 		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Exam 1">
 	      {{x['grades'].exam1}}
 	    </a>
 	  </td>
 	  <td>
 	    <a href="#" class="edit-grade" data-name="exam2" 
-		 data-pk="{{x['student'].sid}}" data-type="text"
+		 data-pk="{{x['grades'].sid}}_{{x['grades'].cid}}" data-type="text"
 		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Exam 2">
 	    {{x['grades'].exam2}}
 	    </a>
 	  </td>
 	  <td>
 	    <a href="#" class="edit-grade" data-name="final" 
-		 data-pk="{{x['student'].sid}}" data-type="text"
+		 data-pk="{{x['grades'].sid}}_{{x['grades'].cid}}" data-type="text"
 		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Final">
 	      {{x['grades'].final}}
 	    </a>

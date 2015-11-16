@@ -92,7 +92,7 @@ begin
 end;
 /
 create trigger check_enrollment
-before insert or update on enrolled
+before insert or update cid, limit on enrolled
 for each row
 declare 
 	actual number; 
