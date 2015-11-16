@@ -10,37 +10,54 @@
     <h3>Current Courses</h3>
   </div>
 </div>
-<ul class="nav nav-tabs">
-{% for c in courses %}
-  <li><a data-toggle="tab" href="#tab-{{c['c'].cid}}">{{c['c'].cid}}</a></li>
-{% endfor %}  
-</ul>
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav nav-tabs">
+      {% for c in courses %}
+      <li><a data-toggle="tab" href="#tab-{{c['c'].cid}}">{{c['c'].cid}}</a></li>
+      {% endfor %}  
+    </ul>
+  </div>
+</div>
 
 <div class="tab-content">
-<table class="table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>When</th>
-      <th>Where</th>
-      <th>See Students</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for c in courses %}
-    <tr>
-      <td class="col-md-2">{{c['c'].cid}}</td>
-      <td class="col-md-2">{{c['c'].cname.title()}}</td>
-      <td class="col-md-2">{{c['c'].meets_at}}</td>
-      <td class="col-md-2">{{c['c'].room}}</td>
-      <td class="col-md-2"><a href="#">.</a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  {% for c in courses %}
+  <div id="tab-{{c['c'].cid}}" class="tab-pane fade">
+    <div class="row">
+      <div class="col-md-12">
+	<h3>{{ c['c'].cname.title() }} - {{c['c'].meets_at}} @ {{c['c'].room }}</h3>
+	<h4>Enrolled students</h4>
+      </div>
+    </div> 
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>Name</th>
+	  <th>ID</th>
+	  <th>Level</th>
+	  <th>Major</th>
+	  <th>Exam 1</th>
+	  <th>Exam 2</th>
+	  <th>Final</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for x in c['s'] %}
+	<tr>
+	  <td>{{x['student'].sname.title()}}</td>
+	  <td>{{x['student'].sid  }}</td>
+	  <td>{{x['student'].s_level.title() }}</td>
+	  <td>{{x['student'].major.title() }}</td>
+	  <td>{{x['grades'].exam1}}</td>
+	  <td>{{x['grades'].exam2}}</td>
+	  <td>{{x['grades'].final}}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
 </div>
-     
   
 {% endblock %}
 {% block scripts %}
