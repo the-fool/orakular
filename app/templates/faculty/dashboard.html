@@ -49,10 +49,11 @@
 	{% for x in c['s'] %}
 	<tr>
 	  <td>
-	    <a href="#" data-id="{{ x['student'].sid}}" 
+	    <a href="#" id="name-{{x['student'].sid}}" 
+	       data-id="{{ x['student'].sid}}" 
 	       data-toggle="tooltip" data-placement="left" 
 	       title="Click for Profile" 
-	       class="student-link">
+	       class="student-info-link">
 	      {{x['student'].sname.title()}}
 	    </a>
 	  </td>
@@ -95,4 +96,5 @@
 {{ super() }}
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <script src="{{url_for('static', filename='dash_faculty.js')}}"></script>
+<script src="{{url_for('static', filename='student_info_modal.js') }}"></script>
 {% endblock %}

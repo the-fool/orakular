@@ -59,9 +59,9 @@
       </thead>
       <tbody>
 	{% for x in students %}
-	<tr data-id="{{ x['s'].sid }}" class="student-info">
+	<tr data-id="{{ x['s'].sid }}" class="student-info-link">
 	  <td>{{ x['s'].sid }}</td>
-	  <td>{{ x['s'].sname.title() }}</td>
+	  <td id="name-{{x['s'].sid}}">{{ x['s'].sname.title() }}</td>
 	  <td> {{ x['s'].s_level.title() }}</td>
 	  <td> {{ x['s'].major.title() }}</td>
 	  <td>{{ x['e1'] }}</td>
