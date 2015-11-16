@@ -1,1 +1,38 @@
 {% extends 'base.html' %}
+
+{% block page_content %}
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Welcome to the Department of {{dep.dname.title()}}</h1>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h3>About us</h3>
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active"><a data-toggle="tab" href="#faculty">Faculty</a></li>
+      <li><a data-toggle="tab" href="#courses">Current Courses</a></li>
+      <li><a data-toggle="tab" href="#staff">Staff</a></li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tab-content">
+      <div id="faculty" class="tab-pane fade in active">
+	Content
+      </div>
+      <div id="courses" class="tab-pane fade">
+	course
+      </div>
+      <div id="staff" class="tab-pane fade">
+	staff
+      </div>
+    </div>
+  </div>
+</div>
+      
+
+{% endblock %}

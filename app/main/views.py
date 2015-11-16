@@ -65,12 +65,13 @@ def department_home(did):
     try:
         dep = sess.query(Department).filter_by(did=did).one()
         f_list = sess.query(Faculty).filter_by(deptid=did).all()
+        s_list = sess.query(Staff).filter_by(deptid=did).all()
         c_list = []
         for c in sess.query(Course).all():
             if c.fid in [f.fid for f in f_list]:  # O(n^2)
                 c_list.append(c)
         return render_template('department_home.html', dep=dep, 
-                               f_list=f_list, c_list=c_list)
+                               f_list=f_list, c_list=c_list, s_list=s_list)
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         print "DB Error: {0} -- {1}".format(error.code, error.message)
