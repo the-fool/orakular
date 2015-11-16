@@ -58,7 +58,8 @@ def gen_student_modal():
     
 @main.route("/dep")
 def departments():
-    return "filler"
+    d_list = sess.query(Department).all()
+    return render_template("departments.html", d_list = d_list)
 
 @main.route("/dep/<int:did>")
 def department_home(did):
