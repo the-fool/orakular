@@ -51,7 +51,7 @@
 	  <div class="tab-content">
 	    <div id="faculty-{{x['d'].did}}" class="tab-pane fade in active">
 	      {% for f in x['f'] %}
-	      <h3 id="fname-{{f.fid}}">{{ f.fname.title() }}</h3>
+	      <h3 class="fname" data-id="{{f.fid}}">{{ f.fname.title() }}</h3>
 	      {% endfor %}
 	    </div>
 	    <div id="courses-{{x['d'].did}}" class="tab-pane fade">
@@ -72,7 +72,7 @@
 		    <td>{{c.cid}}</td>
 		    <td>{{c.meets_at}}</td>
 		    <td>{{c.room}}</td>
-		    <td class="fid-{{c.fid}}">filler</td>
+		    <td class="fid-{{c.fid}}" data-id="{{c.fid}}">filler</td>
 		  </tr>
 		  {% endfor %}
 		</tbody>
@@ -90,4 +90,9 @@
   {% endfor %}
   </div>
 </div> 
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<!-- include the js -->
 {% endblock %}
