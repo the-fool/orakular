@@ -94,5 +94,5 @@
 
 {% block scripts %}
 {{ super() }}
-<!-- include the js -->
+<script type="text/javascript" src="{{url_for('static', filename='departments.js')}}"></script> 
 {% endblock %}
