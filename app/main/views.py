@@ -58,21 +58,24 @@ def gen_student_modal():
     
 @main.route("/dep")
 def departments():
-    d_list = sess.query(Department).all()
-    return render_template("departments.html", d_list = d_list)
+    return redirect(url_for('.department_home', did=0))
 
 @main.route("/dep/<int:did>")
 def department_home(did):
+    l = []
     try:
-        dep = sess.query(Department).filter_by(did=did).one()
-        f_list = sess.query(Faculty).filter_by(deptid=did).all()
-        s_list = sess.query(Staff).filter_by(deptid=did).all()
-        c_list = []
-        for c in sess.query(Course).all():
-            if c.fid in [f.fid for f in f_list]:  # O(n^2)
-                c_list.append(c)
-        return render_template('department_home.html', dep=dep, 
-                               f_list=f_list, c_list=c_list, s_list=s_list)
+        for d in sess.query(Department).all():
+            dic = {}
+            f_list = sess.query(Faculty).filter_by(deptid=d.did).all()
+            s_list = sess.query(Staff).filter_by(deptid=d.did).all()
+            c_list = []
+            for c in sess.query(Course).all():
+                if c.fid in [f.fid for f in f_list]:  # O(n^2)
+                    c_list.append(c)
+            dic = {'f':f_list, 's':s_list, 'c':c_list, 'd':d}
+            l.append(dic)
+        print l
+        return render_template('departments.html', l=l, active=did)
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         print "DB Error: {0} -- {1}".format(error.code, error.message)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block styles %}
 {{ super() }}
-<link rel="stylesheet" href="{{url_for('static', filename='bootstrap.vertical-tabs.css')}}">
+
 {% endblock %}
 
 {% block page_content %}
@@ -13,20 +13,81 @@
 
 <div class="col-xs-3"> <!-- not perfectly responsive --> 
   <ul class="nav nav-pills nav-stacked">
-    {% for d in d_list %}
-      {% if d.did != 999 %}
-      <li><a href="#tab-{{d.did}}" data-toggle="pill">{{d.dname.title()}}</a></li>
+    {% for x in l %}
+      {% if x['d'].did != 999 %}
+      <li><a href="#tab-{{x['d'].did}}" data-toggle="pill">{{x['d'].dname.title()}}</a></li>
       {% endif %}
     {% endfor %}     
    </ul>
 </div>
 
 <div class="col-xs-9">
-    <div class="tab-content">
-      <div class="tab-pane fade" id="home">Home Tab.</div>
-      <div class="tab-pane fade" id="profile">Profile Tab.</div>
-      <div class="tab-pane" id="messages">Messages Tab.</div>
-      <div class="tab-pane" id="settings">Settings Tab.</div>
+  <div class="tab-content">
+    {% for x in l %}
+    <div class="tab-pane fade" id="tab-{{x['d'].did}}">
+      <div class="row">
+	<div class="col-md-12">
+	  <h1>Welcome to the Department of {{x['d'].dname.title()}}</h1>
+	</div>
+      </div>
+      <div class="row">
+	<div class="col-md-12">
+	  <h3>About us</h3>
+	</div>
+      </div>
+      <div class="row">
+	<div class="col-md-12">
+	  <ul class="nav nav-pills nav-justified">
+	    <li class="active"><a data-toggle="pill" 
+				  href="#faculty-{{x['d'].did}}">Faculty</a></li>
+	    <li><a data-toggle="pill" href="#courses-{{x['d'].did}}">Current Courses</a></li>
+	    <li><a data-toggle="pill" href="#staff-{{x['d'].did}}">Staff</a></li>
+	  </ul>
+	</div>
+      </div>
+      <div class="row">
+	<div class="col-md-12">
+	  <br>
+	  <div class="tab-content">
+	    <div id="faculty-{{x['d'].did}}" class="tab-pane fade in active">
+	      {% for f in x['f'] %}
+	      <h3 id="fname-{{f.fid}}">{{ f.fname.title() }}</h3>
+	      {% endfor %}
+	    </div>
+	    <div id="courses-{{x['d'].did}}" class="tab-pane fade">
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th>Title</th>
+		    <th class="col-md-2">ID</th>
+		    <th>When</th>
+		    <th>Where</th>
+		    <th>Faculty</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  {% for c in x['c'] %}
+		  <tr>
+		    <td>{{ c.cname.title() }}</td>
+		    <td>{{c.cid}}</td>
+		    <td>{{c.meets_at}}</td>
+		    <td>{{c.room}}</td>
+		    <td class="fid-{{c.fid}}">filler</td>
+		  </tr>
+		  {% endfor %}
+		</tbody>
+	      </table>
+	    </div>
+	    <div id="staff-{{x['d'].did}}" class="tab-pane fade">
+	      {% for s in x['s'] %}
+	      <h3> {{s.sname.title()}}</h3>
+	      {% endfor %}
+	    </div>
+	  </div>
+	</div>
+      </div>
     </div>
-</div>  
+  {% endfor %}
+  </div>
+</div> 
 {% endblock %}
