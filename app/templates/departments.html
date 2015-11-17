@@ -7,26 +7,24 @@
 {% block page_content %}
 <div class="row">
   <div class="col-md-12">
-   
-     <h2><em><p class="text-right">Explore our departments</p></em></h2>
-  
+    <h2><em><p class="text-right">Explore our departments</p></em></h2>
   </div>
 </div>
 
-<div class="col-xs-3"> 
-    <ul class="nav nav-tabs tabs-left">
-      <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-      <li><a href="#profile" data-toggle="tab">Profile</a></li>
-      <li><a href="#messages" data-toggle="tab">Messages</a></li>
-      <li><a href="#settings" data-toggle="tab">Settings</a></li>
-    </ul>
+<div class="col-xs-3"> <!-- not perfectly responsive --> 
+  <ul class="nav nav-pills nav-stacked">
+    {% for d in d_list %}
+      {% if d.did != 999 %}
+      <li><a href="#tab-{{d.did}}" data-toggle="pill">{{d.dname.title()}}</a></li>
+      {% endif %}
+    {% endfor %}     
+   </ul>
 </div>
 
 <div class="col-xs-9">
-   
     <div class="tab-content">
-      <div class="tab-pane active" id="home">Home Tab.</div>
-      <div class="tab-pane" id="profile">Profile Tab.</div>
+      <div class="tab-pane fade" id="home">Home Tab.</div>
+      <div class="tab-pane fade" id="profile">Profile Tab.</div>
       <div class="tab-pane" id="messages">Messages Tab.</div>
       <div class="tab-pane" id="settings">Settings Tab.</div>
     </div>
