@@ -89,10 +89,17 @@ def department_home(did):
 def search():
     return render_template('search.html')
 
+
 @main.route("/api/<target>")
 def api(target):
     t = globals()[target.title()]
     l = table_to_dict(sess.query(t).all())
+    args = request.args
+    if args.get('s_avg') and target.lower() == 'enrolled':
+        for x in l:
+            print x
+            x['avg'] = str( (float(x['exam1']) + float(x['exam2']) 
+                          + float(x['final']) ) /3)
     return Response(json.dumps(l), mimetype='application/json')
 
 

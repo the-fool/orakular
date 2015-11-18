@@ -7,8 +7,10 @@ $(document).ready(function () {
     
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 	var target = $(e.target).attr("href");
+	var params = "?" + $(e.target).attr("params");
 	target = target.slice(1);
-	$('#table-'+target).bootstrapTable('refresh', {url: "/api/"+target});
+	$('#table-'+target).bootstrapTable('refresh', 
+					   {url: "/api/"+target+params});
 	$('.search').val('');
 	$('.no-result').hide();
     });
