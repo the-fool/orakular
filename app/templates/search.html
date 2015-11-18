@@ -20,6 +20,8 @@
       <li class="active"><a data-toggle="tab" href="#student">Students</a></li>
       <li><a data-toggle="tab" href="#course">Courses</a></li>
       <li><a data-toggle="tab" href="#faculty">Faculty</a></li>
+      <li><a data-toggle="tab" href="#department">Departments</a></li>
+      <li><a data-toggle="tab" href="#enrolled">Enrollment Records</a></li>
     </ul>
   </div>
 </div>
@@ -87,10 +89,46 @@
 	  </thead>
 	</table>
       </div>
+      <div id="department" class="tab-pane fade">
+	<div class="form-group pull-right">
+	  <input type="text" class="search form-control" 
+		 placeholder="Filter" data-id="department">
+	</div>
+	<span class="counter pull-right"></span>
+	<table id="table-department" class="results department"
+	       data-toggle="table" data-sort-name="did"
+	       data-sort-order="asc">
+	  <thead>
+	    <tr>
+	      <th data-field="did" data-sortable="true">ID</th>
+	      <th data-field="dname" data-sortable="true">Name</th>
+	    </tr>
+	  </thead>
+	</table>
+      </div>
+      <div id="enrolled" class="tab-pane fade">
+	<div class="form-group pull-right">
+	  <input type="text" class="search form-control" 
+		 placeholder="Filter" data-id="enrolled">
+	</div>
+	<span class="counter pull-right"></span>
+	<table id="table-enrolled" class="results enrolled"
+	       data-toggle="table" data-sort-name="cid" 
+	       data-sort-order="asc">
+	  <thead>
+	    <tr>
+	      <th data-field="cid" data-sortable="true">Course ID</th>
+	      <th data-field="sid" data-sortable="true">Student</th>
+	      <th data-field="exam1" data-sortable="true">Exam 1</th>
+	      <th data-field="exam2" data-sortable="true">Exam 2</th>
+	      <th data-field="final" data-sortable="true">Final</th>
+	    </tr>
+	  </thead>
+	</table>
+      </div>
     </div>
   </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
