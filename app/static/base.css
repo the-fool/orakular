@@ -28,3 +28,10 @@ body {
     width: 100%;
     z-index: 9999 !important;
 }
+
+.dep-home {
+    -moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+
+}
