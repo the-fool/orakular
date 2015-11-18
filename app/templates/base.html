@@ -4,7 +4,7 @@
 {% block title %}Bureaucalypse{% endblock %}
 {% block styles %}
 {{ super() }}
-<link rel="stylesheet" href="{{url_for('static', filename='mystyle.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='base.css')}}">
 {% endblock %}
 
 {% block head %}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
 	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -55,7 +55,7 @@
 {% block content %}
 <div class="container">
   {% for message in get_flashed_messages() %}
-  <div class="alert alert-warning">
+  <div class="alert alert-warning flash">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     {{message}}
     </div>

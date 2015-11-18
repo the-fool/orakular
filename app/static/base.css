@@ -1,0 +1,30 @@
+body {
+    background-image: url("linen.png");
+}
+
+.btn-outline {
+    color: #563d7c;
+    background-color: transparent;
+    border-color: #563d7c;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #1BABB3;
+    color: #ab5903;
+    cursor: pointer;
+}
+.navbar {
+ -webkit-backface-visibility: hidden;
+}
+.flash {
+    margin-bottom: -55px;
+    margin-top: 60px;
+}
+.page-header {
+    margin: 90px 0 20px;
+}
+.affix {
+    top: 10;
+    width: 100%;
+    z-index: 9999 !important;
+}
