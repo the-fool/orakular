@@ -29,10 +29,12 @@
     <div class="tab-content">
       <div id="student" class="tab-pane fade in active">
 	<div class="form-group pull-right">
-	  <input type="text" class="search form-control" placeholder="Filter">
+	  <input type="text" class="search form-control" 
+		 placeholder="Filter" data-id="student">
 	</div>
 	<span class="counter pull-right"></span>
-	<table id="table-student" class="results" data-toggle="table" data-sort-name="sid" 
+	<table id="table-student" class="results-student" 
+	       data-toggle="table" data-sort-name="sid" 
 	       data-sort-order="asc">
 	  <thead>
 	    <tr>
@@ -47,7 +49,13 @@
 	</table>
       </div>
       <div id="course" class="tab-pane fade">
-	<table id="table-course" data-toggle="table">
+	<div class="form-group pull-right">
+	  <input type="text" class="search form-control" 
+		 placeholder="Filter" data-id="course">
+	</div>
+	<span class="counter pull-right"></span>
+	<table id="table-course" class="results-course"
+	       data-toggle="table">
 	  <thead>
 	    <tr>
 	      <th data-field="cid">Course ID</th>
