@@ -19,7 +19,7 @@
     <ul class="nav nav-tabs">
       <li class="active"><a data-toggle="tab" href="#student">Students</a></li>
       <li><a data-toggle="tab" href="#course">Courses</a></li>
-      <li><a data-toggle="tab" href="#facult">Faculty</a></li>
+      <li><a data-toggle="tab" href="#faculty">Faculty</a></li>
     </ul>
   </div>
 </div>
@@ -33,7 +33,7 @@
 		 placeholder="Filter" data-id="student">
 	</div>
 	<span class="counter pull-right"></span>
-	<table id="table-student" class="results-student" 
+	<table id="table-student" class="results student" 
 	       data-toggle="table" data-sort-name="sid" 
 	       data-sort-order="asc">
 	  <thead>
@@ -54,22 +54,38 @@
 		 placeholder="Filter" data-id="course">
 	</div>
 	<span class="counter pull-right"></span>
-	<table id="table-course" class="results-course"
-	       data-toggle="table">
+	<table id="table-course" class="results course"
+	       data-toggle="table" data-sort-name="cid" 
+	       data-sort-order="asc">
 	  <thead>
 	    <tr>
-	      <th data-field="cid">Course ID</th>
-	      <th data-field="cname">Name</th>
+	      <th data-field="cid" data-sortable="true">Course ID</th>
+	      <th data-field="cname" data-sortable="true">Name</th>
 	      <th data-field="meets_at">When</th>
-	      <th data-field="room">Where</th>
-	      <th data-field="fid">Faculty</th>
+	      <th data-field="room" data-sortable="true">Where</th>
+	      <th data-field="fid" data-sortable="true">Faculty</th>
 	      <th data-field="limit" data-formatter="integerFormat">Limit</th>
 	    </tr>
 	  </thead>
 	</table>
       </div>
       <div id="faculty" class="tab-pane fade">
-	faculty
+	<div class="form-group pull-right">
+	  <input type="text" class="search form-control" 
+		 placeholder="Filter" data-id="faculty">
+	</div>
+	<span class="counter pull-right"></span>
+	<table id="table-faculty" class="results faculty"
+	       data-toggle="table" data-sort-name="fid"
+	       data-sort-order="asc">
+	  <thead>
+	    <tr>
+	      <th data-field="fid" data-sortable="true">ID</th>
+	      <th data-field="fname" data-sortable="true">Name</th>
+	      <th data-field="deptid" data-sortable="true">Dep. ID</th>
+	    </tr>
+	  </thead>
+	</table>
       </div>
     </div>
   </div>
