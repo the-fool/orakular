@@ -8,13 +8,7 @@ from app.student import views as student
 db.ex("database/db_config.sql")
 db.ex("database/data.sql")
 
-# set course fid to the correct faculty fid
-lf = sess.query(Faculty).all()
-lc = sess.query(Course).all()
-ring = cycle(lf)
-for c in lc:
-    c.fid = next(ring).fid
-                
+lc = sess.query(Course).all()                
 ls = sess.query(Student).all()
 for s in ls:
     tmp = lc[:]
@@ -32,7 +26,7 @@ for s in ls:
             if student.check_schedule(d["cid"], s.sid) == 0:
                 sess.add(en)
                 sess.commit()
-                print "added"
+              #  print "added"
             else:
                 print "****SCHEDULE CONFLICT*****"
                 i -= 1
