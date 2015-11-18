@@ -5,11 +5,58 @@
 {% endblock %}
 
 {% block page_content %}
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-12">
+      Search
+    </div>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col-md-12">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#student">Students</a></li>
+      <li><a data-toggle="tab" href="#course">Courses</a></li>
+      <li><a data-toggle="tab" href="#facult">Faculty</a></li>
+    </ul>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-12">
+    <div class="tab-content">
+      <div id="student" class="tab-pane fade in active">
+	<table id="table-student" data-toggle="table">
+	  <thead>
+	    <tr>
+	      <th data-field="sid">Student ID</th>
+	      <th data-field="sname">Name</th>
+	    </tr>
+	  </thead>
+	</table>
+      </div>
+      <div id="course" class="tab-pane fade">
+	<table id="table-course" data-toggle="table">
+	  <thead>
+	    <tr>
+	      <th data-field="cid">Course ID</th>
+	      <th data-field="cname">Name</th>
+	    </tr>
+	  </thead>
+	</table>
+      </div>
+      <div id="facult" class="tab-pane fade">
+	faculty
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-en-US.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/bootstrap-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/locale/bootstrap-table-en-US.min.js"></script>
+<script src="{{ url_for('static', filename='search.js')}}"></script>
 {% endblock %}

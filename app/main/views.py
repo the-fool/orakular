@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app
+from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app, Response
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import main
 from ..student import student
@@ -8,6 +8,8 @@ from ..models import Student, Faculty, Course, Department, Enrolled, Staff, User
 from ..auth.forms import LoginForm
 from ..decorators import non_student_only
 import cx_Oracle
+import json
+
 
 @main.route("/", methods=['GET', 'POST'])
 def index():
@@ -91,7 +93,7 @@ def search():
 def api(target):
     t = globals()[target.title()]
     l = table_to_dict(sess.query(t).all())
-    return jsonify({target: l})
+    return Response(json.dumps(l), mimetype='application/json')
 
 
 def table_to_dict(table):
@@ -100,6 +102,8 @@ def table_to_dict(table):
         d = {}
         for column in row.__table__.columns:
             d[column.name] = str(getattr(row, column.name))
+            if column.name not in ["cid", "meets_at"]:
+                d[column.name] = d[column.name].title()
         l.append(d)
     return l
 
