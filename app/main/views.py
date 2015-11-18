@@ -102,6 +102,9 @@ def table_to_dict(table):
         d = {}
         for column in row.__table__.columns:
             d[column.name] = str(getattr(row, column.name))
+            if column.name in ['sname', 'fname']:
+                d[column.name] = ', '.join(d[column.name].split()[::-1])
+                
             if column.name not in ["cid", "meets_at"]:
                 d[column.name] = d[column.name].title()
         l.append(d)

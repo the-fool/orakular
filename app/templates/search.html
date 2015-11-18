@@ -2,6 +2,7 @@
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css">
+<link rel="stylesheet" href="{{url_for('static', filename='search.css')}}">
 {% endblock %}
 
 {% block page_content %}
@@ -27,15 +28,21 @@
   <div class="col-md-12">
     <div class="tab-content">
       <div id="student" class="tab-pane fade in active">
-	<table id="table-student" data-toggle="table">
+	<div class="form-group pull-right">
+	  <input type="text" class="search form-control" placeholder="Filter">
+	</div>
+	<span class="counter pull-right"></span>
+	<table id="table-student" class="results" data-toggle="table" data-sort-name="sid" 
+	       data-sort-order="asc">
 	  <thead>
 	    <tr>
 	      <th data-field="sid" data-sortable="true">Student ID</th>
 	      <th data-field="sname" data-sortable="true">Name</th>
-	      <th data-field="s_level" data-sortable="true">Level</th>
+	      <th data-field="s_level" data-sortable="true" data-sorter="levelSorter">Level</th>
 	      <th data-field="major" data-sortable="true">Major</th>
 	      <th data-field="age" data-sortable="true">Age</th>
 	    </tr>
+	    
 	  </thead>
 	</table>
       </div>
@@ -48,17 +55,18 @@
 	      <th data-field="meets_at">When</th>
 	      <th data-field="room">Where</th>
 	      <th data-field="fid">Faculty</th>
-	      <th data-field="limit">Limit</th>
+	      <th data-field="limit" data-formatter="integerFormat">Limit</th>
 	    </tr>
 	  </thead>
 	</table>
       </div>
-      <div id="facult" class="tab-pane fade">
+      <div id="faculty" class="tab-pane fade">
 	faculty
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
