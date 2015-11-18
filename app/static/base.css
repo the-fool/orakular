@@ -14,7 +14,8 @@ body {
     cursor: pointer;
 }
 .navbar {
- -webkit-backface-visibility: hidden;
+    opacity: 0.9;
+    -webkit-backface-visibility: hidden;
 }
 .flash {
     margin-bottom: -55px;
