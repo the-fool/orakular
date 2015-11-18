@@ -81,6 +81,11 @@ def department_home(did):
         print "DB Error: {0} -- {1}".format(error.code, error.message)
         raise
     
+@main.route("/search")
+@login_required
+@non_student_only
+def search():
+    return render_template('search.html')
 
 @main.route("/api/<target>")
 def api(target):
