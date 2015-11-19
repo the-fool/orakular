@@ -1,3 +1,29 @@
+function expandStudentSub($el, row) {
+    columns= [{
+	field: 'cid',
+	title: 'Course'
+    }, {
+	field: 'exam1',
+	title: 'Exam 1',
+    }, {
+	field: 'exam2',
+	title: 'Exam 2'
+    },{
+	field: 'final',
+	title: 'Final'
+    }, {
+	field: 'avg',
+	title: 'Course Avg',
+	formatter: 'floatFormat'
+    }];
+
+    url = '/api/enrolled?s_avg=true&sid='+row['sid'];
+    $el.html('<table></table>').find('table').bootstrapTable({
+	columns: columns,
+	url: url
+    });
+}
+
 $(document).ready(function () {
     $('thead').each(function() {
 	$(this).append("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");
@@ -12,13 +38,21 @@ $(document).ready(function () {
 	target = target.slice(1);
 	$('#table-'+target).bootstrapTable('refresh', 
 					   {url: "/api/"+target+params});
+	    
 	$('.search').val('');
 	$('.no-result').hide();
     });
-    
+    $('table').on('expand-row.bs.table', function(e, index, row, $detail) {
+	switch ($('div.tab-content > .active.in').attr('id')) {
+	    case "student": expandStudentSub($detail, row); break;
+	    default: console.log("def");
+	    }
+    });
+   
     $('table').on('load-success.bs.table', function(name) {
-	console.log($(this));
+	//console.log($(this));
     }); 
+    
     
     $(".search").each( function() {
 	$(this).keyup(function () {
@@ -61,4 +95,9 @@ function integerFormat(value) {
 }
 function floatFormat(value) {
     return value.substring(0, value.indexOf('.') + 2);
+}
+
+function expandStudent(i) {
+    alert(i);
+    console.log("funct");
 }

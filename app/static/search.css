@@ -1,4 +1,7 @@
-
+tbody>tr>td:hover {
+    background-color: #ff5050;
+    cursor: pointer;
+}
 
 .results tr[visible='false'],
 .no-result{

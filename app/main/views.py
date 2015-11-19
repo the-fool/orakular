@@ -9,6 +9,7 @@ from ..auth.forms import LoginForm
 from ..decorators import non_student_only
 import cx_Oracle
 import json
+from sqlalchemy import func
 
 
 @main.route("/", methods=['GET', 'POST'])
@@ -76,7 +77,6 @@ def department_home(did):
                     c_list.append(c)
             dic = {'f':f_list, 's':s_list, 'c':c_list, 'd':d}
             l.append(dic)
-        print l
         return render_template('departments.html', l=l, active=did)
     except cx_Oracle.DatabaseError as e:
         error, = e.args
@@ -94,20 +94,26 @@ def search():
 def api(target):
     args = request.args
     t = globals()[target.title()]
-    
+        
     if args.get('join'):
         try:
             t2 = globals()[args.get('join').title()]
         except:
             pass
         l = table_to_dict(sess.query(t, t2).join(t2).all())
+    if target.lower() == "course":
+      
+        e = dict(sess.query(Enrolled.cid, 
+                            func.count(Enrolled.sid))
+                 .group_by(Enrolled.cid).all())
+        for x in l:
+            x['active'] = e[x['cid']]
         
     else:
         l = table_to_dict(sess.query(t).all())
     
     if args.get('s_avg') and target.lower() == 'enrolled':
         for x in l:
-            print x
             x['avg'] = str( (float(x['exam1']) + float(x['exam2']) 
                           + float(x['final']) ) /3)
     return Response(json.dumps(l), mimetype='application/json')
@@ -120,7 +126,6 @@ def table_to_dict(table):
         if not isinstance(row, tuple):
             row = row,
         row = list(row)
-        print row
         for r in row:
             for column in r.__table__.columns:
                 d[column.name] = str(getattr(r, column.name))

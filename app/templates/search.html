@@ -7,13 +7,13 @@
 
 {% block page_content %}
 <div class="page-header">
-  <div class="row">
-    <div class="col-md-12">
-      Search
-    </div>
-  </div>
-</div>
 
+
+<h3>Search</h3>
+
+
+</div>
+<div class="well">
 <div class="row">
   <div class="col-md-12">
     <ul class="nav nav-tabs">
@@ -39,7 +39,11 @@
 	<span class="counter pull-right"></span>
 	<table id="table-student" class="results student" 
 	       data-toggle="table" data-sort-name="sid" 
-	       data-sort-order="asc">
+	       data-sort-order="asc"
+	       data-height="400"
+	       data-classes="table table-striped"
+	       data-detail-view="true">
+	  
 	  <thead>
 	    <tr>
 	      <th data-field="sid" data-sortable="true">Student ID</th>
@@ -69,6 +73,7 @@
 	      <th data-field="room" data-sortable="true">Where</th>
 	      <th data-field="fname" data-sortable="true">Faculty</th>
 	      <th data-field="limit" data-formatter="integerFormat">Limit</th>
+	      <th data-field="active">Active</th>
 	    </tr>
 	  </thead>
 	</table>
@@ -81,7 +86,8 @@
 	<span class="counter pull-right"></span>
 	<table id="table-faculty" class="results faculty"
 	       data-toggle="table" data-sort-name="fid"
-	       data-sort-order="asc">
+	       data-sort-order="asc"
+	       data-detail-view="true">
 	  <thead>
 	    <tr>
 	      <th data-field="fid" data-sortable="true">ID</th>
@@ -132,6 +138,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
 
