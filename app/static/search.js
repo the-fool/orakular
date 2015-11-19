@@ -1,3 +1,35 @@
+function expandDepartmentSub($el, row) {
+   columns= [{
+	field: 'cid',
+	title: 'Course ID'
+    }, {
+	field: 'cname',
+	title: 'Course Name',
+    }, {
+	field: 'meets_at',
+	title: 'When'
+    },{
+	field: 'room',
+	title: 'Where'
+    }, {
+	field: 'fid',
+	title: 'Faculty ID'
+    }, {
+	field: 'fname',
+	title: 'Faculty Name'
+    }, {
+	field: 'c_avg',
+	title: 'Course Avg',
+	formatter: 'floatFormat'
+    }];
+
+    url = '/api/course?c_avg=true&filter=fid_'+row['fid'];
+    $el.html('<table></table>').find('table').bootstrapTable({
+	columns: columns,
+	url: url,
+	classes: 'table no-hover'
+    });
+}
 function expandFacultySub($el, row) {
     columns= [{
 	field: 'cid',
@@ -21,7 +53,7 @@ function expandFacultySub($el, row) {
     $el.html('<table></table>').find('table').bootstrapTable({
 	columns: columns,
 	url: url,
-	classes: 'table table-striped no-hover'
+	classes: 'table no-hover'
     });
 }
 function expandStudentSub($el, row) {
@@ -47,7 +79,7 @@ function expandStudentSub($el, row) {
     $el.html('<table></table>').find('table').bootstrapTable({
 	columns: columns,
 	url: url,
-	classes: 'table table-striped no-hover'
+	classes: 'table no-hover'
     });
 }
 function expandCourseSub($el, row) {
