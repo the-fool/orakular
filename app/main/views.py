@@ -131,6 +131,11 @@ def apiCourse(args):
                                    .join(t2)
                                    .all()
                                )
+        else:
+            l = table_to_dict(sess
+                              .query(Course, t2)
+                              .join(t2)
+                              .all() )
     elif f:
         f = f.split('_')
         if f[0].lower() == 'deptid':
