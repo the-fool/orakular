@@ -114,9 +114,7 @@ function expandCourseSub($el, row) {
 }
 
 $(document).ready(function () {
-    $('thead').each(function() {
-	$(this).append("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");
-    });
+  
     
     var default_table = "student";
     $('#table-'+default_table).bootstrapTable('refresh', {url: "/api/"+default_table});
@@ -144,8 +142,11 @@ $(document).ready(function () {
     $('table').on('click-row.bs.table', function(e,row,$tr) {
 	$tr.find('>td>.detail-icon').trigger('click');
     });
-    $('table').on('load-success.bs.table', function(name) {
-	//console.log($(this));
+    $('.bootstrap-table').on('load-success.bs.table', function(name) {
+	$that = $('.fixed-table-body', $(this)).find('tbody');
+	if (! $that.children().first().hasClass("warning")) { 
+	    console.log("appending warning bar");
+	    $that.prepend("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");}
     }); 
     
     
