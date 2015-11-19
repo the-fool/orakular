@@ -1,7 +1,7 @@
 function expandStudentSub($el, row) {
     columns= [{
 	field: 'cid',
-	title: 'Course'
+	title: 'Courses'
     }, {
 	field: 'exam1',
 	title: 'Exam 1',
@@ -17,7 +17,7 @@ function expandStudentSub($el, row) {
 	formatter: 'floatFormat'
     }];
 
-    url = '/api/enrolled?s_avg=true&sid='+row['sid'];
+    url = '/api/enrolled?s_avg=true&filter=sid_'+row['sid'];
     $el.html('<table></table>').find('table').bootstrapTable({
 	columns: columns,
 	url: url

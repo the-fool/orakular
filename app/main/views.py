@@ -94,30 +94,41 @@ def search():
 def api(target):
     args = request.args
     t = globals()[target.title()]
-        
-    if args.get('join'):
-        try:
-            t2 = globals()[args.get('join').title()]
-        except:
-            pass
-        l = table_to_dict(sess.query(t, t2).join(t2).all())
-    if target.lower() == "course":
-      
+    l = []
+    if target.lower() == 'enrolled':
+        l = apiEnrolled(args)
+    elif target.lower() == "course":
+        l = sess.query(Course).all()
         e = dict(sess.query(Enrolled.cid, 
                             func.count(Enrolled.sid))
                  .group_by(Enrolled.cid).all())
         for x in l:
             x['active'] = e[x['cid']]
-        
+    
     else:
         l = table_to_dict(sess.query(t).all())
     
-    if args.get('s_avg') and target.lower() == 'enrolled':
-        for x in l:
-            x['avg'] = str( (float(x['exam1']) + float(x['exam2']) 
-                          + float(x['final']) ) /3)
     return Response(json.dumps(l), mimetype='application/json')
 
+def apiEnrolled(args):
+    l = []
+    f = args.get('filter')
+    if f:
+        f = f.split('_')
+        l = table_to_dict(sess.query(Enrolled).filter_by(**{f[0]: f[1]}).all())
+    elif args.get('join'):
+        try:
+            t2 = globals()[args.get('join').title()]
+        except:
+            pass
+        l = table_to_dict(sess.query(Enrolled, t2).join(t2).all())
+    else:
+        l = table_to_dict(sess.query(Enrolled).all())
+    if args.get('s_avg'):
+        for x in l:
+            x['avg'] = str( (float(x['exam1']) + float(x['exam2']) 
+                             + float(x['final']) ) /3)
+    return l
 
 def table_to_dict(table):
     l = []
