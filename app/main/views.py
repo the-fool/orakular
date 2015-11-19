@@ -112,14 +112,33 @@ def apiCourse(args):
     if j:
         t2 = globals()[j.title()]
         l = table_to_dict(sess.query(Course, t2).join(t2).all())
+    elif f:
+        f = f.split('_')
+        l = table_to_dict(sess.query(Course)
+                          .filter_by(**{f[0]: f[1]})
+                          .all())
     else:
         l = table_to_dict(sess.query(Course).all())
     
+    if args.get('c_avg'):
+        d = {}
+        e = sess.query(Enrolled).all()
+        for x in e:
+            if x.cid in d:
+                d[x.cid] += (x.exam1 + x.exam2 + x.final)/3
+                d[x.cid + "_len"] += 1
+            else:
+                d[x.cid] = (x.exam1 + x.exam2 + x.final)/3
+                d[x.cid + "_len"] = 1
+        for x in l:
+            x['c_avg'] = str(d[x['cid']] / d[x['cid']+"_len"])
+
     e = dict(sess.query(Enrolled.cid, 
                         func.count(Enrolled.sid))
              .group_by(Enrolled.cid).all())
     for x in l:
         x['active'] = e[x['cid']]
+    
     return l
 
 def apiEnrolled(args):

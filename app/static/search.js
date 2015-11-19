@@ -1,3 +1,29 @@
+function expandFacultySub($el, row) {
+    columns= [{
+	field: 'cid',
+	title: 'Course ID'
+    }, {
+	field: 'cname',
+	title: 'Course Name',
+    }, {
+	field: 'meets_at',
+	title: 'When'
+    },{
+	field: 'room',
+	title: 'Where'
+    }, {
+	field: 'c_avg',
+	title: 'Course Avg',
+	formatter: 'floatFormat'
+    }];
+
+    url = '/api/course?c_avg=true&filter=fid_'+row['fid'];
+    $el.html('<table></table>').find('table').bootstrapTable({
+	columns: columns,
+	url: url,
+	classes: 'table table-striped no-hover'
+    });
+}
 function expandStudentSub($el, row) {
     columns= [{
 	field: 'cid',
@@ -45,9 +71,11 @@ function expandCourseSub($el, row) {
 	title: 'Course Avg',
 	formatter: 'floatFormat'
     }];
-
+    
+    
     url = '/api/enrolled?s_avg=true&join=Student&filter=cid_'+row['cid'];
     $el.html('<table></table>').find('table').bootstrapTable({
+	classes: 'table table-striped no-hover',
 	columns: columns,
 	url: url
     });	
@@ -76,7 +104,8 @@ $(document).ready(function () {
 	switch ($('div.tab-content > .active.in').attr('id')) {
 	    case "student": expandStudentSub($detail, row); break;
 	    case "course": expandCourseSub($detail, row); break;
-	    }
+	    case "faculty": expandFacultySub($detail, row); break;
+	}
     });
     $('table').on('click-row.bs.table', function(e,row,$tr) {
 	$tr.find('>td>.detail-icon').trigger('click');
