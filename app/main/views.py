@@ -100,7 +100,6 @@ def api(target):
             t2 = globals()[args.get('join').title()]
         except:
             pass
-        print sess.query(t, t2).join(t2).all()
         l = table_to_dict(sess.query(t, t2).join(t2).all())
         
     else:

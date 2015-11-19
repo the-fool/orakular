@@ -29,7 +29,7 @@ create table faculty
 create table courses
 	(cid varchar(16) primary key not null, 
 	cname varchar(50) not null,
-	meets_at char(30), 
+	meets_at varchar(30), 
 	room varchar(15), 
 	fid integer, 
 	limit integer,
