@@ -23,7 +23,7 @@ function expandDepartmentSub($el, row) {
 	formatter: 'floatFormat'
     }];
 
-    url = '/api/course?c_avg=true&filter=fid_'+row['fid'];
+    url = '/api/course?c_avg=true&join=Faculty&filter=deptid_'+row['did'];
     $el.html('<table></table>').find('table').bootstrapTable({
 	columns: columns,
 	url: url,
@@ -137,6 +137,8 @@ $(document).ready(function () {
 	    case "student": expandStudentSub($detail, row); break;
 	    case "course": expandCourseSub($detail, row); break;
 	    case "faculty": expandFacultySub($detail, row); break;
+	    case "department": expandDepartmentSub($detail, row); break;
+	    default: console.log("default");
 	}
     });
     $('table').on('click-row.bs.table', function(e,row,$tr) {

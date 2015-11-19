@@ -110,12 +110,27 @@ def apiCourse(args):
     f = args.get('filter')
     j = args.get('join')
     if j:
+        t2 = globals()[j.title()]
         if f:
             f = f.split('_')
-            t2 = globals()[j.title()]
-            l = table_to_dict( sess.query(Course, t2)
-                               .filter_by(**{f[0]:f[1]}).all()
-            )
+            if f[0].lower() == 'deptid':
+                l = table_to_dict( sess.query(Course, t2)
+                                   .filter(
+                                       Course.fid.in_(
+                                           [x[0] for x in
+                                            sess.query(Faculty.fid)
+                                            .filter_by(**{f[0]:f[1]}).all()
+                                        ]
+                                       )
+                                   )
+                                   .join(t2).all() )
+      
+            else:
+                l = table_to_dict( sess.query(Course, t2)
+                                   .filter_by(**{f[0]:f[1]})
+                                   .join(t2)
+                                   .all()
+                               )
     elif f:
         f = f.split('_')
         if f[0].lower() == 'deptid':
