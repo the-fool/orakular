@@ -98,24 +98,43 @@ def api(target):
     if target.lower() == 'enrolled':
         l = apiEnrolled(args)
     elif target.lower() == "course":
-        l = sess.query(Course).all()
-        e = dict(sess.query(Enrolled.cid, 
-                            func.count(Enrolled.sid))
-                 .group_by(Enrolled.cid).all())
-        for x in l:
-            x['active'] = e[x['cid']]
-    
+        l = apiCourse(args)
+       
     else:
         l = table_to_dict(sess.query(t).all())
     
     return Response(json.dumps(l), mimetype='application/json')
 
+def apiCourse(args):
+    l = []
+    f = args.get('filter')
+    j = args.get('join')
+    if j:
+        t2 = globals()[j.title()]
+        l = table_to_dict(sess.query(Course, t2).join(t2).all())
+    else:
+        l = table_to_dict(sess.query(Course).all())
+    
+    e = dict(sess.query(Enrolled.cid, 
+                        func.count(Enrolled.sid))
+             .group_by(Enrolled.cid).all())
+    for x in l:
+        x['active'] = e[x['cid']]
+    return l
+
 def apiEnrolled(args):
     l = []
     f = args.get('filter')
+    j = args.get('join')
     if f:
         f = f.split('_')
-        l = table_to_dict(sess.query(Enrolled).filter_by(**{f[0]: f[1]}).all())
+        if j:
+            t2 = globals()[args.get('join').title()]
+            l = table_to_dict(sess.query(Enrolled, t2)
+                              .filter_by(**{f[0]: f[1]})
+                              .join(t2).all())
+        else:
+            l = table_to_dict(sess.query(Enrolled).filter_by(**{f[0]: f[1]}).all())
     elif args.get('join'):
         try:
             t2 = globals()[args.get('join').title()]

@@ -23,6 +23,34 @@ function expandStudentSub($el, row) {
 	url: url
     });
 }
+function expandCourseSub($el, row) {
+    columns = [{
+	field: 'sid',
+	title: 'Student ID'
+    }, {
+	field: 'sname',
+	title: 'Student Name'
+    }, {
+	field: 'exam1',
+	title: 'Exam 1',
+    }, {
+	field: 'exam2',
+	title: 'Exam 2'
+    },{
+	field: 'final',
+	title: 'Final'
+    }, {
+	field: 'avg',
+	title: 'Course Avg',
+	formatter: 'floatFormat'
+    }];
+
+    url = '/api/enrolled?s_avg=true&join=Student&filter=cid_'+row['cid'];
+    $el.html('<table></table>').find('table').bootstrapTable({
+	columns: columns,
+	url: url
+    });	
+}
 
 $(document).ready(function () {
     $('thead').each(function() {
@@ -42,10 +70,11 @@ $(document).ready(function () {
 	$('.search').val('');
 	$('.no-result').hide();
     });
+    
     $('table').on('expand-row.bs.table', function(e, index, row, $detail) {
 	switch ($('div.tab-content > .active.in').attr('id')) {
 	    case "student": expandStudentSub($detail, row); break;
-	    default: console.log("def");
+	    case "course": expandCourseSub($detail, row); break;
 	    }
     });
    
