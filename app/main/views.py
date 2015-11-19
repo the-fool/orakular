@@ -92,9 +92,20 @@ def search():
 
 @main.route("/api/<target>")
 def api(target):
-    t = globals()[target.title()]
-    l = table_to_dict(sess.query(t).all())
     args = request.args
+    t = globals()[target.title()]
+    
+    if args.get('join'):
+        try:
+            t2 = globals()[args.get('join').title()]
+        except:
+            pass
+        print sess.query(t, t2).join(t2).all()
+        l = table_to_dict(sess.query(t, t2).join(t2).all())
+        
+    else:
+        l = table_to_dict(sess.query(t).all())
+    
     if args.get('s_avg') and target.lower() == 'enrolled':
         for x in l:
             print x
@@ -107,13 +118,17 @@ def table_to_dict(table):
     l = []
     for row in table:
         d = {}
-        for column in row.__table__.columns:
-            d[column.name] = str(getattr(row, column.name))
-            if column.name in ['sname', 'fname']:
-                d[column.name] = ', '.join(d[column.name].split()[::-1])
-                
-            if column.name not in ["cid", "meets_at"]:
-                d[column.name] = d[column.name].title()
+        if not isinstance(row, tuple):
+            row = row,
+        row = list(row)
+        print row
+        for r in row:
+            for column in r.__table__.columns:
+                d[column.name] = str(getattr(r, column.name))
+                if column.name in ['sname', 'fname']:
+                    d[column.name] = ', '.join(d[column.name].split()[::-1])
+                if column.name not in ["cid", "meets_at"]:
+                    d[column.name] = d[column.name].title()
         l.append(d)
     return l
 
