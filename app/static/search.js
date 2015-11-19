@@ -20,7 +20,8 @@ function expandStudentSub($el, row) {
     url = '/api/enrolled?s_avg=true&filter=sid_'+row['sid'];
     $el.html('<table></table>').find('table').bootstrapTable({
 	columns: columns,
-	url: url
+	url: url,
+	classes: 'table table-striped no-hover'
     });
 }
 function expandCourseSub($el, row) {
@@ -77,7 +78,9 @@ $(document).ready(function () {
 	    case "course": expandCourseSub($detail, row); break;
 	    }
     });
-   
+    $('table').on('click-row.bs.table', function(e,row,$tr) {
+	$tr.find('>td>.detail-icon').trigger('click');
+    });
     $('table').on('load-success.bs.table', function(name) {
 	//console.log($(this));
     }); 
