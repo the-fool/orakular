@@ -1,10 +1,11 @@
 $(document).ready(function () {
     $('thead').each(function() {
-	$(this).append("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>"     );
+	$(this).append("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");
     });
+    
     var default_table = "student";
     $('#table-'+default_table).bootstrapTable('refresh', {url: "/api/"+default_table});
-    
+   
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 	var target = $(e.target).attr("href");
 	var params = "?" + $(e.target).attr("params");
@@ -14,7 +15,11 @@ $(document).ready(function () {
 	$('.search').val('');
 	$('.no-result').hide();
     });
-
+    
+    $('table').on('load-success.bs.table', function(name) {
+	console.log($(this));
+    }); 
+    
     $(".search").each( function() {
 	$(this).keyup(function () {
 	    var table = ".results."+$(this).data('id');
@@ -41,7 +46,6 @@ $(document).ready(function () {
 	    else {$('.no-result').hide();}
 	});
     });
-    
 });
 
 function levelSorter(a, b) {
@@ -54,4 +58,7 @@ function levelSorter(a, b) {
 
 function integerFormat(value) {
     return Math.trunc(value);
+}
+function floatFormat(value) {
+    return value.substring(0, value.indexOf('.') + 2);
 }
