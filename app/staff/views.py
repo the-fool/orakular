@@ -56,7 +56,7 @@ def edit_grade():
         error, = e.args
         print "DB Error: {0} - {1}".format(error.code, error.message)
         return Response(status=400)
-        
+    sess.commit()    
     return Response(status=200)
 
 @staff.route('/courses')
