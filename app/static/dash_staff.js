@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 	var target = $(e.target).attr("href");
 	var cid = target.split('-')[1];
-	console.log('cid: '+cid);
+
 	var $table = $('#table-'+cid);
 	var $remove = $('#remove-'+cid);    
 	var selections = [];
@@ -84,11 +84,21 @@ $(document).ready(function() {
 		}]
             });
 	} // end initTable()
-	
+	$table.on('check.bs.table uncheck.bs.table ' +
+                'check-all.bs.table uncheck-all.bs.table', function () {
+
+		    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+		    selections = getIdSelections();
+                });
 	$table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
-        });
-	
+	});
+
+	function getIdSelections() {
+            return $.map($table.bootstrapTable('getSelections'), function (row) {
+		return row.id
+            });
+	}
 	
 	initTable();
 
