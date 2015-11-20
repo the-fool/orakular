@@ -11,40 +11,34 @@ $(document).ready(function() {
 	
 	function initTable() {
 	    $table.bootstrapTable({
+		cache: false,
 		url: '/api/enrolled?join=Student&filter=cid_'+cid,
-		idField: 'cid',
-		idField2: 'sid',
+		idField: 'sid',
+		idField2: 'cid',
 		columns: [
 		  {
                     field: 'state',
                     checkbox: true,
-                 
                     align: 'center'
-                
-		}, {
+                  }, {
                     title: 'SID',
                     field: 'sid',
-                 
                     align: 'center',
-                    
                     sortable: true
                 }, {
                     title: 'Name',
                     field: 'sname',
                     align: 'center',
-		    
 		    sortable: true
 		}, {
                     title: 'Major',
                     field: 'major',
                     align: 'center',
-		    
 		    sortable: true
 		}, { 
 		    title: 'Level',
                     field: 's_level',
                     align: 'center',
-		    
 		    sortable: true
 		},{
                     field: 'exam1',
@@ -91,6 +85,8 @@ $(document).ready(function() {
 
 		    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
 		    selections = getIdSelections();
+		    console.log('checked');
+		    console.log(selections);
                 });
 	$table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
@@ -99,10 +95,18 @@ $(document).ready(function() {
 	$table.on('load-success.bs.table', function() {
 	    console.log("success");
 	});
+	$remove.click(function () {
+            var ids = getIdSelections();
+            $table.bootstrapTable('remove', {
+                field: 'sid',
+                values: ids
+            });
+            $remove.prop('disabled', true);
+        });
 
 	function getIdSelections() {
             return $.map($table.bootstrapTable('getSelections'), function (row) {
-		return row.id
+		return row['sid'];
             });
 	}
 	setTimeout(function () {

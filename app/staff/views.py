@@ -51,7 +51,7 @@ def edit_grade():
     print value
     try:
         sess.execute("update enrolled set {0} = {1} where cid = '{2}' and sid = {3}"
-                     .format(test, value, cid[0], cid[1]))
+                     .format(test, value, cid[1], cid[0]))
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         print "DB Error: {0} - {1}".format(error.code, error.message)
