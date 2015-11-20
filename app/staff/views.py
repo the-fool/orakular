@@ -1,10 +1,11 @@
-from flask import render_template, url_for, redirect, request, flash, abort
+from flask import Response, render_template, url_for, redirect, request, flash, abort
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import staff
 from ..models import User, Staff, Student, Department, Enrolled, Course, Faculty
 from .forms import LoginForm
 from ..database import db_session as sess
 from ..decorators import staff_only
+import cx_Oracle
 
 @staff.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -44,4 +45,23 @@ def dashboard():
 @login_required
 @staff_only
 def edit_grade():
+    cid = request.form['pk'].split('_')
+    test = request.form['name']
+    value = request.form['value']
+    print value
+    try:
+        sess.execute("update enrolled set {0} = {1} where cid = '{2}' and sid = {3}"
+                     .format(test, value, cid[0], cid[1]))
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print "DB Error: {0} - {1}".format(error.code, error.message)
+        return Response(status=400)
+        
+    return Response(status=200)
+
+@staff.route('/courses')
+@login_required
+@staff_only
+def course_info():
     pass
+        

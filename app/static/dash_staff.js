@@ -105,12 +105,14 @@ $(document).ready(function() {
 		return row.id
             });
 	}
-	
-	initTable();
+	setTimeout(function () {
+	    initTable();
+        }, 200);
 
+	
     });
     
-    $('ul.nav-tabs > li > a').first().trigger('click');
+    $('.nav-tabs > li > a').first().trigger('click');
     
 }); // end document.ready()
 
