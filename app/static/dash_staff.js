@@ -12,6 +12,8 @@ $(document).ready(function() {
 	function initTable() {
 	    $table.bootstrapTable({
 		url: '/api/enrolled?join=Student&filter=cid_'+cid,
+		idField: 'cid',
+		idField2: 'sid',
 		columns: [
 		  {
                     field: 'state',
@@ -92,6 +94,10 @@ $(document).ready(function() {
                 });
 	$table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
+	});
+
+	$table.on('load-success.bs.table', function() {
+	    console.log("success");
 	});
 
 	function getIdSelections() {

@@ -2,6 +2,9 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  * extensions: https://github.com/vitalets/x-editable
  */
+/* modded by Thomas Ruble:
+   to account for multi-attribute primary key
+*/
 
 !function ($) {
 
@@ -53,7 +56,8 @@
 
                 return ['<a href="javascript:void(0)"',
                     ' data-name="' + column.field + '"',
-                    ' data-pk="' + row[that.options.idField] + '"',
+                    ' data-pk="' + row[that.options.idField] + "_" + 
+			row[that.options.idField2] + '"',
                     ' data-value="' + result + '"',
                     '>' + '</a>'
                 ].join('');
