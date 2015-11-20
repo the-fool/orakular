@@ -105,6 +105,12 @@ def api(target):
     
     return Response(json.dumps(l), mimetype='application/json')
 
+@main.route("/api/update/<target>", methods=['GET', 'POST', 'DELETE', 'PUT'])
+def update(target):
+    return "ok", 200 
+
+
+
 def apiCourse(args):
     l = []
     f = args.get('filter')

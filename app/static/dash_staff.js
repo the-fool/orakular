@@ -95,13 +95,27 @@ $(document).ready(function() {
 	$table.on('load-success.bs.table', function() {
 	    console.log("success");
 	});
+
 	$remove.click(function () {
             var ids = getIdSelections();
-            $table.bootstrapTable('remove', {
-                field: 'sid',
-                values: ids
-            });
-            $remove.prop('disabled', true);
+	    var parms = cid.concat('_', ids.join('&'));
+            $.ajax({
+		url: '/api/update/course',
+		method: 'DELETE',
+		data: cid.concat(ids,'&'),
+		success: function(d,s) {
+		    console.log('data: '+d);
+		    $table.bootstrapTable('remove', {
+			 field: 'sid',
+			 values: ids
+		    });
+		    $remove.prop('disabled', true);
+		},
+		error: function() {
+		    console.log("error?");
+		}
+	    });
+	   
         });
 
 	function getIdSelections() {
