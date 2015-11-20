@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-student = Blueprint('student', __name__)
+staff = Blueprint('staff', __name__)
 
 from . import views

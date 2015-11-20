@@ -23,7 +23,7 @@
 <div class="row">
   <div class="col-md-12">
     <ul class="nav nav-tabs">
-      {% for c in courses %}
+      {% for c in c_list %}
       <li><a data-toggle="tab" href="#table-{{c['c'].cid}}">{{c['c'].cid}}</a></li>
       {% endfor %}  
     </ul>
@@ -31,7 +31,7 @@
 </div>
 
 <div class="tab-content">
-  {% for c in courses %}
+  {% for c in c_list %}
   <div id="table-{{c['c'].cid}}" class="tab-pane fade">
     <div class="row">
       <div class="col-md-12">
@@ -52,39 +52,39 @@
 	</tr>
       </thead>
       <tbody>
-	{% for x in c['s'] %}
+	{% for x in c['es'] %}
 	<tr>
 	  <td>
-	    <a href="#" id="name-{{x['student'].sid}}" 
-	       data-id="{{ x['student'].sid}}" 
+	    <a href="#" id="name-{{x['s'].sid}}" 
+	       data-id="{{ x['s'].sid}}" 
 	       data-toggle="tooltip" data-placement="left" 
 	       title="Click for Profile" 
 	       class="student-info-link">
-	      {{x['student'].sname.title()}}
+	      {{x['s'].sname.title()}}
 	    </a>
 	  </td>
-	  <td>{{x['student'].sid  }}</td>
-	  <td>{{x['student'].s_level.title() }}</td>
-	  <td>{{x['student'].major.title() }}</td>
+	  <td>{{x['s'].sid  }}</td>
+	  <td>{{x['s'].s_level.title() }}</td>
+	  <td>{{x['s'].major.title() }}</td>
 	  <td>
 	    <a href="#" class="edit-grade" data-name="exam1" 
-		 data-pk="{{x['grades'].sid}}_{{x['grades'].cid}}" data-type="text"
+		 data-pk="{{x['e'].sid}}_{{x['e'].cid}}" data-type="text"
 		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Exam 1">
-	      {{x['grades'].exam1}}
+	      {{x['e'].exam1}}
 	    </a>
 	  </td>
 	  <td>
 	    <a href="#" class="edit-grade" data-name="exam2" 
-		 data-pk="{{x['grades'].sid}}_{{x['grades'].cid}}" data-type="text"
+		 data-pk="{{x['e'].sid}}_{{x['e'].cid}}" data-type="text"
 		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Exam 2">
-	    {{x['grades'].exam2}}
+	    {{x['e'].exam2}}
 	    </a>
 	  </td>
 	  <td>
 	    <a href="#" class="edit-grade" data-name="final" 
-		 data-pk="{{x['grades'].sid}}_{{x['grades'].cid}}" data-type="text"
+		 data-pk="{{x['e'].sid}}_{{x['e'].cid}}" data-type="text"
 		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Final">
-	      {{x['grades'].final}}
+	      {{x['e'].final}}
 	    </a>
 	  </td>
 	</tr>

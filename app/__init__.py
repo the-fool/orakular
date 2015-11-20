@@ -36,6 +36,9 @@ def create_app(config_filename):
     
     from .faculty import faculty as faculty_blueprint
     app.register_blueprint(faculty_blueprint, url_prefix='/faculty')
+    
+    from .staff import staff as staff_blueprint
+    app.register_blueprint(staff_blueprint, url_prefix='/staff')
 
     app.jinja_env.globals.update(title=str.title, 
                                  iteritems=dict.iteritems, len=len)
