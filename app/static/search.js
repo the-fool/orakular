@@ -149,7 +149,21 @@ $(document).ready(function () {
 	    $that.prepend("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");}
     }); 
     
-    
+    /*
+     (function ($) {
+
+        $('#filter').keyup(function () {
+	    console.log("filtering");
+            var rex = new RegExp($(this).val(), 'i');
+            $('.searchable tr').hide();
+            $('.searchable tr').filter(function () {
+                return rex.test($(this).text());
+            }).show();
+
+        })
+
+    }(jQuery));*/
+
     $(".search").each( function() {
 	$(this).keyup(function () {
 	    var table = ".results."+$(this).data('id');
@@ -193,7 +207,7 @@ function floatFormat(value) {
     return value.substring(0, value.indexOf('.') + 2);
 }
 
-function expandStudent(i) {
-    alert(i);
-    console.log("funct");
+function searchableRow(row, index) {
+    
+    return {};
 }
