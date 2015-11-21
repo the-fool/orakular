@@ -108,6 +108,8 @@ def search():
 
 @main.route("/api/<target>")
 def api(target):
+    print "hit"
+    print request.data
     args = request.args
     t = globals()[target.title()]
     l = []
@@ -115,7 +117,8 @@ def api(target):
         l = apiEnrolled(args)
     elif target.lower() == "course":
         l = apiCourse(args)
-       
+    elif target.lower() == 'student':
+        l = apiStudent(args)
     else:
         l = table_to_dict(sess.query(t).all())
     
@@ -125,7 +128,33 @@ def api(target):
 def update(target):
     return "ok", 200 
 
-
+def apiStudent(args):
+    l = []
+    f = args.get('filter')
+    if f:
+        f = f.split('_')
+        if f[0].lower() == 'cid':
+            if args.get('not'):
+                l = table_to_dict( sess.query(Student)
+                               .filter(
+                                   Student.sid.notin_([x[0] for x in
+                                       sess.query(Enrolled.sid)
+                                       .filter_by(**{f[0]:f[1]}).all()]
+                                   )
+                               ).all() )
+            else:
+                l = table_to_dict( sess.query(Student)
+                               .filter(
+                                   Student.sid.in_([x[0] for x in
+                                       sess.query(Enrolled.sid)
+                                       .filter_by(**{f[0]:f[1]}).all()]
+                                   )
+                               ).all() )
+                
+                
+    else:
+        l = table_to_dict(sess.query(Student).all())
+    return l
 def apiCourse(args):
     l = []
     f = args.get('filter')

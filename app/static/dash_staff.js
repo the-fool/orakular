@@ -119,12 +119,8 @@ $(document).ready(function() {
 	    var $table = $('#student-list-table');
 	    $modal.find('.modal-header > h4').text('Select Students to Enroll in ' + cid);
 	    $table.bootstrapTable('refresh', 
-				  { url: '/api/student',
-				    query: {
-					'not': 'true',
-					'filter':'cid_'+cid
-					}
-				    }
+				  { url: '/api/student?not=true&filter=cid_'+cid }
+				    
 	    );
 	    
 	});

@@ -34,7 +34,7 @@ def dashboard():
             for z in e_list:
                 if z['e'].cid == x['c'].cid:
                     x['es'].append(z)
-        print c_list
+
     except:
         raise
 
@@ -48,7 +48,7 @@ def edit_grade():
     cid = request.form['pk'].split('_')
     test = request.form['name']
     value = request.form['value']
-    print value
+
     try:
         sess.execute("update enrolled set {0} = {1} where cid = '{2}' and sid = {3}"
                      .format(test, value, cid[1], cid[0]))
