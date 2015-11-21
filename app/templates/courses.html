@@ -28,7 +28,7 @@
     {% endif %}
     {% endif %}
     {% if current_user.role in ("faculty", "staff") %}
-    <a href="{{ url_for("{0}.course_info".format(current_user.role), cid=c.cid) }}">
+    <a href="{{ url_for('.course_info', cid=c.cid) }}">
       Course information
     </a>
     {% endif %}

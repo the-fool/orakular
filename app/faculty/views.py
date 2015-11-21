@@ -30,22 +30,6 @@ def dashboard():
     return render_template('faculty/dashboard.html', 
                            faculty=f, courses=c, department=department)
 
-@faculty.route('/course_info/<cid>', methods=['GET', 'POST'])
-@login_required
-@faculty_only
-def course_info(cid):
-    course = sess.query(Course).filter_by(cid=cid).one()
-    enrolled = sess.query(Enrolled).filter_by(cid=cid).all()
-    students = [ {'s':sess.query(Student).filter_by(sid=x.sid).one(), 
-                  'e1': x.exam1, 'e2':x.exam2, 'f':x.final} for x in enrolled]
-    instructor = sess.query(Faculty).filter_by(fid=course.fid).one().fname
-    back = request.referrer
-    if not back or back.find('login') != -1: # bad hack
-        back = url_for('main.index')
-    
-    return render_template('course_info.html', course=course, students=students,
-                           instructor=instructor, enrolled=enrolled, back=back)
-
 @faculty.route('/edit_grade', methods=['POST'])
 @login_required
 @faculty_only

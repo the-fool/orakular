@@ -38,27 +38,6 @@ def courses():
     course_list = sess.query(Course).all()    
     return render_template("courses.html", form=None,
                            courses=course_list) 
-
-
-@main.route("/ajax/student_modal")
-@login_required
-@non_student_only
-def gen_student_modal():
-    sid = request.args.get('sid','')
-    try:
-        student = sess.query(Student).filter_by(sid=sid).one()
-        enrolled = sess.query(Enrolled).filter_by(sid=sid).all()
-        e_list = [ {'c':sess.query(Course).filter_by(cid=x.cid).one(), 
-                    'e':x} 
-                   for x in enrolled]
-
-        return render_template('student_modal_gen.html', 
-                               s=student, e_list=e_list)
-    except cx_Oracle.DatabaseError as e:
-        error, = e.args
-        print "DB Error: {0} -- {1}".format(error.code, error.message)
-        raise
-    
 @main.route("/dep")
 def departments():
     return redirect(url_for('.department_home', did=0))
@@ -82,7 +61,44 @@ def department_home(did):
         error, = e.args
         print "DB Error: {0} -- {1}".format(error.code, error.message)
         raise
-    
+
+
+@main.route('/course_info/<cid>', methods=['GET', 'POST'])
+@login_required
+@non_student_only
+def course_info(cid):
+    course = sess.query(Course).filter_by(cid=cid).one()
+    enrolled = sess.query(Enrolled).filter_by(cid=cid).all()
+    students = [ {'s':sess.query(Student).filter_by(sid=x.sid).one(),
+                  'e1': x.exam1, 'e2':x.exam2, 'f':x.final} for x in enrolled]
+    instructor = sess.query(Faculty).filter_by(fid=course.fid).one().fname
+    back = request.referrer
+    if not back or back.find('login') != -1: # bad hack
+        back = url_for('main.index')
+
+    return render_template('course_info.html', course=course, students=students,
+                           instructor=instructor, enrolled=enrolled, back=back)
+
+
+@main.route("/ajax/student_modal")
+@login_required
+@non_student_only
+def gen_student_modal():
+    sid = request.args.get('sid','')
+    try:
+        student = sess.query(Student).filter_by(sid=sid).one()
+        enrolled = sess.query(Enrolled).filter_by(sid=sid).all()
+        e_list = [ {'c':sess.query(Course).filter_by(cid=x.cid).one(), 
+                    'e':x} 
+                   for x in enrolled]
+
+        return render_template('student_modal_gen.html', 
+                               s=student, e_list=e_list)
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print "DB Error: {0} -- {1}".format(error.code, error.message)
+        raise
+        
 @main.route("/search")
 @login_required
 @non_student_only
@@ -108,7 +124,6 @@ def api(target):
 @main.route("/api/update/<target>", methods=['GET', 'POST', 'DELETE', 'PUT'])
 def update(target):
     return "ok", 200 
-
 
 
 def apiCourse(args):
