@@ -96,16 +96,18 @@ $(document).ready(function() {
 
 	$remove.click(function () {
             var ids = getIdSelections();
-	    var parms = cid.concat('_', ids.join('&'));
+	    var params = cid.concat('_', ids.join('&'));
             $.ajax({
 		url: '/api/update/course',
+		dataType: 'json',
+		contentType: 'application/json',
 		method: 'DELETE',
 		data: cid.concat(ids,'&'),
 		success: function(d,s) {
 		    console.log('data: '+d);
 		    $table.bootstrapTable('remove', {
 			 field: 'sid',
-			 values: ids
+			 values: params
 		    });
 		    $remove.prop('disabled', true);
 		},
@@ -117,11 +119,23 @@ $(document).ready(function() {
 	$add.click(function() {
 	    var $modal = $('#student-list');
 	    var $table = $('#student-list-table');
+	    var $confirm = $modal.find('.confirm');
 	    $modal.find('.modal-header > h4').text('Select Students to Enroll in ' + cid);
 	    $table.bootstrapTable('refresh', 
 				  { url: '/api/student?not=true&filter=cid_'+cid }
-				    
-	    );
+				 );
+	    $confirm.off('click').click(function() {
+		var data = {'cid': cid, 'sid':$table.data('selections')};
+		console.log(JSON.stringify(data));
+		$.ajax({
+		    dataType: 'json',
+		    contentType: 'application/json',
+		    url: '/api/update/enrolled',
+		    method: 'POST',
+		    data: JSON.stringify(data)
+	    
+		});
+	    });
 	    
 	});
 
@@ -136,6 +150,11 @@ $(document).ready(function() {
     }); // end current_course tables
     
     initStudentListTable();
+ 
+    $('#student-list').on('hidden.bs.modal', function(e) {
+       $(this).find('.form-control').val('').trigger('keyup');
+       $(this).find('.confirm').prop('disabled', true);
+    });
 
     $('.nav-tabs > li > a').first().trigger('click');
 
@@ -156,36 +175,54 @@ function gradeValidate(value) {
 }
 
 function initStudentListTable() {
-	$('#student-list-table').bootstrapTable({
-	    cache: false,
-	    height: 350,
-	    id: 'sid',
-	 
-	    columns: [
-		{
-		    field: 'state',
-		    checkbox: true,
-		    align: 'center'
-		}, {
-		    title: 'SID',
-		    field: 'sid',
-		    align: 'center',
-		    sortable: true
-		}, {
+    var $table=$('#student-list-table');
+    var $confirm=$('#student-list').find('.confirm');
+    var selections = [];
+
+    $('#student-list-table').bootstrapTable({
+	cache: false,
+	height: 350,
+	id: 'sid',
+	
+	columns: [
+	    {
+		field: 'state',
+		checkbox: true,
+		align: 'center'
+	    }, {
+		title: 'SID',
+		field: 'sid',
+		align: 'center',
+		sortable: true
+	    }, {
 		    title: 'Name',
-		    field: 'sname',
-		    align: 'center',
-		    sortable: true
-		}, {
-		    title: 'Major',
-		    field: 'major',
-		    align: 'center',
-		    sortable: true
-		}, { 
-		    title: 'Level',
-		    field: 's_level',
-		    align: 'center',
-		    sortable: true
-		}]
+		field: 'sname',
+		align: 'center',
+		sortable: true
+	    }, {
+		title: 'Major',
+		field: 'major',
+		align: 'center',
+		sortable: true
+	    }, { 
+		title: 'Level',
+		field: 's_level',
+		align: 'center',
+		sortable: true
+	    }]
 	});
+    
+    $table.on('check.bs.table uncheck.bs.table ' +
+              'check-all.bs.table uncheck-all.bs.table', function () {
+		  $confirm.prop('disabled', !$table.bootstrapTable('getSelections').length);
+		  $table.data('selections', getIdSelections());
+
+              });
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+	    return row['sid'];
+        });
+    }
+
 }

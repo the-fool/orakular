@@ -5,7 +5,7 @@ from ..models import User, Student, Enrolled, Course, Faculty
 from .forms import RegisterClassForm
 from ..database import db_session as sess
 from ..decorators import student_only
-
+import cx_Oracle
 @student.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 @student_only
@@ -52,7 +52,7 @@ def courses():
 
 
 def check_schedule(cid, sid=None):
-    """ sid param only set when this method is used as a util for db init 
+    """ sid param  set when this method is used as a util for db init and admin update 
     Returns 0 on no-conflict, otherwise the conflicting Enrolled Object  
     """
     to_reg = sess.query(Course).filter_by(cid=cid).one()
@@ -63,7 +63,7 @@ def check_schedule(cid, sid=None):
         for x in current_user.courses:
             current_sched.append( (parse_time(sess.query(Course).filter_by(cid=x.cid).one()), x) )
     
-    else: # only invoked by db init insertion of dummy data
+    else: # only invoked when current user is non-student
         elist = sess.query(Enrolled).filter_by(sid=sid).all()
         for x in elist:
             current_sched.append( (parse_time(sess.query(Course).filter_by(cid=x.cid).one()), x) )
@@ -89,10 +89,10 @@ def parse_time(course):
     return schedule
 
 
-def enroll_course(cid):
+def enroll_course(cid, sid=None):
     d = {}
     d['cid'] = cid
-    d['sid'] = current_user.id
+    d['sid'] = sid if sid else current_user.id
     d['exam1'] = 0
     d['exam2'] = 0
     d['final'] = 0
@@ -104,6 +104,5 @@ def enroll_course(cid):
         error, = exc.args
         print "Code: ", error.code
         print "Message: ", error.message
-        flash("Database error - Please contact your administrator")
         sess.rollback()
     

@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, request, jsonify, flash, current_app, Response
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import main
-from ..student import student
+from ..student import student, views as student_func
 import cx_Oracle
 from ..database import db_session as sess
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff, User
@@ -108,8 +108,6 @@ def search():
 
 @main.route("/api/<target>")
 def api(target):
-    print "hit"
-    print request.data
     args = request.args
     t = globals()[target.title()]
     l = []
@@ -126,7 +124,28 @@ def api(target):
 
 @main.route("/api/update/<target>", methods=['GET', 'POST', 'DELETE', 'PUT'])
 def update(target):
-    return "ok", 200 
+    j = request.get_json()
+    print j
+    if request.method == 'POST':
+        if target.lower() == "enrolled":
+            conflicts = []
+            cid = str(request.json['cid'])
+            sid = request.json['sid']
+            if not isinstance(sid, list):
+                sid = [sid]
+            for s in sid:
+                s = int(s)
+                print s
+                check = student_func.check_schedule(cid, s)
+                if check == 0:
+                    sess.execute("INSERT INTO ENROLLED (sid, cid, exam1, exam2, final) VALUES ({0}, '{1}', 0, 0, 0)".format(s, cid))
+                    sess.commit()
+                    print "enrolled"
+                else:
+                    conflicts.append( {'sid':s,'cid':check.cid})
+                    print "error on enrollment"
+            return Response(json.dumps(conflicts), mimetype='application/json')
+    return 'ok', 200
 
 def apiStudent(args):
     l = []
