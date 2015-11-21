@@ -97,7 +97,7 @@ $(document).ready(function() {
 	    console.log(data);
             $.ajax({
 		url: '/api/update/enrolled',
-		dataType: 'json',
+	
 		contentType: 'application/json',
 		method: 'DELETE',
 		data: JSON.stringify(data),
@@ -105,9 +105,10 @@ $(document).ready(function() {
 		    console.log('data: '+d);
 		    $table.bootstrapTable('remove', {
 			 field: 'sid',
-			 values: params
+			 values: data['sid']
 		    });
 		    $remove.prop('disabled', true);
+		    $add.prop('disabled', false);
 		},
 		error: function() {
 		    console.log("error?");
@@ -130,8 +131,18 @@ $(document).ready(function() {
 		    contentType: 'application/json',
 		    url: '/api/update/enrolled',
 		    method: 'POST',
-		    data: JSON.stringify(data)
-	    
+		    data: JSON.stringify(data),
+		    success: function(d, s) {
+			if (d.length != 0) {
+			    var msg = "Schedule conflicts for: \n";
+			    d.forEach(function(e) {
+				msg = msg.concat('Student ', e['sid'], 
+						 ' with course ', e['cid'], '.\n'); 
+			    });
+			alert(msg);
+			}
+		    
+		    }
 		});
 	    });
 	    

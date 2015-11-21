@@ -52,11 +52,12 @@ def edit_grade():
     try:
         sess.execute("update enrolled set {0} = {1} where cid = '{2}' and sid = {3}"
                      .format(test, value, cid[1], cid[0]))
+        sess.commit()
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         print "DB Error: {0} - {1}".format(error.code, error.message)
         return Response(status=400)
-    sess.commit()    
+    
     return Response(status=200)
 
 @staff.route('/courses')

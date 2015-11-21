@@ -53,11 +53,13 @@
             var _formatter = column.formatter;
             column.formatter = function (value, row, index) {
                 var result = _formatter ? _formatter(value, row, index) : value;
-
+		var pk;
+		if (that.options.idField2 !== undefined) { 
+		    pk = row[that.options.idField] + "_" + row[that.options.idField2]; 
+		} else { pk = [that.options.idField];} 
                 return ['<a href="javascript:void(0)"',
                     ' data-name="' + column.field + '"',
-                    ' data-pk="' + row[that.options.idField] + "_" + 
-			row[that.options.idField2] + '"',
+                    ' data-pk="'+ pk + '"',
                     ' data-value="' + result + '"',
                     '>' + '</a>'
                 ].join('');

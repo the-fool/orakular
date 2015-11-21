@@ -144,7 +144,9 @@ def update(target):
                 else:
                     conflicts.append( {'sid':s,'cid':check.cid})
                     print "error on enrollment"
-            return Response(json.dumps(conflicts), mimetype='application/json')
+            print conflicts
+            return Response(json.dumps(conflicts), content_type='application/json', 
+                            mimetype='application/json')
     elif request.method=='DELETE':
         if target.lower()=='enrolled':
             cid = str(request.json['cid'])
