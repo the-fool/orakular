@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 	$remove.click(function () {
             var data = {'cid': cid, 'sid': getIdSelections()};
-	    console.log(data);
+	    
             $.ajax({
 		url: '/api/update/enrolled',
 	
@@ -141,9 +141,10 @@ $(document).ready(function() {
 			    });
 			alert(msg);
 			}
-		    
 		    }
 		});
+		$('#table-'+cid).bootstrapTable('refresh');
+		$modal.modal('hide');
 	    });
 	    
 	});
