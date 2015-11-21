@@ -7,6 +7,7 @@ $(document).ready(function() {
 
 	var $table = $('#table-'+cid);
 	var $remove = $('#remove-'+cid);    
+	var $add = $('#add-'+cid);
 	var selections = [];
 	
 	function initTable() {
@@ -82,19 +83,16 @@ $(document).ready(function() {
 	} // end initTable()
 	$table.on('check.bs.table uncheck.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-
+		    $add.prop('disabled', $table.bootstrapTable('getSelections').length);
 		    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
 		    selections = getIdSelections();
-		    console.log('checked');
+		 
 		    console.log(selections);
                 });
 	$table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
 	});
 
-	$table.on('load-success.bs.table', function() {
-	    console.log("success");
-	});
 
 	$remove.click(function () {
             var ids = getIdSelections();
@@ -115,8 +113,21 @@ $(document).ready(function() {
 		    console.log("error?");
 		}
 	    });
-	   
         });
+	$add.click(function() {
+	    var $modal = $('#student-list');
+	    var $table = $('#student-list-table');
+	    $modal.find('.modal-header > h4').text('Select Students to Enroll in ' + cid);
+	    $table.bootstrapTable('refresh', 
+				  { url: '/api/student',
+				    query: {
+					'not': 'true',
+					'filter':'cid_'+cid
+					}
+				    }
+	    );
+	    
+	});
 
 	function getIdSelections() {
             return $.map($table.bootstrapTable('getSelections'), function (row) {
@@ -126,12 +137,52 @@ $(document).ready(function() {
 	setTimeout(function () {
 	    initTable();
         }, 200);
+    }); // end current_course tables
 
-	
+    
+    $('#student-list').find('table').bootstrapTable({
+	cache: false,
+	height: 350,
+	id: 'sid',
+	url: '/api/student',
+	columns: [
+	    {
+		field: 'state',
+		checkbox: true,
+		align: 'center'
+            }, {
+		title: 'SID',
+		field: 'sid',
+		align: 'center',
+		sortable: true
+            }, {
+		title: 'Name',
+		field: 'sname',
+		align: 'center',
+		sortable: true
+	    }, {
+		title: 'Major',
+		field: 'major',
+		align: 'center',
+		sortable: true
+	    }, { 
+		title: 'Level',
+		field: 's_level',
+		align: 'center',
+		sortable: true
+	    }]
     });
     
-    $('.nav-tabs > li > a').first().trigger('click');
     
+
+    $('.nav-tabs > li > a').first().trigger('click');
+    $('#personnel').on('show.bs.modal', function(e)  {
+	var $modal = $(this);
+	$modal.data('id');
+    });
+    $('#personnel').on('hidden.bs.modal', function() {
+	$(this).find('.modal-body').empty();
+    });
 }); // end document.ready()
 
 function gradeValidate(value) {
@@ -148,3 +199,17 @@ function gradeValidate(value) {
     }
 }
 
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+  };
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+	return entityMap[s];
+    });
+}
