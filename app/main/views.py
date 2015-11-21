@@ -145,7 +145,26 @@ def update(target):
                     conflicts.append( {'sid':s,'cid':check.cid})
                     print "error on enrollment"
             return Response(json.dumps(conflicts), mimetype='application/json')
-    return 'ok', 200
+    elif request.method=='DELETE':
+        if target.lower()=='enrolled':
+            cid = str(request.json['cid'])
+            sid = request.json['sid']
+ 
+            if not isinstance(sid, list):
+                sid = [sid]
+            try:
+                for s in sid:
+                    print "trying"
+                    s = int(s)
+                    sess.execute("DELETE FROM ENROLLED WHERE sid={0} AND cid='{1}'"
+                                 .format(s,cid)) 
+                    print "exected"
+                    sess.commit()
+                return 'ok', 200
+            except:
+                raise
+                return 'not ok', 400
+    return 'not implemented', 400
 
 def apiStudent(args):
     l = []

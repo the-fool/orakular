@@ -86,23 +86,21 @@ $(document).ready(function() {
 		    $add.prop('disabled', $table.bootstrapTable('getSelections').length);
 		    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
 		    selections = getIdSelections();
-		 
-		    console.log(selections);
-                });
+		});
 	$table.on('all.bs.table', function (e, name, args) {
             console.log(name, args);
 	});
 
 
 	$remove.click(function () {
-            var ids = getIdSelections();
-	    var params = cid.concat('_', ids.join('&'));
+            var data = {'cid': cid, 'sid': getIdSelections()};
+	    console.log(data);
             $.ajax({
-		url: '/api/update/course',
+		url: '/api/update/enrolled',
 		dataType: 'json',
 		contentType: 'application/json',
 		method: 'DELETE',
-		data: cid.concat(ids,'&'),
+		data: JSON.stringify(data),
 		success: function(d,s) {
 		    console.log('data: '+d);
 		    $table.bootstrapTable('remove', {
