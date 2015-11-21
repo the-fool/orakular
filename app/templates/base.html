@@ -35,7 +35,9 @@
 	<ul class="nav navbar-nav">
 		<li><a href="{{ url_for('main.courses') }}">Catalog</a></li>
 		<li><a href="{{ url_for('main.departments') }}">Departments</a></li>
-		{% block navbar_extras %}{% endblock %}
+		{% if current_user.role in ('staff', 'faculty') %}
+		<li><a class="search-link" href="{{ url_for('main.search') }}">Admin Search</a></li>
+		{% endif %}
 	</ul>
 	 {% if current_user.is_authenticated %}
 	<ul class="nav navbar-nav navbar-right">
