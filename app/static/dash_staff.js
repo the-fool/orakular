@@ -10,7 +10,7 @@ $(document).ready(function() {
 	var $add = $('#add-'+cid);
 	var selections = [];
 	
-	function initTable() {
+	function initCourseTable() {
 	    $table.bootstrapTable({
 		cache: false,
 		url: '/api/enrolled?join=Student&filter=cid_'+cid,
@@ -80,7 +80,7 @@ $(document).ready(function() {
 		    }
 		}]
             });
-	} // end initTable()
+	} // end initCourseTable()
 	$table.on('check.bs.table uncheck.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
 		    $add.prop('disabled', $table.bootstrapTable('getSelections').length);
@@ -131,54 +131,14 @@ $(document).ready(function() {
             });
 	}
 	setTimeout(function () {
-	    initTable();
+	    initCourseTable();
         }, 200);
     }); // end current_course tables
-
     
-    $('#student-list').find('table').bootstrapTable({
-	cache: false,
-	height: 350,
-	id: 'sid',
-	url: '/api/student',
-	columns: [
-	    {
-		field: 'state',
-		checkbox: true,
-		align: 'center'
-            }, {
-		title: 'SID',
-		field: 'sid',
-		align: 'center',
-		sortable: true
-            }, {
-		title: 'Name',
-		field: 'sname',
-		align: 'center',
-		sortable: true
-	    }, {
-		title: 'Major',
-		field: 'major',
-		align: 'center',
-		sortable: true
-	    }, { 
-		title: 'Level',
-		field: 's_level',
-		align: 'center',
-		sortable: true
-	    }]
-    });
-    
-    
+    initStudentListTable();
 
     $('.nav-tabs > li > a').first().trigger('click');
-    $('#personnel').on('show.bs.modal', function(e)  {
-	var $modal = $(this);
-	$modal.data('id');
-    });
-    $('#personnel').on('hidden.bs.modal', function() {
-	$(this).find('.modal-body').empty();
-    });
+
 }); // end document.ready()
 
 function gradeValidate(value) {
@@ -195,17 +155,37 @@ function gradeValidate(value) {
     }
 }
 
-var entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': '&quot;',
-    "'": '&#39;',
-    "/": '&#x2F;'
-  };
-
-function escapeHtml(string) {
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
-	return entityMap[s];
-    });
+function initStudentListTable() {
+	$('#student-list-table').bootstrapTable({
+	    cache: false,
+	    height: 350,
+	    id: 'sid',
+	 
+	    columns: [
+		{
+		    field: 'state',
+		    checkbox: true,
+		    align: 'center'
+		}, {
+		    title: 'SID',
+		    field: 'sid',
+		    align: 'center',
+		    sortable: true
+		}, {
+		    title: 'Name',
+		    field: 'sname',
+		    align: 'center',
+		    sortable: true
+		}, {
+		    title: 'Major',
+		    field: 'major',
+		    align: 'center',
+		    sortable: true
+		}, { 
+		    title: 'Level',
+		    field: 's_level',
+		    align: 'center',
+		    sortable: true
+		}]
+	});
 }
