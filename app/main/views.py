@@ -117,10 +117,13 @@ def api(target):
         l = apiCourse(args)
     elif target.lower() == 'student':
         l = apiStudent(args)
+    elif target.lower() == 'faculty':
+        l = apiFaculty(args)
     else:
         l = table_to_dict(sess.query(t).all())
     
-    return Response(json.dumps(l), mimetype='application/json')
+        
+    return Response(json.dumps(l), content_type='application/json', mimetype='application/json')
 
 @main.route("/api/update/<target>", methods=['GET', 'POST', 'DELETE', 'PUT'])
 def update(target):
@@ -167,6 +170,33 @@ def update(target):
                 raise
                 return 'not ok', 400
     return 'not implemented', 400
+
+def apiFaculty(args):
+    l = []
+    f = args.get('filter')
+    if f:
+        f = f.split('_')
+        if f[0].lower()=='deptid':
+            f[0] = 'did'
+            l = table_to_dict( sess.query(Faculty)
+                               .filter(
+                                   Faculty.deptid.in_([x[0] for x in
+                                                       sess.query(Department.did)
+                                                       .filter_by(**{f[0]:f[1]}).all()]
+                                                  )
+                               ).all() )
+
+    else:
+        l = table_to_dict(sess.query(Faculty).all())
+    
+    if args['xedit']:
+        i = 0
+        for x in l:
+            i += 1
+            x['value'] = str(i)
+            x['text'] = '{0}: {1}'.format(x['fid'],x['fname'])
+    return l
+
 
 def apiStudent(args):
     l = []

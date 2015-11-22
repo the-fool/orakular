@@ -56,7 +56,7 @@
 		var pk;
 		if (that.options.idField2 !== undefined) { 
 		    pk = row[that.options.idField] + "_" + row[that.options.idField2]; 
-		} else { pk = [that.options.idField];} 
+		} else { pk = row[that.options.idField];} 
                 return ['<a href="javascript:void(0)"',
                     ' data-name="' + column.field + '"',
                     ' data-pk="'+ pk + '"',

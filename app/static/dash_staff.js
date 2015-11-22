@@ -160,7 +160,8 @@ $(document).ready(function() {
     }); // end current_course tables
     
     initStudentListTable();
-    initCourseListTable();
+    initCurrentCoursesTable();
+
     $('#student-list').on('hidden.bs.modal', function(e) {
        $(this).find('.form-control').val('').trigger('keyup');
        $(this).find('.confirm').prop('disabled', true);
@@ -169,20 +170,6 @@ $(document).ready(function() {
     $('#tab-current-enrollment .nav-tabs > li > a').first().trigger('click');
 
 }); // end document.ready()
-
-function gradeValidate(value) {
-    if($.trim(value) == '') {
-        return 'This field is required';
-    }
-    if($.isNumeric(value)) {
-        if (value > 100 || value < 0) {
-            return 'Must be between 0 and 100';
-        }
-    }
-    else {
-        return 'Must enter a number';
-    }
-}
 
 function initStudentListTable() {
     var $table=$('#student-list-table');
@@ -205,7 +192,7 @@ function initStudentListTable() {
 		align: 'center',
 		sortable: true
 	    }, {
-		    title: 'Name',
+		title: 'Name',
 		field: 'sname',
 		align: 'center',
 		sortable: true
@@ -238,6 +225,197 @@ function initStudentListTable() {
 }
 
 function initCurrentCoursesTable() {
+    var did = $('#tab-current-courses').data('id');
+    
+    var $table = $('#table-current-courses');
+    var $remove = $('#remove-course');    
+    var $add = $('#add-course');
+    var selections = [];
+    
+   
+    $table.bootstrapTable({
+	cache: false,
+	url: '/api/course?join=Faculty&filter=deptid_'+did,
+	idField: 'cid',
+	columns: [
+	    {
+                field: 'state',
+                checkbox: true,
+                align: 'center'
+            }, {
+                title: 'Course ID',
+                field: 'cid',
+                align: 'center',
+                sortable: true
+		
+            }, {
+                title: 'Name',
+                field: 'cname',
+                align: 'center',
+		sortable: true,
+		editable: {
+		    type: 'text',
+		    title: 'Change Course Name',
+		    validate: stringValidate,
+		    url: '/staff/change_cname',
+		    name: 'cname'
+		}
+	    }, {
+                title: 'When',
+                field: 'meets_at',
+                align: 'center',
+		sortable: true,
+		editable: {
+		    type: 'text',
+		    title: 'Change Meeting Time',
+		    validate: timeValidate,
+		    url: '/staff/change_meets_at',
+		    name: 'meets_at'
+		}
+		
+	    }, { 
+		title: 'Room',
+                field: 'room',
+                align: 'center',
+		sortable: true,
+		editable: {
+		    type: 'text',
+		    title: 'Change Room',
+		    validate: stringValidate,
+		    url: '/staff/change_room',
+		    name: 'room'
+		}
+	    }, {
+		field: 'fname',
+                title: 'Faculty Name',
+                sortable: true,
+                align: 'center',
+            }, {
+		title: 'Change Professor',
+                sortable: true,
+                align: 'center',
+                editable: {
+		    type: 'select',
+		    emptytext: 'Select Professor',
+		    defaultValue: 'Select Professor',
+		    autotext: 'never',
+		    source:  '/api/faculty?xedit=true&filter=deptid_'+did,
+		    title: 'Change Professor',
+		    url: '/staff/change_prof',
+		    name: 'fid'
+		    success: function(response, newValue) {
+			console.log('succesful edit';
+		    }
+		}
+            }
+	]
+    });
+    
+    $table.on('check.bs.table uncheck.bs.table ' +
+              'check-all.bs.table uncheck-all.bs.table', function () {
+		  $add.prop('disabled', $table.bootstrapTable('getSelections').length);
+		  $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+		  selections = getIdSelections();
+	      });
+    $table.on('all.bs.table', function (e, name, args) {
+        console.log(name, args);
+    });
+    
+    
+    $remove.click(function () {
+        var data = {'deptid': did, 'cid': getIdSelections()};
+	
+        $.ajax({
+	    url: '/api/update/course',
+	    
+	    contentType: 'application/json',
+	    method: 'DELETE',
+	    data: JSON.stringify(data),
+	    success: function(d,s) {
+		console.log('data: '+d);
+		$table.bootstrapTable('remove', {
+		    field: 'cid',
+		    values: data['cid']
+		});
+		$remove.prop('disabled', true);
+		$add.prop('disabled', false);
+	    },
+	    error: function() {
+		console.log("error on delete ajax");
+	    }
+	});
+    });
+
+    $add.click(function() {
+	/*var $modal = $('#student-list');
+	var $table = $('#student-list-table');
+	var $confirm = $modal.find('.confirm');
+	$modal.find('.modal-header > h4').text('Select Students to Enroll in ' + cid);
+	$table.bootstrapTable('refresh', 
+			      { url: '/api/student?not=true&filter=cid_'+cid }
+			     );
+	$confirm.off('click').click(function() {
+	    var data = {'cid': cid, 'sid':$table.data('selections')};
+	    console.log(JSON.stringify(data));
+	    $.ajax({
+		dataType: 'json',
+		contentType: 'application/json',
+		url: '/api/update/enrolled',
+		method: 'POST',
+		data: JSON.stringify(data),
+		success: function(d, s) {
+		    if (d.length != 0) {
+			var msg = "Schedule conflicts for: \n";
+			d.forEach(function(e) {
+			    msg = msg.concat('Student ', e['sid'], 
+					     ' with course ', e['cid'], '.\n'); 
+			});
+			alert(msg);
+		    }
+		}
+	    });
+	    $('#table-'+cid).bootstrapTable('refresh');
+	    $modal.modal('hide');
+	});
+	*/	
+    });
+	
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+	    return row['cid'];
+        });
+    }  
+   
+    
+} // end init_current_course
 
 
+function gradeValidate(value) {
+    if($.trim(value) == '') {
+        return 'This field is required';
+    }
+    if($.isNumeric(value)) {
+        if (value > 100 || value < 0) {
+            return 'Must be between 0 and 100';
+        }
+    }
+    else {
+        return 'Must enter a number';
+    }
+}
+
+function stringValidate(value) {
+    if($.trim(value) == '') {
+	return 'This field is required';
+    }
+}
+function profValidate(value) {
+    if($.trim(value) == '') {
+	return 'This field is required';
+    }
+}
+function timeValidate(value) {
+    if($.trim(value) == '') {
+	return 'This field is required';
+    }
 }
