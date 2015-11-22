@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css">
@@ -53,7 +55,7 @@
 	{% for c in c_list %}
 	<div id="tab-{{c['c'].cid}}" class="tab-pane fade">
 	  <div class="well">
-	    <h3>{{ c['c'].cname.title() }} - {{c['c'].meets_at}} @ {{c['c'].room }}</h3>
+	 <!--   <h3>{{ c['c'].cname.title() }} - {{c['c'].meets_at}} @ {{c['c'].room }}</h3>-->
 	    <h4>Enrolled students</h4>
 	     <div id="toolbar-{{c['c'].cid}}">
 	      
@@ -92,7 +94,9 @@
       <div id="toolbar-current-courses">
 	
         <button id="add-course"
-                data-toggle="modal" data-target="#"
+                data-toggle="modal" 
+		data-backdrop="static"
+		data-target="#add-course-modal"
                 class="btn btn-success">
           <i class="glyphicon glyphicon-plus"></i> Add Course
         </button>
@@ -115,6 +119,23 @@
 
 {% include 'student_info_modal.html' %}
 {% include 'student_list_modal.html' %}
+
+<div id="add-course-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        {{ wtf.quick_form(add_course_form) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
   
 {% endblock %}
 {% block scripts %}

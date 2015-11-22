@@ -2,7 +2,7 @@ from flask import Response, render_template, url_for, redirect, request, flash, 
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import staff
 from ..models import User, Staff, Student, Department, Enrolled, Course, Faculty
-from .forms import LoginForm
+from .forms import AddCourseForm
 from ..database import db_session as sess, cursor as c, db
 from ..decorators import staff_only
 import cx_Oracle
@@ -11,8 +11,31 @@ import cx_Oracle
 @login_required
 @staff_only
 def dashboard():
+    add_course_form = AddCourseForm()
+    staff = sess.query(Staff).filter_by(sid=current_user.id).one()
+    f_set = [(str(x[0]), x[1].title()) for x 
+             in sess.query(Faculty.fid, Faculty.fname).filter_by(deptid = staff.deptid).all()]
+    add_course_form.faculty.choices =  f_set
+    
+    if add_course_form.validate_on_submit():
+        print "validating " + add_course_form.faculty.data
+        try:
+            add_course_form.cname.data = add_course_form.cname.data.replace("'", "''")
+            print add_course_form.cname.data
+            c.execute("INSERT INTO courses (cid, cname, fid, meets_at, room, limit) VALUES ('{0}', '{1}', '{2}', 'M 0:00', 'none', 99)"
+                      .format(str(add_course_form.cid.data).upper(), add_course_form.cname.data
+                              , str(add_course_form.faculty.data)))
+            db.commit()
+        except cx_Oracle.DatabaseError as e:
+            error, = e.args
+            print "DB Error: {0} -- {1}".format(error.code, error.message)
+            db.rollback()
+            if error.code == 1:
+                flash('Primary key constraint: Failed to add course')
+            else: flash('Failed to add course.')
+    else:
+        print "not validating"
     try:
-        staff = sess.query(Staff).filter_by(sid=current_user.id).one()
         department = sess.query(Department).filter_by(did=staff.deptid).one()
         c_list = (sess
                   .query(Course, Faculty)
@@ -38,7 +61,7 @@ def dashboard():
     except:
         raise
 
-    return render_template('staff/dashboard2.html', staff=staff, department=department, c_list = c_list)
+    return render_template('staff/dashboard2.html', staff=staff, department=department, c_list = c_list, add_course_form = add_course_form)
 
 
 @staff.route('/edit_grade', methods=['GET','POST'])

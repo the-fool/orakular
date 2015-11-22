@@ -189,7 +189,7 @@ def apiFaculty(args):
     else:
         l = table_to_dict(sess.query(Faculty).all())
     
-    if args['xedit']:
+    if args.get('xedit'):
         for x in l:
             x['value'] = x['fid']
             x['text'] = '{0}: {1}'.format(x['fid'],x['fname'])
@@ -289,8 +289,12 @@ def apiCourse(args):
     e = dict(sess.query(Enrolled.cid, 
                         func.count(Enrolled.sid))
              .group_by(Enrolled.cid).all())
+    
     for x in l:
-        x['active'] = e[x['cid']]
+        if x['cid'] in e:
+            x['active'] = e[x['cid']]
+        else:
+            x['active'] = 0
     
     return l
 

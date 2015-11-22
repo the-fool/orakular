@@ -221,7 +221,6 @@ function initStudentListTable() {
 	    return row['sid'];
         });
     }
-
 }
 
 function initCurrentCoursesTable() {
@@ -357,6 +356,11 @@ function initCurrentCoursesTable() {
     });
 
     $add.click(function() {
+	    
+/*	$.ajax({
+	    url: 'api/faculty?filter=deptid_'+did,
+	    ('form div:nth-last-child(2)', $('#add-course-modal')).append("FOOOO");
+	});
 	/*var $modal = $('#student-list');
 	var $table = $('#student-list-table');
 	var $confirm = $modal.find('.confirm');
