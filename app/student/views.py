@@ -3,9 +3,11 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from . import student
 from ..models import User, Student, Enrolled, Course, Faculty
 from .forms import RegisterClassForm
-from ..database import db_session as sess
+from ..database import db_session as sess, cursor as c, db
 from ..decorators import student_only
 import cx_Oracle
+import sqlalchemy
+
 @student.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 @student_only
@@ -36,8 +38,11 @@ def courses():
     if form.validate_on_submit():
         conf = check_schedule(form.cid.data)
         if conf == 0:
-            enroll_course(form.cid.data)
-            flash('You are registered for {0}.'.format(form.cid.data))
+            conf = enroll_course(form.cid.data)
+            if conf != -1:
+                flash('You are registered for {0}.'.format(form.cid.data))
+            else:
+                flash('Course is full')
         else:
             flash('Schedule conflict with {0}.'.format(conf.cid))
         return redirect(url_for('.courses'))
@@ -100,9 +105,7 @@ def enroll_course(cid, sid=None):
     try:
         sess.add(en)
         sess.commit()
-    except cx_Oracle.DatabaseError, exc:
-        error, = exc.args
-        print "Code: ", error.code
-        print "Message: ", error.message
+    except sqlalchemy.exc.DatabaseError as e: 
+        print "Message: ", e.orig
         sess.rollback()
-    
+        return -1

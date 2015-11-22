@@ -3,7 +3,7 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from . import staff
 from ..models import User, Staff, Student, Department, Enrolled, Course, Faculty
 from .forms import LoginForm
-from ..database import db_session as sess
+from ..database import db_session as sess, cursor as c, db
 from ..decorators import staff_only
 import cx_Oracle
 
@@ -50,12 +50,13 @@ def edit_grade():
     value = request.form['value']
 
     try:
-        sess.execute("update enrolled set {0} = {1} where cid = '{2}' and sid = {3}"
+        c.execute("update enrolled set {0} = {1} where cid = '{2}' and sid = {3}"
                      .format(test, value, cid[1], cid[0]))
-        sess.commit()
+        db.commit()
     except cx_Oracle.DatabaseError as e:
         error, = e.args
         print "DB Error: {0} - {1}".format(error.code, error.message)
+        db.rollback()
         return Response(status=400)
     
     return Response(status=200)
@@ -76,12 +77,16 @@ def update_course():
   
     
     try:
-        sess.execute("update courses set {0} = '{1}' where cid = '{2}'".format(attr, val, pk))
-        sess.commit()
-        
-    except cx_Oracle.DatabaseError as e:
-        error, = e.args
+        c.execute("update courses set {0} = '{1}' where cid = '{2}'".format(attr, val, pk))
+        db.commit()
+    except cx_Oracle.DatabaseError as ex:
+        error, = ex.args
         print "DB Error: {0} - {1}".format(error.code, error.message)
+        db.rollback()
+        if str(error.code) == '20001':
+            print '***'
+            return Response('Registration limit is incompatible with enrollment', status=409)
+            
         return Response(status=400)
    
     return Response(status=200)

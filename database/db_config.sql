@@ -125,11 +125,6 @@ begin
   from enrolled
   where enrolled.cid = :new.cid; 
 
-  --select limit
-  --into maximum
-  --from courses
-  --where courses.cid = :new.cid;
-
   if (:new.limit <= actual)
   then RAISE_APPLICATION_ERROR( -20001, 'Sorry, the class is full' );
   END IF;
