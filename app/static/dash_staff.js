@@ -257,7 +257,7 @@ function initCurrentCoursesTable() {
 		    type: 'text',
 		    title: 'Change Course Name',
 		    validate: stringValidate,
-		    url: '/staff/change_cname',
+		    url: '/staff/update_course',
 		    name: 'cname'
 		}
 	    }, {
@@ -269,7 +269,7 @@ function initCurrentCoursesTable() {
 		    type: 'text',
 		    title: 'Change Meeting Time',
 		    validate: timeValidate,
-		    url: '/staff/change_meets_at',
+		    url: '/staff/update_course',
 		    name: 'meets_at'
 		}
 		
@@ -282,31 +282,40 @@ function initCurrentCoursesTable() {
 		    type: 'text',
 		    title: 'Change Room',
 		    validate: stringValidate,
-		    url: '/staff/change_room',
-		    name: 'room'
+		    url: '/staff/update_course',
+		    name: 'room',
+		
 		}
 	    }, {
-		field: 'fname',
-                title: 'Faculty Name',
-                sortable: true,
+		title: 'Limit',
+                field: 'limit',
                 align: 'center',
-            }, {
-		title: 'Change Professor',
+		sortable: true,
+		editable: {
+		    type: 'text',
+		    title: 'Set Limit',
+		    validate: stringValidate,
+		    url: '/staff/update_course',
+		    name: 'limit',
+
+
+		}
+	   }, {
+		title: 'Professor',
                 sortable: true,
+		field: 'fid',
                 align: 'center',
                 editable: {
+		    name: 'fid',
 		    type: 'select',
 		    emptytext: 'Select Professor',
 		    defaultValue: 'Select Professor',
-		    autotext: 'never',
+		    
 		    source:  '/api/faculty?xedit=true&filter=deptid_'+did,
 		    title: 'Change Professor',
-		    url: '/staff/change_prof',
+		    url: '/staff/update_course',
 		    name: 'fid',
-		    success: function(response, newValue) {
-			$table.bootstrapTable('refresh');
-			console.log(response);
-		    }
+		
 		}
             }
 	]
@@ -408,6 +417,9 @@ function gradeValidate(value) {
 function stringValidate(value) {
     if($.trim(value) == '') {
 	return 'This field is required';
+    }
+    if(value.length > 50) {
+	return 'Must be less than 50 characters';
     }
 }
 function profValidate(value) {

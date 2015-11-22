@@ -10,10 +10,10 @@ metadata = Base.metadata
 class Course(Base):
     __tablename__ = 'courses'
 
-    cid = Column(String(16), primary_key=True)
+    cid = Column(String(50), primary_key=True)
     cname = Column(String(50), nullable=False)
-    meets_at = Column(String(30))
-    room = Column(String(15))
+    meets_at = Column(String(50))
+    room = Column(String(50))
     fid = Column(ForeignKey(u'faculty.fid'))
     limit = Column(Numeric(scale=0, asdecimal=False))
     faculty = relationship(u'Faculty')
@@ -64,8 +64,8 @@ class Student(Base):
 
     sid = Column(Integer, primary_key=True)
     sname = Column(String(50), nullable=False)
-    major = Column(String(30), nullable=False, server_default=text("'undeclared' "))
-    s_level = Column(String(15), nullable=False)
+    major = Column(String(50), nullable=False, server_default=text("'undeclared' "))
+    s_level = Column(String(50), nullable=False)
     age = Column(Integer)
 
 

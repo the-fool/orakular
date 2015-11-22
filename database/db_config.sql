@@ -11,7 +11,7 @@ drop sequence staff_id /
 create table students 
 	(sid integer primary key not null, 
 	sname varchar(50) not null, 
-	major varchar(30) default 'undeclared' not null, 
+	major varchar(50) default 'undeclared' not null, 
 	s_level varchar2(15) not null, 
         age integer)
 /
@@ -27,10 +27,10 @@ create table faculty
   	  on delete set null)
 /
 create table courses
-	(cid varchar(16) primary key not null, 
+	(cid varchar(50) primary key not null, 
 	cname varchar(50) not null,
-	meets_at varchar(30), 
-	room varchar(15), 
+	meets_at varchar(50), 
+	room varchar(50), 
 	fid integer, 
 	limit integer,
 	actual_enrolled integer default 0,
@@ -39,7 +39,7 @@ create table courses
 /
 create table enrolled
 	(sid integer,
-	cid varchar(16), 
+	cid varchar(50), 
 	exam1 integer default 0, 
 	exam2 integer default 0, 
 	final integer default 0,
@@ -92,7 +92,7 @@ begin
 end;
 /
 create trigger check_enrollment
-before insert or update cid, limit on enrolled
+before insert on enrolled 
 for each row
 declare 
 	actual number; 
