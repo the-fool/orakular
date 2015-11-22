@@ -112,3 +112,25 @@ begin
   then RAISE_APPLICATION_ERROR( -20001, 'Sorry, the class is full' );
   END IF;
 END;
+/
+create trigger check_enrollment_on_course
+before update of limit on courses
+for each row
+declare 
+	actual number; 
+	maximum number;
+begin
+  select count(cid) 
+  into actual
+  from enrolled
+  where enrolled.cid = :new.cid; 
+
+  --select limit
+  --into maximum
+  --from courses
+  --where courses.cid = :new.cid;
+
+  if (:new.limit <= actual)
+  then RAISE_APPLICATION_ERROR( -20001, 'Sorry, the class is full' );
+  END IF;
+END;
