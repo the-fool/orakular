@@ -346,6 +346,12 @@ function initCurrentCoursesTable() {
 		    field: 'cid',
 		    values: data['cid']
 		});
+		data['cid'].forEach(function(e) {
+		    console.log("attempting removal of "+e);
+		    $('a[href="#tab-'+e+'"]').parent().remove();
+		    $('#tab-'+e).remove();
+		    $('#tab-current-enrollment .nav-tabs > li > a').first().trigger('click');
+		});
 		$remove.prop('disabled', true);
 		$add.prop('disabled', false);
 	    },
@@ -353,45 +359,6 @@ function initCurrentCoursesTable() {
 		console.log("error on delete ajax");
 	    }
 	});
-    });
-
-    $add.click(function() {
-	    
-/*	$.ajax({
-	    url: 'api/faculty?filter=deptid_'+did,
-	    ('form div:nth-last-child(2)', $('#add-course-modal')).append("FOOOO");
-	});
-	/*var $modal = $('#student-list');
-	var $table = $('#student-list-table');
-	var $confirm = $modal.find('.confirm');
-	$modal.find('.modal-header > h4').text('Select Students to Enroll in ' + cid);
-	$table.bootstrapTable('refresh', 
-			      { url: '/api/student?not=true&filter=cid_'+cid }
-			     );
-	$confirm.off('click').click(function() {
-	    var data = {'cid': cid, 'sid':$table.data('selections')};
-	    console.log(JSON.stringify(data));
-	    $.ajax({
-		dataType: 'json',
-		contentType: 'application/json',
-		url: '/api/update/enrolled',
-		method: 'POST',
-		data: JSON.stringify(data),
-		success: function(d, s) {
-		    if (d.length != 0) {
-			var msg = "Schedule conflicts for: \n";
-			d.forEach(function(e) {
-			    msg = msg.concat('Student ', e['sid'], 
-					     ' with course ', e['cid'], '.\n'); 
-			});
-			alert(msg);
-		    }
-		}
-	    });
-	    $('#table-'+cid).bootstrapTable('refresh');
-	    $modal.modal('hide');
-	});
-	*/	
     });
 	
     function getIdSelections() {

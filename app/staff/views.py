@@ -17,7 +17,7 @@ def dashboard():
              in sess.query(Faculty.fid, Faculty.fname).filter_by(deptid = staff.deptid).all()]
     add_course_form.faculty.choices =  f_set
     
-    if add_course_form.validate_on_submit():
+    if request.method == 'POST' and add_course_form.validate_on_submit():
         print "validating " + add_course_form.faculty.data
         try:
             add_course_form.cname.data = add_course_form.cname.data.replace("'", "''")

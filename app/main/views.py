@@ -179,6 +179,7 @@ def update(target):
                 for c in cid:
                     sess.execute("DELETE FROM Courses WHERE cid='{0}'".format(str(c)))
                     sess.commit()
+                    print 'deleted'
                 return "alright", 200
             except:
                 raise
