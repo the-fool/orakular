@@ -196,7 +196,9 @@ function integerFormat(value) {
     return Math.trunc(value);
 }
 function floatFormat(value) {
-    return value.substring(0, value.indexOf('.') + 2);
+    if (value !== undefined) {
+	return value.substring(0, value.indexOf('.') + 2);
+    }
 }
 
 function searchableRow(row, index) {

@@ -19,7 +19,7 @@ def index():
        user = User.check_user(id=form.id.data)
        if user is not None:
            login_user(user, form.remember_me.data)
-           flash('Welcome back!')
+           flash('Welcome to the Bureaucalypse!')
        else:
            flash('Invalid User ID')
     if current_user.is_authenticated:
@@ -299,7 +299,8 @@ def apiCourse(args):
                 d[x.cid] = (x.exam1 + x.exam2 + x.final)/3
                 d[x.cid + "_len"] = 1
         for x in l:
-            x['c_avg'] = str(d[x['cid']] / d[x['cid']+"_len"])
+            if x['cid'] in d:
+                x['c_avg'] = str(d[x['cid']] / d[x['cid']+"_len"])
 
     e = dict(sess.query(Enrolled.cid, 
                         func.count(Enrolled.sid))
