@@ -190,10 +190,8 @@ def apiFaculty(args):
         l = table_to_dict(sess.query(Faculty).all())
     
     if args['xedit']:
-        i = 0
         for x in l:
-            i += 1
-            x['value'] = str(i)
+            x['value'] = x['fid']
             x['text'] = '{0}: {1}'.format(x['fid'],x['fname'])
     return l
 

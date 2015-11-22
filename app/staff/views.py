@@ -65,4 +65,23 @@ def edit_grade():
 @staff_only
 def course_info():
     pass
+
+@staff.route('/change_prof', methods=['GET', 'POST'])
+@login_required
+@staff_only
+def change_prof():
+    cid = request.form['pk']
+    print cid
+    fac = request.form['value']
+    print fac
+    
+    try:
+        sess.execute("update courses set fid = {0} where cid = '{1}'".format(fac, cid))
+        sess.commit()
         
+    except cx_Oracle.DatabaseError as e:
+        error, = e.args
+        print "DB Error: {0} - {1}".format(error.code, error.message)
+        return Response(status=400)
+   
+    return Response(cid, status=200)

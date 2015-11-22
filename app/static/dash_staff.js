@@ -302,9 +302,10 @@ function initCurrentCoursesTable() {
 		    source:  '/api/faculty?xedit=true&filter=deptid_'+did,
 		    title: 'Change Professor',
 		    url: '/staff/change_prof',
-		    name: 'fid'
+		    name: 'fid',
 		    success: function(response, newValue) {
-			console.log('succesful edit';
+			$table.bootstrapTable('refresh');
+			console.log(response);
 		    }
 		}
             }
