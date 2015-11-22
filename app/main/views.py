@@ -19,9 +19,9 @@ def index():
        user = User.check_user(id=form.id.data)
        if user is not None:
            login_user(user, form.remember_me.data)
-           flash('hello member')
+           flash('Welcome back!')
        else:
-           flash('invalid id')
+           flash('Invalid User ID')
     if current_user.is_authenticated:
        return redirect(url_for('{0}.dashboard'.format(current_user.role)))
     else: 

@@ -22,7 +22,7 @@ def dashboard():
         try:
             add_course_form.cname.data = add_course_form.cname.data.replace("'", "''")
             print add_course_form.cname.data
-            c.execute("INSERT INTO courses (cid, cname, fid, meets_at, room, limit) VALUES ('{0}', '{1}', '{2}', 'M 0:00', 'none', 99)"
+            c.execute("INSERT INTO courses (cid, cname, fid, meets_at, room, limit) VALUES ('{0}', '{1}', '{2}', 'NONE 0:00', 'none', 999)"
                       .format(str(add_course_form.cid.data).upper(), add_course_form.cname.data
                               , str(add_course_form.faculty.data)))
             db.commit()
