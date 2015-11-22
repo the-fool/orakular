@@ -10,7 +10,7 @@ $(document).ready(function() {
 	var $add = $('#add-'+cid);
 	var selections = [];
 	
-	function initCourseTable() {
+	function initEnrollmentTable() {
 	    $table.bootstrapTable({
 		cache: false,
 		url: '/api/enrolled?join=Student&filter=cid_'+cid,
@@ -80,7 +80,7 @@ $(document).ready(function() {
 		    }
 		}]
             });
-	} // end initCourseTable()
+	} // end initEnrollmentTable()
 	$table.on('check.bs.table uncheck.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
 		    $add.prop('disabled', $table.bootstrapTable('getSelections').length);
@@ -155,18 +155,18 @@ $(document).ready(function() {
             });
 	}
 	setTimeout(function () {
-	    initCourseTable();
+	    initEnrollmentTable();
         }, 200);
     }); // end current_course tables
     
     initStudentListTable();
- 
+    initCourseListTable();
     $('#student-list').on('hidden.bs.modal', function(e) {
        $(this).find('.form-control').val('').trigger('keyup');
        $(this).find('.confirm').prop('disabled', true);
     });
 
-    $('.nav-tabs > li > a').first().trigger('click');
+    $('#tab-current-enrollment .nav-tabs > li > a').first().trigger('click');
 
 }); // end document.ready()
 
@@ -234,5 +234,10 @@ function initStudentListTable() {
 	    return row['sid'];
         });
     }
+
+}
+
+function initCurrentCoursesTable() {
+
 
 }
