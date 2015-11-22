@@ -169,6 +169,20 @@ def update(target):
             except:
                 raise
                 return 'not ok', 400
+        
+        elif target.lower() == 'course':
+            cid = request.json['cid']
+            
+            if not isinstance(cid, list):
+                cid = [cid]
+            try:
+                for c in cid:
+                    sess.execute("DELETE FROM Courses WHERE cid='{0}'".format(str(c)))
+                    sess.commit()
+                return "alright", 200
+            except:
+                raise
+                                 
     return 'not implemented', 400
 
 def apiFaculty(args):

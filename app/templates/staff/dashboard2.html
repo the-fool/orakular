@@ -101,9 +101,8 @@
           <i class="glyphicon glyphicon-plus"></i> Add Course
         </button>
 	
-        <button id="remove-course" class="btn btn-danger" disabled
-	  data-toggle="modal" data-target="#">
-          <i class="glyphicon glyphicon-remove"></i> Delete Course Student
+        <button id="remove-course" class="btn btn-danger" disabled>
+          <i class="glyphicon glyphicon-remove"></i> Delete Course
         </button>
       </div>
       
@@ -125,7 +124,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">Add Course</h4>
       </div>
       <div class="modal-body">
         {{ wtf.quick_form(add_course_form) }}

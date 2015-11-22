@@ -332,7 +332,7 @@ function initCurrentCoursesTable() {
     
     
     $remove.click(function () {
-        var data = {'deptid': did, 'cid': getIdSelections()};
+        var data = {'cid': getIdSelections()};
 	
         $.ajax({
 	    url: '/api/update/course',
