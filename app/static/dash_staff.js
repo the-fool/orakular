@@ -312,6 +312,7 @@ function initCurrentCoursesTable() {
 		    defaultValue: 'Select Professor',
 		    
 		    source:  '/api/faculty?xedit=true&filter=deptid_'+did,
+		    sourceCache: false,
 		    title: 'Change Professor',
 		    url: '/staff/update_course',
 		    name: 'fid',
