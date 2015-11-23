@@ -106,12 +106,6 @@ def edit_grade():
     
     return Response(status=200)
 
-@staff.route('/courses')
-@login_required
-@staff_only
-def course_info():
-    pass
-
 @staff.route('/update_course', methods=['GET', 'POST'])
 @login_required
 @staff_only
@@ -119,8 +113,7 @@ def update_course():
     pk = request.form['pk']
     attr = request.form['name']
     val = request.form['value']
-  
-    
+      
     try:
         c.execute("update courses set {0} = '{1}' where cid = '{2}'".format(attr, val, pk))
         db.commit()
@@ -129,10 +122,31 @@ def update_course():
         print "DB Error: {0} - {1}".format(error.code, error.message)
         db.rollback()
         if str(error.code) == '20001':
-            print '***'
+            print 'Enrollment Trigger'
             return Response('Registration limit is incompatible with enrollment', status=409)
             
         return Response(status=400)
    
     return Response(status=200)
 
+@staff.route('/update_personnel', methods=['GET', 'POST'])
+@login_required
+@staff_only
+def update_personnel():
+    if request.form['pk'] >= 4000:
+        t,a,k = 'Faculty','fname', 'fid'
+    else:
+        t,a,k = 'Staff', 'sname', 'sid'
+    print t, a
+    try:
+        c.execute("UPDATE {0} SET {1} = '{2}' WHERE {3} = {4}"
+                  .format(t,a,request.form['value'],k,request.form['pk'])) 
+        db.commit()
+    except cx_Oracle.DatabaseError as ex:
+        error, = ex.args
+        print "DB Error: {0} - {1}".format(error.code, error.message)
+        db.rollback()
+        return Response(status=400)
+        
+    return Response('updated person name',status=200)
+        

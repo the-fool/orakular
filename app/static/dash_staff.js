@@ -411,7 +411,7 @@ function initPersonnelTable() {
 		    type: 'text',
 		    title: 'Change Personnel Name',
 		    validate: stringValidate,
-		    url: '/staff/update_personell',
+		    url: '/staff/update_personnel',
 		    name: 'name'
 		}
 	    }

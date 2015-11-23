@@ -40,7 +40,6 @@ def courses():
     for c in sess.query(Course).all():    
         c_list.append({'c': c, 'f': f_dict[c.fid]})
   
-    print c_list
     return render_template("courses.html", form=None,
                              courses=c_list) 
 @main.route("/dep")
@@ -216,10 +215,10 @@ def apiPersonnel(args):
         if f[0].lower() == 'deptid':
             l = sess.query(Faculty).filter(Faculty.deptid==f[1]).all()
             for x in l:
-                ll.append({'id': x.fid, 'name': reverseName(x.fname), 'role': 'Faculty'})
+                ll.append({'id': x.fid, 'name': x.fname.title(), 'role': 'Faculty'})
             l = sess.query(Staff).filter(Staff.deptid==f[1]).all()
             for x in l:
-                ll.append({'id': x.sid, 'name': reverseName(x.sname), 'role': 'Staff'})
+                ll.append({'id': x.sid, 'name': x.sname.title(), 'role': 'Staff'})
     return ll
 
 
