@@ -15,12 +15,13 @@ from itertools import chain
 def index():
     form = LoginForm()       
     if form.validate_on_submit():
-       user = User.check_user(id=form.id.data)
-       if user is not None:
-           login_user(user, form.remember_me.data)
-           flash('Welcome to the Bureaucalypse!')
-       else:
-           flash('Invalid User ID')
+        user = User.check_user(id=form.id.data)
+        if user is not None:
+            login_user(user, form.remember_me.data)
+            flash('Welcome to the Bureaucalypse!')
+        else:
+            flash('Invalid User ID')
+        return redirect(url_for('.index'))
     if current_user.is_authenticated:
        return redirect(url_for('{0}.dashboard'.format(current_user.role)))
     else: 

@@ -72,7 +72,6 @@ function initEnrollmentTable() {
         showMultiSort: true,
 	search: true,
 	showRefresh: true,
-	detailView: true,
         columns: [
             {
                 title: 'Course ID',
