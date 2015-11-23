@@ -177,7 +177,20 @@ def update(target):
             except:
                 raise
                 return 'not ok', 400
-        
+        elif target.lower() == 'personnel':
+            try:
+                for j in request.get_json():
+                    if j['role'].lower() == 'staff':
+                        t,a = 'staff','sid'
+                    else:
+                        t,a = 'faculty','fid'
+                    sess.execute("DELETE FROM {0} WHERE {1}={2}".format(t,a,j['id']))
+                return 'Deleted!', 200
+            
+            except cx_Oracle.DatabaseException as e:
+                print e
+                return 'Error on delet', 400
+                    
         elif target.lower() == 'course':
             cid = request.json['cid']
             

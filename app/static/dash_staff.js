@@ -430,8 +430,11 @@ function initPersonnelTable() {
     
     
     $remove.click(function () {
-        var data = {'id': getIdSelections()};
-	
+        var data = getIdSelections();
+	var ids = data.map(function(d) {
+	   return d['id'];
+	});
+	console.log(data);
         $.ajax({
 	    url: '/api/update/personnel',
 	    
@@ -441,14 +444,8 @@ function initPersonnelTable() {
 	    success: function(d,s) {
 		console.log('data: '+d);
 		$table.bootstrapTable('remove', {
-		    field: 'cid',
-		    values: data['cid']
-		});
-		data['cid'].forEach(function(e) {
-		    console.log("attempting removal of "+e);
-		    $('a[href="#tab-'+e+'"]').parent().remove();
-		    $('#tab-'+e).remove();
-		    $('#tab-current-enrollment .nav-tabs > li > a').first().trigger('click');
+		    field: 'id',
+		    values: ids
 		});
 		$remove.prop('disabled', true);
 		$add.prop('disabled', false);
@@ -461,7 +458,7 @@ function initPersonnelTable() {
 	
     function getIdSelections() {
         return $.map($table.bootstrapTable('getSelections'), function (row) {
-	    return row['id'];
+	    return {role: row['role'], id: row['id']};
         });
     }  
    
