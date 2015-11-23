@@ -161,7 +161,7 @@ $(document).ready(function() {
     
     initStudentListTable();
     initCurrentCoursesTable();
-
+    initPersonnelTable();
     $('#student-list').on('hidden.bs.modal', function(e) {
        $(this).find('.form-control').val('').trigger('keyup');
        $(this).find('.confirm').prop('disabled', true);
@@ -234,6 +234,7 @@ function initCurrentCoursesTable() {
    
     $table.bootstrapTable({
 	cache: false,
+	search: true,
 	url: '/api/course?join=Faculty&filter=deptid_'+did,
 	idField: 'cid',
 	columns: [
@@ -370,7 +371,7 @@ function initCurrentCoursesTable() {
     
 } // end init_current_course
 
-function initCurrentCoursesTable() {
+function initPersonnelTable() {
     var did = $('#tab-personnel').data('id');
     
     var $table = $('#table-personnel');
@@ -383,6 +384,7 @@ function initCurrentCoursesTable() {
 	cache: false,
 	url: '/api/personnel?filter=deptid_'+did,
 	idField: 'id',
+	search: true,
 	columns: [
 	    {
                 field: 'state',
