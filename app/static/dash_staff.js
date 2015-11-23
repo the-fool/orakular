@@ -370,6 +370,101 @@ function initCurrentCoursesTable() {
     
 } // end init_current_course
 
+function initCurrentCoursesTable() {
+    var did = $('#tab-personnel').data('id');
+    
+    var $table = $('#table-personnel');
+    var $remove = $('#fire');    
+    var $add = $('#hire');
+    var selections = [];
+    
+   
+    $table.bootstrapTable({
+	cache: false,
+	url: '/api/personnel?filter=deptid_'+did,
+	idField: 'id',
+	columns: [
+	    {
+                field: 'state',
+                checkbox: true,
+                align: 'center'
+            }, {
+                title: 'ID',
+                field: 'id',
+                align: 'center',
+                sortable: true
+		
+            }, {
+                title: 'Role',
+                field: 'role',
+                align: 'center',
+                sortable: true
+		
+            }, {
+                title: 'Name',
+                field: 'name',
+                align: 'center',
+		sortable: true,
+		editable: {
+		    type: 'text',
+		    title: 'Change Personnel Name',
+		    validate: stringValidate,
+		    url: '/staff/update_personell',
+		    name: 'name'
+		}
+	    }
+	]
+    });
+    
+    $table.on('check.bs.table uncheck.bs.table ' +
+              'check-all.bs.table uncheck-all.bs.table', function () {
+		  $add.prop('disabled', $table.bootstrapTable('getSelections').length);
+		  $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+		  selections = getIdSelections();
+	      });
+    $table.on('all.bs.table', function (e, name, args) {
+        console.log(name, args);
+    });
+    
+    
+    $remove.click(function () {
+        var data = {'id': getIdSelections()};
+	
+        $.ajax({
+	    url: '/api/update/personnel',
+	    
+	    contentType: 'application/json',
+	    method: 'DELETE',
+	    data: JSON.stringify(data),
+	    success: function(d,s) {
+		console.log('data: '+d);
+		$table.bootstrapTable('remove', {
+		    field: 'cid',
+		    values: data['cid']
+		});
+		data['cid'].forEach(function(e) {
+		    console.log("attempting removal of "+e);
+		    $('a[href="#tab-'+e+'"]').parent().remove();
+		    $('#tab-'+e).remove();
+		    $('#tab-current-enrollment .nav-tabs > li > a').first().trigger('click');
+		});
+		$remove.prop('disabled', true);
+		$add.prop('disabled', false);
+	    },
+	    error: function() {
+		console.log("error on delete ajax");
+	    }
+	});
+    });
+	
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+	    return row['id'];
+        });
+    }  
+   
+    
+} // end initPersonnel
 
 function gradeValidate(value) {
     if($.trim(value) == '') {

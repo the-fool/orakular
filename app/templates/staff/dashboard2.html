@@ -114,6 +114,35 @@
       </table>
     </div>
   </div>
+  <div id="tab-personnel" 
+       data-id="{{department.did}}"
+       class="tab-pane fade">
+    <div class="well">
+      <div class="text-center"><h3>Personnel</h3></div>
+      <div id="toolbar-current-courses">
+	<button id="hire"
+                data-toggle="modal" 
+		data-backdrop="static"
+		data-target="#add-course-modal"
+                class="btn btn-success">
+          <i class="glyphicon glyphicon-plus"></i> Hire Person
+        </button>
+	
+        <button id="fire" class="btn btn-danger" disabled>
+          <i class="glyphicon glyphicon-remove"></i> Fire Person
+        </button>
+      </div>
+      
+      <table id="table-personnel"
+	     data-id="{{department.did}}"
+	     data-toolbar="#toolbar-personnel"
+	     data-show-refresh="true"
+	     data-locale="en-US">
+      </table>
+    </div>
+  </div>
+
+
 </div>
 
 {% include 'student_info_modal.html' %}

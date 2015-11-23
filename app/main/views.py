@@ -7,10 +7,9 @@ from ..database import db_session as sess
 from ..models import Student, Faculty, Course, Department, Enrolled, Staff, User
 from ..auth.forms import LoginForm
 from ..decorators import non_student_only
-import cx_Oracle
 import json
 from sqlalchemy import func
-
+from itertools import chain
 
 @main.route("/", methods=['GET', 'POST'])
 def index():
@@ -109,7 +108,7 @@ def search():
 @main.route("/api/<target>")
 def api(target):
     args = request.args
-    t = globals()[target.title()]
+ 
     l = []
     if target.lower() == 'enrolled':
         l = apiEnrolled(args)
@@ -119,7 +118,10 @@ def api(target):
         l = apiStudent(args)
     elif target.lower() == 'faculty':
         l = apiFaculty(args)
+    elif target.lower() == 'personnel':
+        l = apiPersonnel(args)
     else:
+        t = globals()[target.title()] 
         l = table_to_dict(sess.query(t).all())
     
         
@@ -186,6 +188,24 @@ def update(target):
                                  
     return 'not implemented', 400
 
+def apiPersonnel(args):
+    l = []
+    ll = []
+    f = args.get('filter')
+    if f:
+        f = f.split('_')
+        if f[0].lower() == 'deptid':
+            l = sess.query(Faculty).filter(Faculty.deptid==f[1]).all()
+            for x in l:
+                x.fname = ', '.join(x.fname.title().split()[::-1])
+                ll.append({'id': x.fid, 'name': x.fname, 'role': 'Faculty'})
+            l = sess.query(Staff).filter(Staff.deptid==f[1]).all()
+            for x in l:
+                x.sname = ', '.join(x.sname.title().split()[::-1])
+                ll.append({'id': x.sid, 'name': x.sname, 'role': 'Staff'})
+           
+           
+    return ll
 def apiFaculty(args):
     l = []
     f = args.get('filter')
