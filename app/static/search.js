@@ -70,7 +70,7 @@ function initEnrollmentTable() {
 	flat: true,
         url: '/api/enrolled?s_avg=true',
         showMultiSort: true,
-	sortPriority: [{sortName:"exam1", sortOrder:"desc"},{sortName:"exam2", sortOrder:"desc"}],
+//	sortPriority: [{sortName:"exam1", sortOrder:"desc"},{sortName:"exam2", sortOrder:"desc"}],
 	showColumns: true,
 	search: true,
 	showRefresh: true,
@@ -116,7 +116,6 @@ function initCourseTable() {
         cache: false,
         search: true,
 	showRefresh: true,
-	showMultiSort: true,
 	detailView: true,
 	locale: 'en-US',
 	url: '/api/course?join=Faculty',
@@ -171,7 +170,7 @@ function initStudentTable() {
     $table.bootstrapTable({
         cache: false,
 	url: "/api/student",
-        showMultiSort: true,
+  
 	detailView: true,
 	showRefresh: true,
         search: true,
@@ -323,6 +322,8 @@ function expandCourseSub($el, row) {
     });	
 }
 
+initMainTables();
+
 $(document).ready(function () {
     var default_table = "student";
 //    $('#table-'+default_table).bootstrapTable('refresh', {url: "/api/"+default_table});
@@ -346,7 +347,7 @@ $(document).ready(function () {
     $('table').on('click-row.bs.table', function(e,row,$tr) {
 	$tr.find('>td>.detail-icon').trigger('click');
     });
-    initMainTables();
+//    initMainTables();
 });
 
 function levelSorter(a, b) {

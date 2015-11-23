@@ -7,10 +7,7 @@
 
 {% block page_content %}
 <div class="page-header">
-
-
 <h3>Search</h3>
-
 
 </div>
 <div class="well">
@@ -83,8 +80,7 @@
 {{ super() }}
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/bootstrap-table.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/locale/bootstrap-table-en-US.min.js"></script>
-
-<script src="{{url_for('static', filename='search.js')}}"></script>
 <script src="{{url_for('static', filename='flat_json.js')}}"></script>
 <script src="{{url_for('static', filename='multi_sort.js')}}"></script>
+<script src="{{url_for('static', filename='search.js')}}"></script>
 {% endblock %}
