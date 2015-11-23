@@ -14,10 +14,10 @@
   <div class="col-md-12">
     <h2 class="cname">{{ c['c'].cname.title() }}</h2>
       {% if current_user.role == "student" %}
-         {% if c.cid not in enrolled %}
+         {% if c['c'].cid not in enrolled %}
     <p>
       <button type="button" class="btn btn-default button-reg" 
-	      data-id="{{c.cid}}" >
+	      data-id="{{c['c'].cid}}" >
 	Register
       </button>
     </p>
