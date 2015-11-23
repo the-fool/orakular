@@ -59,7 +59,7 @@
       </thead>
       <tbody>
 	{% for x in students %}
-	<tr data-id="{{ x['s'].sid }}" class="student-info-link">
+	<tr data-id="{{ x['s'].sid }}" class="student-info-link custom-hover">
 	  <td>{{ x['s'].sid }}</td>
 	  <td id="name-{{x['s'].sid}}">{{ x['s'].sname.title() }}</td>
 	  <td> {{ x['s'].s_level.title() }}</td>

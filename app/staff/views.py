@@ -37,8 +37,21 @@ def dashboard():
                 else: flash('Failed to add course.')
     
         elif hire_form.validate_on_submit():
-            print "hiring"
-            
+            print "hiring " + hire_form.name.data + " as " + hire_form.role.data
+            if hire_form.role.data == 'staff':
+                params = "(sname, deptid)"
+            else: params = "(fname, deptid)"
+            try:
+                c.execute("INSERT INTO {0} {1} VALUES ('{2}', {3})"
+                          .format(hire_form.role.data, params, hire_form.name.data, staff.deptid))  
+                db.commit()
+                flash('Hired {0}!'.format(hire_form.name.data))
+            except cx_Oracle.DatabaseError as e:
+                error, = e.args
+                print "DB Error: {0} -- {1}".format(error.code, error.message)
+                db.rollback()
+                flash('Failed to hire person')
+
         return redirect(url_for('.dashboard'))
     else:
         try:

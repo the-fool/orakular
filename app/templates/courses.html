@@ -12,7 +12,7 @@
   {% for c in courses %}
 <div class="row"> 
   <div class="col-md-12">
-    <h2 class="cname">{{ c.cname.title() }}</h2>
+    <h2 class="cname">{{ c['c'].cname.title() }}</h2>
       {% if current_user.role == "student" %}
          {% if c.cid not in enrolled %}
     <p>
@@ -28,7 +28,7 @@
     {% endif %}
     {% endif %}
     {% if current_user.role in ("faculty", "staff") %}
-    <a href="{{ url_for('.course_info', cid=c.cid) }}">
+    <a href="{{ url_for('.course_info', cid=c['c'].cid) }}">
       Course information
     </a>
     {% endif %}
@@ -38,15 +38,17 @@
 	  <th>Time</th>
 	  <th>Course No.</th>
 	  <th>Where</th>
-	  <th>Instructor</th>
+	  <th>Instructor Name</th>
+	  <th>Instructor ID</th>
 	</tr>
       </thead>
       <tbody>
 	<tr>
-	  <td class="col-md-3">{{c.meets_at}}</td>
-	  <td class="col-md-3">{{c.cid}}</td>
-	  <td class="col-md-3">{{c.room}}</td>
-	  <td class="col-md-3">{{c.fid}}</td>
+	  <td class="col-md-3">{{c['c'].meets_at}}</td>
+	  <td class="col-md-3">{{c['c'].cid}}</td>
+	  <td class="col-md-3">{{c['c'].room}}</td>
+	  <td class="col-md-3">{{c['f'].title()}}</td>
+	  <td class="col-md-3">{{c['c'].fid}}</td>
 	</tr>
       </tbody>
     </table>

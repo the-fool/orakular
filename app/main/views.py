@@ -33,10 +33,16 @@ def courses():
     if current_user.is_authenticated:
         if current_user.role == 'student':
             return redirect(url_for('student.courses'))
-
-    course_list = sess.query(Course).all()    
+    c_list = []
+    f_dict = {}
+    for f in sess.query(Faculty).all():
+        f_dict[f.fid] = f.fname
+    for c in sess.query(Course).all():    
+        c_list.append({'c': c, 'f': f_dict[c.fid]})
+  
+    print c_list
     return render_template("courses.html", form=None,
-                           courses=course_list) 
+                             courses=c_list) 
 @main.route("/dep")
 def departments():
     return redirect(url_for('.department_home', did=0))

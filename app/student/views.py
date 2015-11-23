@@ -47,13 +47,21 @@ def courses():
             flash('Schedule conflict with {0}.'.format(conf.cid))
         return redirect(url_for('.courses'))
 
-    course_list = sess.query(Course).all()
+    c_list = []
+    f_dict = {}
+    for f in sess.query(Faculty).all():
+        f_dict[f.fid] = f.fname
+    for c in sess.query(Course).all():
+        c_list.append({'c': c, 'f': f_dict[c.fid]})
+
+    print c_list
+
     e_list = []
     if current_user.courses:
         e_list = [e.cid for e in current_user.courses]
 
     return render_template('courses.html', form=form,
-                           courses=course_list, enrolled=e_list)
+                           courses=c_list, enrolled=e_list)
 
 
 def check_schedule(cid, sid=None):

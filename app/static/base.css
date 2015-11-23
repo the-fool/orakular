@@ -9,8 +9,8 @@ body {
 }
 
 .custom-hover > tbody > tr:not(.detail-view):hover td {
-    background-color: #1BABB3;
-    color: #ab5903;
+    background-color:  #739Bf1;
+    
     cursor: pointer;
 }
 .navbar {
