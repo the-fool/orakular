@@ -125,7 +125,7 @@ $(document).ready(function () {
 	target = target.slice(1);
 	$('#table-'+target).bootstrapTable('refresh', 
 					   {url: "/api/"+target+params});
-	    
+	
 	$('.search').val('');
 	$('.no-result').hide();
     });
@@ -148,13 +148,6 @@ $(document).ready(function () {
 	    console.log("appending warning bar");
 	    $that.prepend("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");}
     }); 
-
- /* ** This method does not seem necessary . . . 
-    $(window).resize(function() {
-	console.log("resizing window");
-	$('#table-student').bootstrapTable('resetView');
-    });
-*/
 
     $(".search").each( function() {
 	$(this).keyup(function () {

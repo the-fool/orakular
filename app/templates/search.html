@@ -39,7 +39,9 @@
 	</div>
 	<span class="counter pull-right"></span>
 	<table id="table-student" class="results student custom-hover" 
-	       data-toggle="table" data-sort-name="sid" 
+	       data-toggle="table" 
+	       data-sort-name="sid" 
+	       
 	       data-sort-order="asc"
 	       data-classes="table table-striped"
 	       data-detail-view="true">
@@ -160,5 +162,6 @@
 {{ super() }}
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/bootstrap-table.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.0/locale/bootstrap-table-en-US.min.js"></script>
-<script src="{{ url_for('static', filename='search.js')}}"></script>
+<script src="{{url_for('static', filename='multi_sort.js')}}"></script>
+<script src="{{url_for('static', filename='search.js')}}"></script>
 {% endblock %}
