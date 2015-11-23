@@ -332,6 +332,7 @@
             if (column.sortable === false || column.visible === false) {
                 return true;
             }
+	    console.log("adding column to ");
             $multiSortName.append('<option value="' + column.field + '">' + column.title + '</option>');
         });
 

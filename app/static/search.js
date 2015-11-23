@@ -36,7 +36,6 @@ function initFacultyTable() {
     $table.bootstrapTable({
 	cache: false,
 	url: '/api/faculty',
-	showMultiSort: true,
 	search: true,
 	detailView: true,
 	showRefresh: true,
@@ -68,8 +67,11 @@ function initEnrollmentTable() {
     var $table = $('#table-enrolled');
     $table.bootstrapTable({
         cache: false,
+	flat: true,
         url: '/api/enrolled?s_avg=true',
         showMultiSort: true,
+	sortPriority: [{sortName:"exam1", sortOrder:"desc"},{sortName:"exam2", sortOrder:"desc"}],
+	showColumns: true,
 	search: true,
 	showRefresh: true,
         columns: [
