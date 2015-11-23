@@ -18,3 +18,8 @@ class AddCourseForm(Form):
     cname = StringField('Course Name', validators=[Required()])
     faculty = SelectField('Faculty')
     submit = SubmitField('Add course')
+
+class HirePersonForm(Form):
+    name = StringField('Full Name', validators=[Required()])
+    role = SelectField('Staff or Faculty?', choices=[('staff', 'Staff'),('faculty','Faculty')])
+    submit = SubmitField('Hire Person')
