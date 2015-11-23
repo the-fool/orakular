@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block styles %}
 {{ super() }}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.css">
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 {% endblock %}
 {% block navbar_extras %}
@@ -11,96 +14,183 @@
 {% block page_content %}
 
 <div class="page-header">
-  <h1>{{ staff.sname.title()}}</h1>
-  <h3>Department of {{ department.dname.title() }}</h3>
-</div>
-
-<div class="row">
-  <div class="col-md-8">
-    <h3>Current Courses</h3>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <ul class="nav nav-tabs">
-      {% for c in c_list %}
-      <li><a data-toggle="tab" href="#table-{{c['c'].cid}}">{{c['c'].cid}}</a></li>
-      {% endfor %}  
-    </ul>
+  <div class="row text-center">
+    <h1>Department of {{ department.dname.title() }}</h1>
   </div>
 </div>
 
+<div class="row text-center">
+  <ul class="nav nav-pills" style="display:inline-block;">
+    <li class="active">
+      <a data-toggle="pill" href="#tab-current-enrollment">
+	Current Enrollment
+      </a>
+    </li>
+    <li>
+      <a id="pill-current-courses" data-toggle="pill" href="#tab-current-courses">
+	Current Courses
+      </a>
+    </li>
+    <li>
+      <a data-toggle="pill" href="#tab-personnel">
+	Personnel
+      </a>
+    </li>
+  </ul>
+</div>
+<br>
 <div class="tab-content">
-  {% for c in c_list %}
-  <div id="table-{{c['c'].cid}}" class="tab-pane fade">
+  <div id="tab-current-enrollment" class="tab-pane fade in active">
     <div class="row">
       <div class="col-md-12">
-	<h3>{{ c['c'].cname.title() }} - {{c['c'].meets_at}} @ {{c['c'].room }}</h3>
-	<h4>Enrolled students</h4>
+	<ul class="nav nav-tabs">
+	  {% for c in c_list %}
+	  <li><a data-toggle="tab" href="#tab-{{c['c'].cid}}">{{c['c'].cid}}</a></li>
+	  {% endfor %}  
+	</ul>
       </div>
-    </div> 
-    <table class="table table-striped table-bordered">
-      <thead>
-	<tr>
-	  <th>Name</th>
-	  <th>ID</th>
-	  <th>Level</th>
-	  <th>Major</th>
-	  <th>Exam 1</th>
-	  <th>Exam 2</th>
-	  <th>Final</th>
-	</tr>
-      </thead>
-      <tbody>
-	{% for x in c['es'] %}
-	<tr>
-	  <td>
-	    <a href="#" id="name-{{x['s'].sid}}" 
-	       data-id="{{ x['s'].sid}}" 
-	       data-toggle="tooltip" data-placement="left" 
-	       title="Click for Profile" 
-	       class="student-info-link">
-	      {{x['s'].sname.title()}}
-	    </a>
-	  </td>
-	  <td>{{x['s'].sid  }}</td>
-	  <td>{{x['s'].s_level.title() }}</td>
-	  <td>{{x['s'].major.title() }}</td>
-	  <td>
-	    <a href="#" class="edit-grade" data-name="exam1" 
-		 data-pk="{{x['e'].sid}}_{{x['e'].cid}}" data-type="text"
-		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Exam 1">
-	      {{x['e'].exam1}}
-	    </a>
-	  </td>
-	  <td>
-	    <a href="#" class="edit-grade" data-name="exam2" 
-		 data-pk="{{x['e'].sid}}_{{x['e'].cid}}" data-type="text"
-		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Exam 2">
-	    {{x['e'].exam2}}
-	    </a>
-	  </td>
-	  <td>
-	    <a href="#" class="edit-grade" data-name="final" 
-		 data-pk="{{x['e'].sid}}_{{x['e'].cid}}" data-type="text"
-		 data-url="{{url_for('.edit_grade')}}" data-title="Edit Final">
-	      {{x['e'].final}}
-	    </a>
-	  </td>
-	</tr>
+    </div>
+    <div class="row">
+      <div class="tab-content">
+	{% for c in c_list %}
+	<div id="tab-{{c['c'].cid}}" class="tab-pane fade">
+	  <div class="well">
+	 <!--   <h3>{{ c['c'].cname.title() }} - {{c['c'].meets_at}} @ {{c['c'].room }}</h3>-->
+	    <h4>Enrolled students</h4>
+	     <div id="toolbar-{{c['c'].cid}}">
+	      
+	      <button id="add-{{c['c'].cid}}" 
+		      data-toggle="modal" data-target="#student-list"
+		      class="btn btn-success">
+		<i class="glyphicon glyphicon-plus"></i> Register Student
+	      </button>
+	      
+	      <button id="remove-{{c['c'].cid}}" class="btn btn-danger" disabled>
+		<i class="glyphicon glyphicon-remove"></i> Unenroll Student
+	      </button>
+	    </div>
+	    
+	    <table id="table-{{c['c'].cid}}" 
+		   class="course-table"
+		   data-id="{{c['c'].cid}}"
+		   data-toolbar="#toolbar-{{c['c'].cid}}"
+		   data-search="true"
+		   data-show-refresh="true"
+		   data-show-toggle="true"
+		   data-show-columns="true"
+		   data-locale="en-US">
+	    </table>
+	  </div>
+	</div>
 	{% endfor %}
-      </tbody>
-    </table>
+      </div>
+    </div>
   </div>
-  {% endfor %}
+  <div id="tab-current-courses" 
+       data-id="{{department.did}}"
+       class="tab-pane fade">
+    <div class="well">
+      <div class="text-center"><h3>Current Courses</h3></div>
+      <div id="toolbar-current-courses">
+	
+        <button id="add-course"
+                data-toggle="modal" 
+		data-backdrop="static"
+		data-target="#add-course-modal"
+                class="btn btn-success">
+          <i class="glyphicon glyphicon-plus"></i> Add Course
+        </button>
+	
+        <button id="remove-course" class="btn btn-danger" disabled>
+          <i class="glyphicon glyphicon-remove"></i> Delete Course
+        </button>
+      </div>
+      
+      <table id="table-current-courses"
+	     data-id="{{department.did}}"
+	     data-toolbar="#toolbar-current-courses"
+	     data-show-refresh="true"
+	     data-locale="en-US">
+      </table>
+    </div>
+  </div>
+  <div id="tab-personnel" 
+       data-id="{{department.did}}"
+       class="tab-pane fade">
+    <div class="well">
+      <div class="text-center"><h3>Personnel</h3></div>
+      <div id="toolbar-current-courses">
+	<button id="hire"
+                data-toggle="modal" 
+		data-backdrop="static"
+		data-target="#hire-modal"
+                class="btn btn-success">
+          <i class="glyphicon glyphicon-plus"></i> Hire Person
+        </button>
+	
+        <button id="fire" class="btn btn-danger" disabled>
+          <i class="glyphicon glyphicon-remove"></i> Fire Person
+        </button>
+      </div>
+      
+      <table id="table-personnel"
+	     data-id="{{department.did}}"
+	     data-toolbar="#toolbar-personnel"
+	     data-show-refresh="true"
+	     data-locale="en-US">
+      </table>
+    </div>
+  </div>
+
+
 </div>
 
 {% include 'student_info_modal.html' %}
+{% include 'student_list_modal.html' %}
+
+<div id="add-course-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Course</h4>
+      </div>
+      <div class="modal-body">
+        {{ wtf.quick_form(add_course_form) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="hire-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Hire Person</h4>
+      </div>
+      <div class="modal-body">
+        {{ wtf.quick_form(hire_form) }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
   
 {% endblock %}
 {% block scripts %}
 {{ super() }}
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/locale/bootstrap-table-zh-CN.min.js">
+</script>
+<script src="{{ url_for('static', filename='bootstrap-table-editable.js')}}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-<script src="{{url_for('static', filename='dash_faculty.js')}}"></script>
+<script src="{{url_for('static', filename='dash_staff.js')}}"></script>
 <script src="{{url_for('static', filename='student_info_modal.js') }}"></script>
+<script src="{{url_for('static', filename='bs_alerts.js')}}"></script>
 {% endblock %}

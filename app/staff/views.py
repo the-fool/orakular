@@ -80,7 +80,7 @@ def dashboard():
         except:
             raise
             
-        return render_template('staff/dashboard2.html', staff=staff, 
+        return render_template('staff/dashboard.html', staff=staff, 
                                department=department, c_list = c_list, 
                                add_course_form = add_course_form, 
                                hire_form=hire_form)
