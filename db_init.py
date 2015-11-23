@@ -5,6 +5,7 @@ from database import db
 from itertools import cycle
 from app.student import views as student
 
+db.ex("database/db_teardown.sql")
 db.ex("database/db_config.sql")
 db.ex("database/data.sql")
 
@@ -26,7 +27,6 @@ for s in ls:
             if student.check_schedule(d["cid"], s.sid) == 0:
                 sess.add(en)
                 sess.commit()
-              #  print "added"
             else:
                 print "****SCHEDULE CONFLICT*****"
                 i -= 1
