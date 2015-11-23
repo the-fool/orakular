@@ -5,6 +5,7 @@ function initMainTables() {
     initStudentTable();
     initCourseTable();
 }
+
 function initDepartmentTable() {
     var $table = $('#table-department');
     $table.bootstrapTable({
@@ -12,7 +13,7 @@ function initDepartmentTable() {
 	url: '/api/department',
 	detailView: true,
 	showRefresh: true,
-	local: 'en-US',
+	locale: 'en-US',
 	search: true,
 	columns: [
 	    {
@@ -70,6 +71,7 @@ function initEnrollmentTable() {
         url: '/api/enrolled?s_avg=true',
         showMultiSort: true,
 	search: true,
+	showRefresh: true,
 	detailView: true,
         columns: [
             {
@@ -114,7 +116,9 @@ function initCourseTable() {
         search: true,
 	showRefresh: true,
 	showMultiSort: true,
-        url: '/api/course?join=Faculty',
+	detailView: true,
+	locale: 'en-US',
+	url: '/api/course?join=Faculty',
         columns: [
             {
                 title: 'Course ID',
@@ -137,6 +141,16 @@ function initCourseTable() {
                 align: 'center',
                 sortable: true,
             }, {
+	       title: 'Professor Name',
+                sortable: true,
+                field: 'fname',
+                align: 'center'
+	   }, {
+                title: 'Professor ID',
+                sortable: true,
+                field: 'fid',
+                align: 'center'
+	   }, {
                 title: 'Limit',
                 field: 'limit',
                 align: 'center',
@@ -146,17 +160,7 @@ function initCourseTable() {
                 field: 'active',
                 align: 'center',
                 sortable: true,
-           }, {
-                title: 'Professor ID',
-                sortable: true,
-                field: 'fid',
-                align: 'center'
-	   }, {
-	       title: 'Professor Name',
-                sortable: true,
-                field: 'fname',
-                align: 'center'
-	   }
+           }
 	]
     });
 }
@@ -168,6 +172,7 @@ function initStudentTable() {
 	url: "/api/student",
         showMultiSort: true,
 	detailView: true,
+	showRefresh: true,
         search: true,
 
         columns: [
