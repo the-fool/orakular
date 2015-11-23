@@ -1,3 +1,207 @@
+function initMainTables() {
+    initDepartmentTable();
+    initFacultyTable();
+    initEnrollmentTable();
+    initStudentTable();
+    initCourseTable();
+}
+function initDepartmentTable() {
+    var $table = $('#table-department');
+    $table.bootstrapTable({
+	cache: false,
+	url: '/api/department',
+	detailView: true,
+	showRefresh: true,
+	local: 'en-US',
+	search: true,
+	columns: [
+	    {
+		title: 'ID',
+		field: 'did',
+		align: 'center',
+		sortable: true
+	    },{
+		title: 'Name',
+		field: 'dname',
+		align: 'center',
+		sortable: true
+	    }
+	]
+    });
+}
+
+function initFacultyTable() {
+    var $table = $('#table-faculty');
+    $table.bootstrapTable({
+	cache: false,
+	url: '/api/faculty',
+	showMultiSort: true,
+	search: true,
+	detailView: true,
+	showRefresh: true,
+	locale: 'en-US',
+	columns:[
+            {
+                title: 'ID',
+                field: 'fid',
+                align: 'center',
+                sortable: true
+
+            }, {
+                title: 'Name',
+                field: 'fname',
+                align: 'center',
+                sortable: true
+
+            }, {
+                title: 'Dep. ID',
+                field: 'deptid',
+                align: 'center',
+                sortable: true,
+	    }
+	]
+    });
+}
+
+function initEnrollmentTable() {
+    var $table = $('#table-enrolled');
+    $table.bootstrapTable({
+        cache: false,
+        url: '/api/enrolled?s_avg=true',
+        showMultiSort: true,
+	search: true,
+	detailView: true,
+        columns: [
+            {
+                title: 'Course ID',
+                field: 'cid',
+                align: 'center',
+                sortable: true
+            }, {
+	        title: 'SID',
+                field: 'sid',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Exam 1',
+                field: 'exam1',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Exam 2',
+                field: 'exam2',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Final',
+                field: 'final',
+                align: 'center',
+		sortable: true,
+	    }, {
+		title: 'Average',
+                field: 'avg',
+                align: 'center',
+		formatter: floatFormat,
+		sortable: true,
+	    }
+	]
+    });
+}
+function initCourseTable() {
+    var $table=$('#table-course');
+    $table.bootstrapTable({
+        cache: false,
+        search: true,
+	showRefresh: true,
+	showMultiSort: true,
+        url: '/api/course?join=Faculty',
+        columns: [
+            {
+                title: 'Course ID',
+                field: 'cid',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Name',
+                field: 'cname',
+                align: 'center',
+                sortable: true,
+            }, {
+                title: 'When',
+                field: 'meets_at',
+                align: 'center',
+                sortable: true,
+            },  {
+                title: 'Room',
+                field: 'room',
+                align: 'center',
+                sortable: true,
+            }, {
+                title: 'Limit',
+                field: 'limit',
+                align: 'center',
+                sortable: true,
+           }, {
+                title: 'Active',
+                field: 'active',
+                align: 'center',
+                sortable: true,
+           }, {
+                title: 'Professor ID',
+                sortable: true,
+                field: 'fid',
+                align: 'center'
+	   }, {
+	       title: 'Professor Name',
+                sortable: true,
+                field: 'fname',
+                align: 'center'
+	   }
+	]
+    });
+}
+			 
+function initStudentTable() {
+    var $table = $('#table-student')
+    $table.bootstrapTable({
+        cache: false,
+	url: "/api/student",
+        showMultiSort: true,
+	detailView: true,
+        search: true,
+
+        columns: [
+            {
+                title: 'SID',
+                field: 'sid',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Name',
+                field: 'sname',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Major',
+                field: 'major',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Level',
+                field: 's_level',
+		sorter: levelSorter,
+                align: 'center',
+                sortable: true
+            }, {
+		title: 'Age',
+		field: 'age',
+		align: 'center',
+		sortable: true
+	    }
+	]
+    });
+}
+
 function expandDepartmentSub($el, row) {
    columns= [{
 	field: 'cid',
@@ -114,20 +318,14 @@ function expandCourseSub($el, row) {
 }
 
 $(document).ready(function () {
-  
-    
     var default_table = "student";
-    $('#table-'+default_table).bootstrapTable('refresh', {url: "/api/"+default_table});
+//    $('#table-'+default_table).bootstrapTable('refresh', {url: "/api/"+default_table});
    
     $('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
 	var target = $(e.target).attr("href");
 	var params = "?" + $(e.target).attr("params");
 	target = target.slice(1);
-	$('#table-'+target).bootstrapTable('refresh', 
-					   {url: "/api/"+target+params});
-	
-	$('.search').val('');
-	$('.no-result').hide();
+	$('#table-'+target).bootstrapTable('refresh');
     });
     
     $('table').on('expand-row.bs.table', function(e, index, row, $detail) {
@@ -142,39 +340,7 @@ $(document).ready(function () {
     $('table').on('click-row.bs.table', function(e,row,$tr) {
 	$tr.find('>td>.detail-icon').trigger('click');
     });
-    $('.bootstrap-table').on('load-success.bs.table', function(name) {
-	$that = $('.fixed-table-body', $(this)).find('tbody');
-	if (! $that.children().first().hasClass("warning")) { 
-	    console.log("appending warning bar");
-	    $that.prepend("<tr class='warning no-result'><td colspan='99'><i class='fa fa-warning'></i> No result</td></tr>");}
-    }); 
-
-    $(".search").each( function() {
-	$(this).keyup(function () {
-	    var table = ".results."+$(this).data('id');
-	    var searchTerm = $(this).val();
-	    var listItem = $(table +' tbody').children('tr');
-	    var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
-	    
-	    $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
-		return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
-	    }});
-	    
-	    $(table + " tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
-		$(this).attr('visible','false');
-	    });
-	    
-	    $(table + " tbody tr:containsi('" + searchSplit + "')").each(function(e){
-		$(this).attr('visible','true');
-	    });
-	    
-	    var jobCount = $(table +' tbody tr[visible="true"]').length;
-	    $('.counter').text(jobCount + ' item');
-	    
-	    if(jobCount == '0') {$('.no-result').show();}
-	    else {$('.no-result').hide();}
-	});
-    });
+    initMainTables();
 });
 
 function levelSorter(a, b) {
@@ -195,6 +361,5 @@ function floatFormat(value) {
 }
 
 function searchableRow(row, index) {
-    
     return {};
 }

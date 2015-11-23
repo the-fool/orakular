@@ -33,123 +33,44 @@
   <div class="col-md-12">
     <div class="tab-content">
       <div id="student" class="tab-pane fade in active">
-	<div class="form-group pull-right">
-	  <input id="filter" type="text" class="form-control search" 
-		 placeholder="Filter" data-id="student">
-	</div>
-	<span class="counter pull-right"></span>
-	<table id="table-student" class="results student custom-hover" 
-	       data-toggle="table" 
-	       data-sort-name="sid" 
-	       
-	       data-sort-order="asc"
+	<div id="toolbar-student"></div>
+	<table id="table-student"
+	       class="results student custom-hover" 
 	       data-classes="table table-striped"
-	       data-detail-view="true">
-	  
-	  <thead>
-	    <tr>
-	      <th data-field="sid" data-sortable="true">Student ID</th>
-	      <th data-field="sname" data-sortable="true">Name</th>
-	      <th data-field="s_level" data-sortable="true" data-sorter="levelSorter">Level</th>
-	      <th data-field="major" data-sortable="true">Major</th>
-	      <th data-field="age" data-sortable="true">Age</th>
-	    </tr>
-	    
-	  </thead>
-	</table>
+	       data-toolbar="#toolbar-student">
+	</table> 
       </div>
       <div id="course" class="tab-pane fade">
-	<div class="form-group pull-right">
-	  <input type="text" 
-		 class="search form-control" 
-		 placeholder="Filter" 
-		 data-id="course">
-	</div>
-	<span class="counter pull-right"></span>
+	<div id="toolbar-course"></div>
 	<table id="table-course" 
 	       class="results course custom-hover"
-	       classes="table table-striped"
-	       data-toggle="table" 
-	       data-sort-name="cid" 
-	       data-sort-order="asc"
-	       data-detail-view="true"
 	       data-classes="table table-striped"
-	       >
-	  <thead>
-	    <tr>
-	      <th data-field="cid" data-sortable="true">Course ID</th>
-	      <th data-field="cname" data-sortable="true">Name</th>
-	      <th data-field="meets_at">When</th>
-	      <th data-field="room" data-sortable="true">Where</th>
-	      <th data-field="fname" data-sortable="true">Faculty</th>
-	      <th data-field="limit" data-formatter="integerFormat">Limit</th>
-	      <th data-field="active">Active</th>
-	    </tr>
-	  </thead>
+	       data-toolbar="#toolbar-course">
 	</table>
       </div>
       <div id="faculty" class="tab-pane fade">
-	<div class="form-group pull-right">
-	  <input type="text" class="search form-control" 
-		 placeholder="Filter" data-id="faculty">
-	</div>
-	<span class="counter pull-right"></span>
+	<div id="toolbar-faculty"></div>
 	<table id="table-faculty" 
 	       class="results faculty custom-hover"
-	       data-toggle="table" 
-	       data-sort-name="fid"
-	       data-sort-order="asc"
-	       data-detail-view="true"
+	       data-toolbar="#toolbar-faculty"
 	       data-classes="table table-striped">
-	  <thead>
-	    <tr>
-	      <th data-field="fid" data-sortable="true">ID</th>
-	      <th data-field="fname" data-sortable="true">Name</th>
-	      <th data-field="deptid" data-sortable="true">Dep. ID</th>
-	    </tr>
-	  </thead>
 	</table>
       </div>
+
       <div id="department" class="tab-pane fade">
-	<div class="form-group pull-right">
-	  <input type="text" class="search form-control" 
-		 placeholder="Filter" data-id="department">
-	</div>
-	<span class="counter pull-right"></span>
-	<table id="table-department" class="results department custom-hover"
-	       data-toggle="table" 
-	       data-sort-name="did"
-	       data-sort-order="asc"
-	       data-detail-view="true"
-	       data-classes="table table-striped">
-	  <thead>
-	    <tr>
-	      <th data-field="did" data-sortable="true">ID</th>
-	      <th data-field="dname" data-sortable="true">Name</th>
-	    </tr>
-	  </thead>
+	<div id="toolbar-department"></div>
+	<table id="table-department" 
+	       class="results department custom-hover"
+	       data-classes="table table-striped"
+	       data-toolbar="#toolbar-department">
 	</table>
       </div>
       <div id="enrolled" class="tab-pane fade">
-	<div class="form-group pull-right">
-	  <input type="text" class="search form-control" 
-		 placeholder="Filter" data-id="enrolled">
-	</div>
-	<span class="counter pull-right"></span>
-	<table id="table-enrolled" class="results enrolled"
-	       data-toggle="table" data-sort-name="cid" 
-	       data-sort-order="asc">
-	  <thead>
-	    <tr>
-	      <th data-field="cid" data-sortable="true">Course ID</th>
-	      <th data-field="sid" data-sortable="true">Student</th>
-	      <th data-field="exam1" data-sortable="true">Exam 1</th>
-	      <th data-field="exam2" data-sortable="true">Exam 2</th>
-	      <th data-field="final" data-sortable="true">Final</th>
-	      <th data-field="avg" data-sortable="true"
-		  data-formatter="floatFormat">Average</th>
-	    </tr>
-	  </thead>
+	<div id="toolbar-enrolled"></div>
+	<table id="table-enrolled" 
+	       class="results enrolled"
+	       data-classes="table table-striped"
+	       data-tooblar="#toolbar-department">
 	</table>
       </div>
     </div>
