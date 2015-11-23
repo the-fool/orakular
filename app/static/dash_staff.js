@@ -497,4 +497,9 @@ function timeValidate(value) {
     if($.trim(value) == '') {
 	return 'This field is required';
     }
+    var pat = /( (M)|(Tu)|(W)|(Th)|(F) )\s([01]\d|2[0-3]):?([0-5]\d)-([01]\d|2[0-3]):?([0-5]\d)/i
+    if (!pat.test(value)) {
+	return 'Field must be form of MTuWThF 00:00-24:00'
+    }
+
 }
